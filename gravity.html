@@ -1,0 +1,780 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>重力沙盒 — 手势创造星系</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: #000;
+    overflow: hidden;
+    font-family: 'Segoe UI', system-ui, sans-serif;
+    cursor: none;
+  }
+
+  canvas {
+    display: block;
+    position: fixed;
+    top: 0; left: 0;
+  }
+
+  #bgCanvas     { z-index: 0; }
+  #trailCanvas  { z-index: 1; }
+  #mainCanvas   { z-index: 2; }
+  #uiCanvas     { z-index: 3; pointer-events: none; }
+
+  /* 摄像头预览 */
+  .cam-preview {
+    position: fixed;
+    bottom: 16px; left: 16px;
+    z-index: 20;
+    border-radius: 14px;
+    overflow: hidden;
+    border: 2px solid rgba(255,255,255,.12);
+    box-shadow: 0 4px 24px rgba(0,0,0,.6);
+    opacity: .85;
+    transition: opacity .3s;
+  }
+  .cam-preview:hover { opacity: 1; }
+  .cam-preview video {
+    display: block;
+    width: 240px; height: 180px;
+    object-fit: cover;
+    transform: scaleX(-1);
+  }
+  .cam-preview canvas {
+    position: absolute; top: 0; left: 0;
+    width: 240px; height: 180px;
+    transform: scaleX(-1);
+  }
+
+  /* HUD */
+  .hud {
+    position: fixed; z-index: 10; pointer-events: none;
+    color: rgba(255,255,255,.6);
+    font-size: .78rem; letter-spacing: .03em;
+  }
+
+  .hud-top {
+    top: 20px; left: 50%;
+    transform: translateX(-50%);
+    text-align: center;
+  }
+  .hud-top h1 {
+    font-size: 1.3rem; font-weight: 600;
+    color: rgba(255,255,255,.75);
+    margin-bottom: 4px; letter-spacing: .06em;
+  }
+
+  .hud-left {
+    top: 20px; left: 20px;
+    line-height: 1.8;
+  }
+
+  .hud-right {
+    top: 20px; right: 20px;
+    text-align: right; line-height: 1.8;
+  }
+
+  .hud-bottom {
+    bottom: 20px; left: 50%;
+    transform: translateX(-50%);
+    display: flex; gap: 20px;
+    pointer-events: auto;
+  }
+
+  .btn {
+    background: rgba(255,255,255,.08);
+    border: 1px solid rgba(255,255,255,.15);
+    color: rgba(255,255,255,.7);
+    padding: 8px 18px;
+    border-radius: 8px;
+    font-size: .8rem;
+    cursor: pointer;
+    transition: all .2s;
+    letter-spacing: .03em;
+  }
+  .btn:hover {
+    background: rgba(255,255,255,.15);
+    color: #fff;
+  }
+
+  .gesture-status {
+    position: fixed; z-index: 10; pointer-events: none;
+    bottom: 70px; left: 50%;
+    transform: translateX(-50%);
+    text-align: center;
+    color: rgba(255,255,255,.5);
+    font-size: .82rem;
+    transition: color .3s;
+  }
+  .gesture-status .gesture-icon {
+    font-size: 1.6rem;
+    display: block;
+    margin-bottom: 4px;
+  }
+
+  .mass-indicator {
+    position: fixed; z-index: 10; pointer-events: none;
+    bottom: 120px; left: 50%;
+    transform: translateX(-50%);
+    color: rgba(255,255,255,.5);
+    font-size: .8rem;
+    text-align: center;
+  }
+  .mass-indicator .mass-bar {
+    width: 200px; height: 4px;
+    background: rgba(255,255,255,.1);
+    border-radius: 2px;
+    margin: 6px auto 0;
+    overflow: hidden;
+  }
+  .mass-indicator .mass-fill {
+    height: 100%; border-radius: 2px;
+    transition: width .15s;
+  }
+
+  .key {
+    display: inline-block;
+    background: rgba(255,255,255,.1);
+    border: 1px solid rgba(255,255,255,.2);
+    border-radius: 4px;
+    padding: 1px 6px;
+    font-size: .7rem;
+    margin: 0 2px;
+  }
+</style>
+</head>
+<body>
+
+<canvas id="bgCanvas"></canvas>
+<canvas id="trailCanvas"></canvas>
+<canvas id="mainCanvas"></canvas>
+<canvas id="uiCanvas"></canvas>
+
+<div class="cam-preview" id="camPreview">
+  <video id="video" playsinline></video>
+  <canvas id="handCanvas" width="640" height="480"></canvas>
+</div>
+
+<div class="hud hud-top">
+  <h1>重力沙盒 · 手势控制</h1>
+  <span>伸出手指移动光标 · 捏合放置星球 · 张开手掌粒子爆发</span>
+</div>
+
+<div class="hud hud-left">
+  星球: <span id="planetCount">0</span><br>
+  粒子: <span id="particleCount">0</span><br>
+  FPS: <span id="fpsDisplay">0</span>
+</div>
+
+<div class="hud hud-right">
+  <span class="key">☝️</span> 食指 → 移动光标<br>
+  <span class="key">🤏</span> 捏合 → 放置星球<br>
+  <span class="key">✌️</span> 2指 → 小质量<br>
+  <span class="key">🖐️</span> 5指 → 大质量 + 爆发<br>
+  <span class="key">R</span> 重置宇宙
+</div>
+
+<div class="mass-indicator" id="massInd">
+  质量: <span id="massLabel">中等</span>
+  <div class="mass-bar"><div class="mass-fill" id="massFill" style="width:40%;background:linear-gradient(90deg,#6ee7b7,#a78bfa)"></div></div>
+</div>
+
+<div class="gesture-status" id="gestureStatus">
+  <span class="gesture-icon">🖐️</span>
+  等待手部识别...
+</div>
+
+<div class="hud hud-bottom">
+  <button class="btn" id="btnReset">重置宇宙</button>
+  <button class="btn" id="btnTrail" data-on="1">轨迹: 开</button>
+  <button class="btn" id="btnPause">暂停</button>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils@0.3.1675466862/camera_utils.js" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/@mediapipe/hands@0.4.1646424915/hands.js" crossorigin="anonymous"></script>
+
+<script>
+/* ===== 画布初始化 ===== */
+var bgCanvas    = document.getElementById('bgCanvas');
+var trailCanvas = document.getElementById('trailCanvas');
+var mainCanvas  = document.getElementById('mainCanvas');
+var uiCanvas    = document.getElementById('uiCanvas');
+var bgCtx       = bgCanvas.getContext('2d');
+var trailCtx    = trailCanvas.getContext('2d');
+var mainCtx     = mainCanvas.getContext('2d');
+var uiCtx       = uiCanvas.getContext('2d');
+
+var video      = document.getElementById('video');
+var handCanvas = document.getElementById('handCanvas');
+var handCtx    = handCanvas.getContext('2d');
+
+var W, H;
+function resize() {
+  W = window.innerWidth;
+  H = window.innerHeight;
+  [bgCanvas, trailCanvas, mainCanvas, uiCanvas].forEach(function(c) {
+    c.width = W; c.height = H;
+  });
+  drawStarfield();
+}
+window.addEventListener('resize', resize);
+resize();
+
+/* ===== 星空背景 ===== */
+var bgStars = [];
+function drawStarfield() {
+  bgCtx.fillStyle = '#000';
+  bgCtx.fillRect(0, 0, W, H);
+  bgStars = [];
+  for (var i = 0; i < 600; i++) {
+    bgStars.push({
+      x: Math.random() * W, y: Math.random() * H,
+      r: Math.random() * 1.5 + 0.3,
+      a: Math.random() * 0.6 + 0.2,
+      twinkleSpeed: Math.random() * 0.02 + 0.005,
+      phase: Math.random() * Math.PI * 2
+    });
+  }
+}
+
+function updateStarfield(time) {
+  bgCtx.fillStyle = '#000';
+  bgCtx.fillRect(0, 0, W, H);
+  for (var i = 0; i < bgStars.length; i++) {
+    var s = bgStars[i];
+    var alpha = s.a + Math.sin(time * s.twinkleSpeed + s.phase) * 0.2;
+    bgCtx.beginPath();
+    bgCtx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+    bgCtx.fillStyle = 'rgba(255,255,255,' + Math.max(0.05, alpha) + ')';
+    bgCtx.fill();
+  }
+}
+
+/* ===== 颜色方案 ===== */
+var PLANET_PALETTES = [
+  { core: '#a78bfa', glow: 'rgba(167,139,250,' },
+  { core: '#6ee7b7', glow: 'rgba(110,231,183,' },
+  { core: '#fb923c', glow: 'rgba(251,146,60,'  },
+  { core: '#f87171', glow: 'rgba(248,113,113,' },
+  { core: '#60a5fa', glow: 'rgba(96,165,250,'  },
+  { core: '#fbbf24', glow: 'rgba(251,191,36,'  },
+  { core: '#e879f9', glow: 'rgba(232,121,249,' },
+  { core: '#34d399', glow: 'rgba(52,211,153,'  }
+];
+var paletteIdx = 0;
+
+/* ===== 物理常量 ===== */
+var G = 800, DT = 0.016, MERGE_FACTOR = 0.8, SOFTENING = 5;
+
+/* ===== 星球 & 粒子 ===== */
+var planets = [];
+var particles = [];
+
+function massToRadius(m) { return Math.max(4, Math.pow(m, 0.4) * 2.5); }
+
+function createPlanet(x, y, vx, vy, mass) {
+  var pal = PLANET_PALETTES[paletteIdx % PLANET_PALETTES.length];
+  paletteIdx++;
+  return { x:x, y:y, vx:vx||0, vy:vy||0, mass:mass, radius:massToRadius(mass), palette:pal, trail:[], alive:true };
+}
+
+function createParticle(x, y, vx, vy, life) {
+  var l = life || (120 + Math.random() * 200);
+  return { x:x, y:y, vx:vx, vy:vy, life:l, maxLife:l, radius:0.8+Math.random()*1.2, hue:Math.random()*360 };
+}
+
+function spawnAmbient(count) {
+  for (var i = 0; i < count; i++)
+    particles.push(createParticle(Math.random()*W, Math.random()*H, (Math.random()-.5)*.5, (Math.random()-.5)*.5, 300+Math.random()*400));
+}
+
+function spawnBurst(x, y, count, speed) {
+  for (var i = 0; i < count; i++) {
+    var a = Math.random() * Math.PI * 2;
+    var s = Math.random() * speed;
+    particles.push(createParticle(x+(Math.random()-.5)*10, y+(Math.random()-.5)*10, Math.cos(a)*s, Math.sin(a)*s, 80+Math.random()*150));
+  }
+}
+
+/* ===== 物理模拟 ===== */
+function simulate() {
+  var i, j, p, q, dx, dy, distSq, dist, force, ax, ay;
+  for (i = 0; i < planets.length; i++) {
+    p = planets[i]; if (!p.alive) continue;
+    for (j = i + 1; j < planets.length; j++) {
+      q = planets[j]; if (!q.alive) continue;
+      dx = q.x - p.x; dy = q.y - p.y;
+      distSq = dx*dx + dy*dy + SOFTENING*SOFTENING;
+      dist = Math.sqrt(distSq);
+      if (dist < (p.radius + q.radius) * MERGE_FACTOR) { mergePlanets(p, q); continue; }
+      force = G * p.mass * q.mass / distSq;
+      ax = force * dx / dist; ay = force * dy / dist;
+      p.vx += ax/p.mass*DT; p.vy += ay/p.mass*DT;
+      q.vx -= ax/q.mass*DT; q.vy -= ay/q.mass*DT;
+    }
+  }
+  for (i = planets.length - 1; i >= 0; i--) {
+    p = planets[i];
+    if (!p.alive) { planets.splice(i, 1); continue; }
+    p.x += p.vx * DT; p.y += p.vy * DT;
+    if (showTrails) { p.trail.push({x:p.x, y:p.y}); if (p.trail.length > 120) p.trail.shift(); }
+  }
+  for (i = particles.length - 1; i >= 0; i--) {
+    var pt = particles[i]; pt.life--;
+    if (pt.life <= 0) { particles.splice(i, 1); continue; }
+    for (j = 0; j < planets.length; j++) {
+      p = planets[j]; dx = p.x - pt.x; dy = p.y - pt.y;
+      distSq = dx*dx + dy*dy + SOFTENING*SOFTENING; dist = Math.sqrt(distSq);
+      if (dist < p.radius * 1.2) { pt.life = 0; break; }
+      force = G * p.mass * 0.3 / distSq;
+      pt.vx += force*dx/dist*DT; pt.vy += force*dy/dist*DT;
+    }
+    pt.x += pt.vx * DT; pt.y += pt.vy * DT;
+    pt.vx *= 0.9995; pt.vy *= 0.9995;
+  }
+  if (particles.length < 300) spawnAmbient(5);
+}
+
+function mergePlanets(a, b) {
+  var tm = a.mass + b.mass;
+  a.x = (a.x*a.mass + b.x*b.mass)/tm;
+  a.y = (a.y*a.mass + b.y*b.mass)/tm;
+  a.vx = (a.vx*a.mass + b.vx*b.mass)/tm;
+  a.vy = (a.vy*a.mass + b.vy*b.mass)/tm;
+  a.mass = tm; a.radius = massToRadius(tm); b.alive = false;
+  spawnBurst(a.x, a.y, 60, 4);
+  document.getElementById('planetCount').textContent = planets.filter(function(p){return p.alive;}).length;
+}
+
+/* ===== 渲染 ===== */
+var showTrails = true;
+
+function render(time) {
+  if (showTrails) {
+    trailCtx.fillStyle = 'rgba(0,0,0,0.03)';
+    trailCtx.fillRect(0, 0, W, H);
+    for (var i = 0; i < planets.length; i++) {
+      var p = planets[i]; if (p.trail.length < 2) continue;
+      trailCtx.beginPath(); trailCtx.moveTo(p.trail[0].x, p.trail[0].y);
+      for (var t = 1; t < p.trail.length; t++) trailCtx.lineTo(p.trail[t].x, p.trail[t].y);
+      trailCtx.strokeStyle = p.palette.glow + '0.3)';
+      trailCtx.lineWidth = Math.max(1, p.radius * 0.3);
+      trailCtx.stroke();
+    }
+  } else {
+    trailCtx.clearRect(0, 0, W, H);
+  }
+
+  mainCtx.clearRect(0, 0, W, H);
+  for (var i = 0; i < particles.length; i++) {
+    var pt = particles[i];
+    var alpha = Math.min(1, pt.life / pt.maxLife) * 0.7;
+    mainCtx.beginPath(); mainCtx.arc(pt.x, pt.y, pt.radius, 0, Math.PI*2);
+    mainCtx.fillStyle = 'hsla(' + pt.hue + ',70%,70%,' + alpha + ')';
+    mainCtx.fill();
+  }
+  for (var i = 0; i < planets.length; i++) {
+    var p = planets[i], r = p.radius;
+    var g1 = mainCtx.createRadialGradient(p.x, p.y, r*0.5, p.x, p.y, r*4);
+    g1.addColorStop(0, p.palette.glow+'0.25)'); g1.addColorStop(1, p.palette.glow+'0)');
+    mainCtx.beginPath(); mainCtx.arc(p.x, p.y, r*4, 0, Math.PI*2); mainCtx.fillStyle = g1; mainCtx.fill();
+    var g2 = mainCtx.createRadialGradient(p.x-r*0.3, p.y-r*0.3, r*0.1, p.x, p.y, r);
+    g2.addColorStop(0,'#fff'); g2.addColorStop(0.3,p.palette.core); g2.addColorStop(1,p.palette.glow+'0.6)');
+    mainCtx.beginPath(); mainCtx.arc(p.x, p.y, r, 0, Math.PI*2); mainCtx.fillStyle = g2; mainCtx.fill();
+    mainCtx.beginPath(); mainCtx.arc(p.x-r*0.25, p.y-r*0.25, r*0.35, 0, Math.PI*2);
+    mainCtx.fillStyle = 'rgba(255,255,255,0.25)'; mainCtx.fill();
+  }
+}
+
+/* ===== 手势交互状态 ===== */
+var handX = -100, handY = -100;
+var isPinching = false;
+var wasPinching = false;
+var pinchStartX = 0, pinchStartY = 0;
+var currentMass = 30;
+var MIN_MASS = 5, MAX_MASS = 200;
+var paused = false;
+var fingerCount = 0;
+var handDetected = false;
+var lastBurstTime = 0;
+
+var PINCH_THRESHOLD = 0.07;
+var PINCH_RELEASE   = 0.09;
+
+var gestureStatusEl = document.getElementById('gestureStatus');
+var massLabelEl     = document.getElementById('massLabel');
+var massFillEl      = document.getElementById('massFill');
+
+/* 平滑手部坐标 */
+var smoothX = -100, smoothY = -100;
+var SMOOTH = 0.35;
+
+function updateMassFromFingers(count) {
+  var massMap = [30, 10, 20, 50, 100, 180];
+  currentMass = massMap[Math.min(count, 5)];
+  updateMassIndicator();
+}
+
+function updateMassIndicator() {
+  var pct = ((currentMass - MIN_MASS) / (MAX_MASS - MIN_MASS)) * 100;
+  massFillEl.style.width = pct + '%';
+  var hue = 140 - pct * 1.2;
+  massFillEl.style.background = 'linear-gradient(90deg, hsl('+(hue+40)+',70%,65%), hsl('+hue+',70%,55%))';
+  if (currentMass < 15)       massLabelEl.textContent = '微小';
+  else if (currentMass < 40)  massLabelEl.textContent = '中等';
+  else if (currentMass < 80)  massLabelEl.textContent = '巨大';
+  else if (currentMass < 150) massLabelEl.textContent = '超巨星';
+  else                        massLabelEl.textContent = '黑洞级';
+}
+
+/* ===== 手指伸展检测 ===== */
+function countFingers(lm) {
+  var count = 0;
+  // 拇指: tip(4) 比 ip(3) 更远离手腕(0) 的 x 方向
+  var wristX = lm[0].x;
+  var isRightHand = lm[17].x < lm[5].x; // 粗略判断左右手
+  if (isRightHand) {
+    if (lm[4].x < lm[3].x) count++;
+  } else {
+    if (lm[4].x > lm[3].x) count++;
+  }
+  // 食指
+  if (lm[8].y < lm[6].y) count++;
+  // 中指
+  if (lm[12].y < lm[10].y) count++;
+  // 无名指
+  if (lm[16].y < lm[14].y) count++;
+  // 小指
+  if (lm[20].y < lm[18].y) count++;
+  return count;
+}
+
+function getPinchDist(lm) {
+  var dx = lm[4].x - lm[8].x;
+  var dy = lm[4].y - lm[8].y;
+  return Math.sqrt(dx * dx + dy * dy);
+}
+
+/* ===== MediaPipe Hands 回调 ===== */
+function onHandResults(results) {
+  handCtx.clearRect(0, 0, handCanvas.width, handCanvas.height);
+
+  if (!results.multiHandLandmarks || results.multiHandLandmarks.length === 0) {
+    handDetected = false;
+    handX = -100; handY = -100;
+    smoothX = -100; smoothY = -100;
+    isPinching = false;
+    wasPinching = false;
+    gestureStatusEl.innerHTML = '<span class="gesture-icon">👋</span>请将手放入摄像头画面';
+    return;
+  }
+
+  handDetected = true;
+  var lm = results.multiHandLandmarks[0];
+
+  // 绘制手部骨架到预览画布
+  drawHandSkeleton(lm);
+
+  // 食指尖位置 → 屏幕坐标 (镜像)
+  var rawX = (1 - lm[8].x) * W;
+  var rawY = lm[8].y * H;
+
+  if (smoothX < 0) { smoothX = rawX; smoothY = rawY; }
+  smoothX += (rawX - smoothX) * SMOOTH;
+  smoothY += (rawY - smoothY) * SMOOTH;
+  handX = smoothX;
+  handY = smoothY;
+
+  // 手指计数
+  fingerCount = countFingers(lm);
+
+  // 捏合检测
+  var pinchDist = getPinchDist(lm);
+  if (!isPinching && pinchDist < PINCH_THRESHOLD) {
+    isPinching = true;
+    pinchStartX = handX;
+    pinchStartY = handY;
+  } else if (isPinching && pinchDist > PINCH_RELEASE) {
+    isPinching = false;
+    // 释放时放置星球
+    var dvx = (pinchStartX - handX) * 0.12;
+    var dvy = (pinchStartY - handY) * 0.12;
+    planets.push(createPlanet(pinchStartX, pinchStartY, dvx, dvy, currentMass));
+    spawnBurst(pinchStartX, pinchStartY, 30, 3);
+    document.getElementById('planetCount').textContent = planets.length;
+  }
+
+  // 根据手指数调整质量
+  if (!isPinching) {
+    updateMassFromFingers(fingerCount);
+  }
+
+  // 5 指张开 → 粒子爆发
+  var now = performance.now();
+  if (fingerCount >= 5 && !isPinching && now - lastBurstTime > 800) {
+    lastBurstTime = now;
+    spawnBurst(handX, handY, 80, 5);
+  }
+
+  // 更新手势状态显示
+  updateGestureDisplay();
+}
+
+function updateGestureDisplay() {
+  var icon, text;
+  if (isPinching) {
+    icon = '🤏'; text = '捏合中 — 移动手设定速度方向...';
+  } else if (fingerCount >= 5) {
+    icon = '🖐️'; text = '张开手掌 — 粒子爆发！质量: 黑洞级';
+  } else if (fingerCount === 1) {
+    icon = '☝️'; text = '食指指向 — 移动光标 · 质量: 微小';
+  } else if (fingerCount === 2) {
+    icon = '✌️'; text = '两根手指 — 质量: 中等';
+  } else if (fingerCount === 3) {
+    icon = '🤟'; text = '三根手指 — 质量: 巨大';
+  } else if (fingerCount === 4) {
+    icon = '🖖'; text = '四根手指 — 质量: 超巨星';
+  } else {
+    icon = '✊'; text = '握拳 — 捏合拇指+食指放置星球';
+  }
+  gestureStatusEl.innerHTML = '<span class="gesture-icon">' + icon + '</span>' + text;
+}
+
+/* ===== 手部骨架绘制 ===== */
+var HAND_CONNECTIONS = [
+  [0,1],[1,2],[2,3],[3,4],
+  [0,5],[5,6],[6,7],[7,8],
+  [0,9],[9,10],[10,11],[11,12],
+  [0,13],[13,14],[14,15],[15,16],
+  [0,17],[17,18],[18,19],[19,20],
+  [5,9],[9,13],[13,17]
+];
+
+function drawHandSkeleton(lm) {
+  var cw = handCanvas.width, ch = handCanvas.height;
+
+  handCtx.lineWidth = 2;
+  handCtx.strokeStyle = 'rgba(167,139,250,0.6)';
+
+  for (var i = 0; i < HAND_CONNECTIONS.length; i++) {
+    var a = lm[HAND_CONNECTIONS[i][0]];
+    var b = lm[HAND_CONNECTIONS[i][1]];
+    handCtx.beginPath();
+    handCtx.moveTo(a.x * cw, a.y * ch);
+    handCtx.lineTo(b.x * cw, b.y * ch);
+    handCtx.stroke();
+  }
+
+  for (var i = 0; i < lm.length; i++) {
+    var p = lm[i];
+    var isFingerTip = (i === 4 || i === 8 || i === 12 || i === 16 || i === 20);
+    handCtx.beginPath();
+    handCtx.arc(p.x * cw, p.y * ch, isFingerTip ? 5 : 3, 0, Math.PI * 2);
+    handCtx.fillStyle = isFingerTip ? 'rgba(110,231,183,0.9)' : 'rgba(167,139,250,0.7)';
+    handCtx.fill();
+  }
+
+  // 捏合距离指示
+  var thumbTip = lm[4], indexTip = lm[8];
+  var midX = (thumbTip.x + indexTip.x) / 2 * cw;
+  var midY = (thumbTip.y + indexTip.y) / 2 * ch;
+  var d = getPinchDist(lm);
+  if (d < PINCH_RELEASE) {
+    handCtx.beginPath();
+    handCtx.arc(midX, midY, 8, 0, Math.PI * 2);
+    handCtx.fillStyle = d < PINCH_THRESHOLD ? 'rgba(251,191,36,0.8)' : 'rgba(251,191,36,0.3)';
+    handCtx.fill();
+  }
+}
+
+/* ===== UI 层渲染 ===== */
+function renderUI() {
+  uiCtx.clearRect(0, 0, W, H);
+
+  if (!handDetected || handX < 0) return;
+
+  var previewR = massToRadius(currentMass);
+
+  if (isPinching) {
+    // 画速度箭头
+    var dx = pinchStartX - handX;
+    var dy = pinchStartY - handY;
+
+    uiCtx.beginPath();
+    uiCtx.moveTo(pinchStartX, pinchStartY);
+    uiCtx.lineTo(pinchStartX + dx * 2, pinchStartY + dy * 2);
+    uiCtx.strokeStyle = 'rgba(251,191,36,0.4)';
+    uiCtx.lineWidth = 2;
+    uiCtx.setLineDash([6, 4]);
+    uiCtx.stroke();
+    uiCtx.setLineDash([]);
+
+    var angle = Math.atan2(dy, dx);
+    var headLen = 12;
+    var endX = pinchStartX + dx * 2;
+    var endY = pinchStartY + dy * 2;
+    uiCtx.beginPath();
+    uiCtx.moveTo(endX, endY);
+    uiCtx.lineTo(endX - headLen*Math.cos(angle-0.4), endY - headLen*Math.sin(angle-0.4));
+    uiCtx.moveTo(endX, endY);
+    uiCtx.lineTo(endX - headLen*Math.cos(angle+0.4), endY - headLen*Math.sin(angle+0.4));
+    uiCtx.strokeStyle = 'rgba(251,191,36,0.6)';
+    uiCtx.lineWidth = 2;
+    uiCtx.stroke();
+
+    // 起点预览球
+    uiCtx.beginPath();
+    uiCtx.arc(pinchStartX, pinchStartY, previewR, 0, Math.PI * 2);
+    uiCtx.strokeStyle = 'rgba(251,191,36,0.5)';
+    uiCtx.lineWidth = 2;
+    uiCtx.stroke();
+
+    // 速度标签
+    var speed = Math.sqrt(dx * dx + dy * dy) * 0.12;
+    uiCtx.fillStyle = 'rgba(255,255,255,0.5)';
+    uiCtx.font = '12px "Segoe UI", sans-serif';
+    uiCtx.fillText('速度: ' + speed.toFixed(1), pinchStartX + 20, pinchStartY - 20);
+
+    // 当前手位置指示
+    uiCtx.beginPath();
+    uiCtx.arc(handX, handY, 6, 0, Math.PI * 2);
+    uiCtx.fillStyle = 'rgba(251,191,36,0.7)';
+    uiCtx.fill();
+  } else {
+    // 光标 + 预览球
+    // 外圈光晕
+    var cursorGlow = uiCtx.createRadialGradient(handX, handY, 0, handX, handY, previewR + 20);
+    cursorGlow.addColorStop(0, 'rgba(167,139,250,0.15)');
+    cursorGlow.addColorStop(1, 'rgba(167,139,250,0)');
+    uiCtx.beginPath();
+    uiCtx.arc(handX, handY, previewR + 20, 0, Math.PI * 2);
+    uiCtx.fillStyle = cursorGlow;
+    uiCtx.fill();
+
+    // 预览球轮廓
+    uiCtx.beginPath();
+    uiCtx.arc(handX, handY, previewR, 0, Math.PI * 2);
+    uiCtx.strokeStyle = 'rgba(167,139,250,0.3)';
+    uiCtx.lineWidth = 1.5;
+    uiCtx.setLineDash([4, 4]);
+    uiCtx.stroke();
+    uiCtx.setLineDash([]);
+
+    // 中心点
+    uiCtx.beginPath();
+    uiCtx.arc(handX, handY, 4, 0, Math.PI * 2);
+    uiCtx.fillStyle = 'rgba(167,139,250,0.8)';
+    uiCtx.fill();
+
+    // 十字准星
+    var crossSize = previewR + 10;
+    uiCtx.strokeStyle = 'rgba(255,255,255,0.12)';
+    uiCtx.lineWidth = 1;
+    uiCtx.beginPath();
+    uiCtx.moveTo(handX - crossSize, handY); uiCtx.lineTo(handX - 8, handY);
+    uiCtx.moveTo(handX + 8, handY); uiCtx.lineTo(handX + crossSize, handY);
+    uiCtx.moveTo(handX, handY - crossSize); uiCtx.lineTo(handX, handY - 8);
+    uiCtx.moveTo(handX, handY + 8); uiCtx.lineTo(handX, handY + crossSize);
+    uiCtx.stroke();
+  }
+}
+
+/* ===== 键盘 & 按钮 ===== */
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'r' || e.key === 'R') resetUniverse();
+  if (e.key === ' ') { paused = !paused; updatePauseBtn(); e.preventDefault(); }
+});
+
+document.getElementById('btnReset').addEventListener('click', resetUniverse);
+document.getElementById('btnTrail').addEventListener('click', function() {
+  showTrails = !showTrails;
+  this.textContent = '轨迹: ' + (showTrails ? '开' : '关');
+  if (!showTrails) trailCtx.clearRect(0, 0, W, H);
+});
+document.getElementById('btnPause').addEventListener('click', function() {
+  paused = !paused; updatePauseBtn();
+});
+
+function updatePauseBtn() {
+  document.getElementById('btnPause').textContent = paused ? '继续' : '暂停';
+}
+
+function resetUniverse() {
+  planets = []; particles = [];
+  trailCtx.clearRect(0, 0, W, H);
+  spawnAmbient(400);
+  document.getElementById('planetCount').textContent = '0';
+  paletteIdx = 0;
+}
+
+/* ===== 主循环 ===== */
+var fpsFrames = 0, fpsTime = 0;
+
+function loop(time) {
+  requestAnimationFrame(loop);
+  fpsFrames++;
+  if (time - fpsTime >= 1000) {
+    document.getElementById('fpsDisplay').textContent = fpsFrames;
+    fpsFrames = 0; fpsTime = time;
+  }
+  document.getElementById('particleCount').textContent = particles.length;
+  updateStarfield(time);
+  if (!paused) simulate();
+  render(time);
+  renderUI();
+}
+
+/* ===== MediaPipe Hands 初始化 ===== */
+var hands = new Hands({
+  locateFile: function(file) {
+    return 'https://cdn.jsdelivr.net/npm/@mediapipe/hands@0.4.1646424915/' + file;
+  }
+});
+
+hands.setOptions({
+  maxNumHands: 1,
+  modelComplexity: 1,
+  minDetectionConfidence: 0.7,
+  minTrackingConfidence: 0.6
+});
+
+hands.onResults(onHandResults);
+
+gestureStatusEl.innerHTML = '<span class="gesture-icon">⏳</span>正在加载手部识别模型…';
+
+navigator.mediaDevices.getUserMedia({
+  video: { width: 640, height: 480, facingMode: 'user' }
+}).then(function(stream) {
+  video.srcObject = stream;
+  video.onloadedmetadata = function() {
+    video.play();
+    handCanvas.width  = video.videoWidth  || 640;
+    handCanvas.height = video.videoHeight || 480;
+
+    var camera = new Camera(video, {
+      onFrame: function() {
+        return hands.send({ image: video });
+      },
+      width: 640,
+      height: 480
+    });
+    camera.start();
+
+    gestureStatusEl.innerHTML = '<span class="gesture-icon">👋</span>请将手放入摄像头画面';
+  };
+}).catch(function(err) {
+  gestureStatusEl.innerHTML = '<span class="gesture-icon">❌</span>摄像头启动失败: ' + err.message;
+  gestureStatusEl.style.color = '#f87171';
+});
+
+/* ===== 启动 ===== */
+spawnAmbient(400);
+updateMassIndicator();
+requestAnimationFrame(loop);
+</script>
+</body>
+</html>

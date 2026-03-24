@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>多人眨眼识别 - Emoji 爆发</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    min-height: 100vh;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+    overflow: hidden;
+    font-family: 'Segoe UI', system-ui, sans-serif;
+    user-select: none;
+  }
+
+  h1 {
+    color: #e0d4ff; font-size: 1.6rem; font-weight: 600;
+    margin-bottom: 8px; letter-spacing: .04em;
+  }
+
+  .status {
+    font-size: .85rem; margin-bottom: 20px;
+    letter-spacing: .03em; transition: color .3s;
+  }
+  .status.loading { color: #f0c040; }
+  .status.ready   { color: #6ee7b7; }
+  .status.no-face { color: #f87171; }
+
+  .cam-container {
+    position: relative;
+    width: 640px; height: 480px;
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 0 80px rgba(120, 100, 255, .3), 0 8px 32px rgba(0,0,0,.5);
+    border: 2px solid rgba(255,255,255,.08);
+  }
+
+  video, .draw-canvas {
+    position: absolute; top: 0; left: 0;
+    width: 100%; height: 100%;
+    border-radius: 20px;
+  }
+
+  video {
+    transform: scaleX(-1);
+    object-fit: cover;
+  }
+
+  .draw-canvas {
+    z-index: 2;
+    pointer-events: none;
+    transform: scaleX(-1);
+  }
+
+  .dashboard {
+    display: flex; gap: 24px; flex-wrap: wrap;
+    justify-content: center;
+    margin-top: 24px;
+    max-width: 700px;
+  }
+
+  .stat {
+    text-align: center; color: rgba(255,255,255,.55);
+    font-size: .8rem; letter-spacing: .04em;
+  }
+  .stat .val {
+    display: block; font-size: 1.6rem; font-weight: 700;
+    color: #a78bfa; margin-bottom: 2px;
+  }
+
+  .face-cards {
+    display: flex; gap: 16px; flex-wrap: wrap;
+    justify-content: center;
+    margin-top: 16px;
+    max-width: 700px;
+  }
+
+  .face-card {
+    background: rgba(255,255,255,.06);
+    border: 1px solid rgba(255,255,255,.1);
+    border-radius: 12px;
+    padding: 12px 20px;
+    text-align: center;
+    min-width: 130px;
+    transition: border-color .3s, box-shadow .3s;
+  }
+  .face-card.blinking {
+    box-shadow: 0 0 20px rgba(167,139,250,.4);
+  }
+  .face-card .face-label {
+    font-size: .75rem; color: rgba(255,255,255,.5);
+    margin-bottom: 4px; letter-spacing: .04em;
+  }
+  .face-card .face-dot {
+    display: inline-block; width: 8px; height: 8px;
+    border-radius: 50%; margin-right: 4px;
+    vertical-align: middle;
+  }
+  .face-card .face-blinks {
+    font-size: 1.4rem; font-weight: 700;
+    color: #e0d4ff;
+  }
+  .face-card .face-ear {
+    font-size: .75rem; color: rgba(255,255,255,.4);
+    margin-top: 2px;
+  }
+  .face-card .ear-mini-bar {
+    width: 100%; height: 4px;
+    background: rgba(255,255,255,.1);
+    border-radius: 2px; overflow: hidden;
+    margin-top: 6px;
+  }
+  .face-card .ear-mini-fill {
+    height: 100%; width: 0%;
+    border-radius: 2px;
+    transition: width .08s;
+  }
+
+  .emoji-particle {
+    position: fixed; font-size: 2.2rem;
+    pointer-events: none; z-index: 100;
+    animation: fly var(--dur) ease-out forwards;
+  }
+  @keyframes fly {
+    0%   { opacity: 1; transform: translate(0, 0) scale(1) rotate(0deg); }
+    50%  { opacity: 1; }
+    100% { opacity: 0; transform: translate(var(--tx), var(--ty)) scale(var(--sc)) rotate(var(--rot)); }
+  }
+
+  .blink-flash {
+    position: absolute; inset: 0;
+    border-radius: 20px;
+    z-index: 3; pointer-events: none;
+    animation: flash .4s ease-out forwards;
+  }
+  @keyframes flash {
+    0%   { opacity: 1; }
+    100% { opacity: 0; }
+  }
+
+  @media (max-width: 700px) {
+    .cam-container { width: 95vw; height: 71.25vw; }
+    h1 { font-size: 1.2rem; }
+  }
+</style>
+</head>
+<body>
+
+<h1>多人眨眼 Emoji 爆发</h1>
+<p class="status loading" id="status">正在加载人脸识别模型…</p>
+
+<div class="cam-container" id="camContainer">
+  <video id="video" playsinline></video>
+  <canvas class="draw-canvas" id="overlay" width="640" height="480"></canvas>
+</div>
+
+<div class="dashboard">
+  <div class="stat">
+    <span class="val" id="totalBlinks">0</span>
+    总眨眼次数
+  </div>
+  <div class="stat">
+    <span class="val" id="faceCount">0</span>
+    检测人数
+  </div>
+  <div class="stat">
+    <span class="val" id="fpsValue">-</span>
+    FPS
+  </div>
+</div>
+
+<div class="face-cards" id="faceCards"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils@0.3.1675466862/camera_utils.js" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/@mediapipe/face_mesh@0.4.1633559619/face_mesh.js" crossorigin="anonymous"></script>
+
+<script>
+var MAX_FACES = 4;
+
+var video        = document.getElementById('video');
+var overlay      = document.getElementById('overlay');
+var ctx          = overlay.getContext('2d');
+var statusEl     = document.getElementById('status');
+var totalBlinkEl = document.getElementById('totalBlinks');
+var faceCountEl  = document.getElementById('faceCount');
+var fpsEl        = document.getElementById('fpsValue');
+var faceCardsEl  = document.getElementById('faceCards');
+var camContainer = document.getElementById('camContainer');
+
+var emojis = [
+  '😂','🥰','😎','🤩','😜','🥳','😍','🤗',
+  '🤯','🥺','✨','💖','🔥','🌈','⭐','💫','🎉',
+  '🎊','💥','🦋','🍀','🌸','🍭','🎵','💎',
+  '👻','🐱','🦊','🐸','🐥','🌟','🍩','🧁','🎈'
+];
+
+var FACE_COLORS = [
+  { stroke: 'rgba(167, 139, 250, 0.8)', fill: 'rgba(167, 139, 250, 0.1)', hex: '#a78bfa', flash: 'rgba(167,139,250,.35)' },
+  { stroke: 'rgba(110, 231, 183, 0.8)', fill: 'rgba(110, 231, 183, 0.1)', hex: '#6ee7b7', flash: 'rgba(110,231,183,.35)' },
+  { stroke: 'rgba(251, 146, 60, 0.8)',  fill: 'rgba(251, 146, 60, 0.1)',  hex: '#fb923c', flash: 'rgba(251,146,60,.35)'  },
+  { stroke: 'rgba(248, 113, 113, 0.8)', fill: 'rgba(248, 113, 113, 0.1)', hex: '#f87171', flash: 'rgba(248,113,113,.35)' }
+];
+
+var LEFT_EYE_IDX  = { p1:33, p2:160, p3:158, p4:133, p5:153, p6:144 };
+var RIGHT_EYE_IDX = { p1:362, p2:385, p3:387, p4:263, p5:373, p6:380 };
+
+var LEFT_EYE_CONTOUR  = [33,7,163,144,145,153,154,155,133,173,157,158,159,160,161,246];
+var RIGHT_EYE_CONTOUR = [362,382,381,380,374,373,390,249,263,466,388,387,386,385,384,398];
+
+var LEFT_EYE_CENTER_IDX  = [159, 145, 33, 133];
+var RIGHT_EYE_CENTER_IDX = [386, 374, 362, 263];
+
+var EAR_THRESHOLD  = 0.2;
+var BLINK_COOLDOWN = 400;
+
+var faceStates = [];
+for (var i = 0; i < MAX_FACES; i++) {
+  faceStates.push({
+    eyeWasClosed: false,
+    lastBlinkTime: 0,
+    blinkCount: 0,
+    ear: 0
+  });
+}
+
+var totalBlinks = 0;
+var lastFpsTime = 0;
+var frameCount  = 0;
+
+function ensureFaceCards(count) {
+  while (faceCardsEl.children.length < count) {
+    var idx = faceCardsEl.children.length;
+    var color = FACE_COLORS[idx % FACE_COLORS.length];
+    var card = document.createElement('div');
+    card.className = 'face-card';
+    card.style.borderColor = color.stroke;
+    card.innerHTML =
+      '<div class="face-label"><span class="face-dot" style="background:' + color.hex + '"></span>人脸 ' + (idx + 1) + '</div>' +
+      '<div class="face-blinks" id="fb_' + idx + '">0</div>' +
+      '<div class="face-ear" id="fe_' + idx + '">EAR: -</div>' +
+      '<div class="ear-mini-bar"><div class="ear-mini-fill" id="fbar_' + idx + '" style="background:' + color.hex + '"></div></div>';
+    faceCardsEl.appendChild(card);
+  }
+  while (faceCardsEl.children.length > count) {
+    faceCardsEl.removeChild(faceCardsEl.lastChild);
+  }
+}
+
+function ptDist(a, b) {
+  var dx = a.x - b.x;
+  var dy = a.y - b.y;
+  return Math.sqrt(dx * dx + dy * dy);
+}
+
+function calcEAR(lm, eye) {
+  var v1 = ptDist(lm[eye.p2], lm[eye.p6]);
+  var v2 = ptDist(lm[eye.p3], lm[eye.p5]);
+  var h  = ptDist(lm[eye.p1], lm[eye.p4]);
+  return (v1 + v2) / (2.0 * h);
+}
+
+function getEyeScreenPos(lm, indices, cRect) {
+  var sx = 0, sy = 0;
+  for (var i = 0; i < indices.length; i++) {
+    sx += lm[indices[i]].x;
+    sy += lm[indices[i]].y;
+  }
+  var nx = sx / indices.length;
+  var ny = sy / indices.length;
+  return {
+    x: cRect.left + (1 - nx) * cRect.width,
+    y: cRect.top  + ny * cRect.height
+  };
+}
+
+function drawEyeContour(lm, indices, color) {
+  ctx.beginPath();
+  for (var i = 0; i < indices.length; i++) {
+    var x = lm[indices[i]].x * overlay.width;
+    var y = lm[indices[i]].y * overlay.height;
+    if (i === 0) ctx.moveTo(x, y);
+    else ctx.lineTo(x, y);
+  }
+  ctx.closePath();
+  ctx.strokeStyle = color.stroke;
+  ctx.lineWidth = 2.5;
+  ctx.stroke();
+  ctx.fillStyle = color.fill;
+  ctx.fill();
+}
+
+function drawFaceLabel(lm, faceIdx, color) {
+  var nose = lm[1];
+  var x = nose.x * overlay.width;
+  var y = nose.y * overlay.height - 60;
+  ctx.font = 'bold 14px "Segoe UI", sans-serif';
+  ctx.fillStyle = color.hex;
+  ctx.textAlign = 'center';
+  ctx.fillText('人脸 ' + (faceIdx + 1), x, y);
+}
+
+function onResults(results) {
+  var now = performance.now();
+  frameCount++;
+  if (now - lastFpsTime >= 1000) {
+    fpsEl.textContent = frameCount;
+    frameCount = 0;
+    lastFpsTime = now;
+  }
+
+  ctx.clearRect(0, 0, overlay.width, overlay.height);
+
+  var faces = results.multiFaceLandmarks || [];
+  var numFaces = faces.length;
+
+  faceCountEl.textContent = numFaces;
+
+  if (numFaces === 0) {
+    statusEl.textContent = '未检测到人脸 — 请面对摄像头';
+    statusEl.className = 'status no-face';
+    ensureFaceCards(0);
+    return;
+  }
+
+  if (statusEl.className.indexOf('ready') === -1) {
+    statusEl.textContent = '识别中 — 检测到 ' + numFaces + ' 人，请眨眼试试！';
+    statusEl.className = 'status ready';
+  } else {
+    statusEl.textContent = '识别中 — 检测到 ' + numFaces + ' 人，请眨眼试试！';
+  }
+
+  ensureFaceCards(numFaces);
+
+  for (var fi = 0; fi < numFaces; fi++) {
+    var lm = faces[fi];
+    var color = FACE_COLORS[fi % FACE_COLORS.length];
+    var state = faceStates[fi];
+
+    drawEyeContour(lm, LEFT_EYE_CONTOUR, color);
+    drawEyeContour(lm, RIGHT_EYE_CONTOUR, color);
+    drawFaceLabel(lm, fi, color);
+
+    var earL = calcEAR(lm, LEFT_EYE_IDX);
+    var earR = calcEAR(lm, RIGHT_EYE_IDX);
+    var ear  = (earL + earR) / 2;
+    state.ear = ear;
+
+    var blinksEl = document.getElementById('fb_' + fi);
+    var earEl    = document.getElementById('fe_' + fi);
+    var barEl    = document.getElementById('fbar_' + fi);
+    var card     = faceCardsEl.children[fi];
+
+    if (blinksEl) blinksEl.textContent = state.blinkCount;
+    if (earEl)    earEl.textContent = 'EAR: ' + ear.toFixed(2);
+    if (barEl) {
+      var pct = Math.min(100, Math.max(0, (ear / 0.35) * 100));
+      barEl.style.width = pct + '%';
+    }
+
+    if (ear < EAR_THRESHOLD) {
+      state.eyeWasClosed = true;
+      if (card) card.classList.add('blinking');
+    } else {
+      if (card) card.classList.remove('blinking');
+      if (state.eyeWasClosed) {
+        state.eyeWasClosed = false;
+        if (now - state.lastBlinkTime > BLINK_COOLDOWN) {
+          state.lastBlinkTime = now;
+          state.blinkCount++;
+          totalBlinks++;
+          totalBlinkEl.textContent = totalBlinks;
+          if (blinksEl) blinksEl.textContent = state.blinkCount;
+          onBlink(lm, color);
+        }
+      }
+    }
+  }
+
+  for (var ri = numFaces; ri < MAX_FACES; ri++) {
+    faceStates[ri].eyeWasClosed = false;
+  }
+}
+
+function onBlink(lm, color) {
+  var cRect = camContainer.getBoundingClientRect();
+  var leftPos  = getEyeScreenPos(lm, LEFT_EYE_CENTER_IDX, cRect);
+  var rightPos = getEyeScreenPos(lm, RIGHT_EYE_CENTER_IDX, cRect);
+
+  var n = 4 + Math.floor(Math.random() * 5);
+  for (var i = 0; i < n; i++) {
+    spawnLater(leftPos.x,  leftPos.y,  i * 45);
+    spawnLater(rightPos.x, rightPos.y, i * 45);
+  }
+
+  var flash = document.createElement('div');
+  flash.className = 'blink-flash';
+  flash.style.background = 'radial-gradient(circle, ' + color.flash + ', transparent 70%)';
+  camContainer.appendChild(flash);
+  flash.addEventListener('animationend', function() { flash.remove(); });
+}
+
+function spawnLater(cx, cy, delay) {
+  setTimeout(function() { spawnEmoji(cx, cy); }, delay);
+}
+
+function spawnEmoji(cx, cy) {
+  var el = document.createElement('div');
+  el.className = 'emoji-particle';
+  el.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+
+  var angle = Math.random() * Math.PI * 2;
+  var dist  = 80 + Math.random() * 180;
+  var tx  = Math.cos(angle) * dist;
+  var ty  = Math.sin(angle) * dist - 40;
+  var dur = 0.6 + Math.random() * 0.5;
+  var sc  = 0.5 + Math.random() * 0.9;
+  var rot = (Math.random() - 0.5) * 400;
+
+  el.style.left = cx + 'px';
+  el.style.top  = cy + 'px';
+  el.style.setProperty('--tx', tx + 'px');
+  el.style.setProperty('--ty', ty + 'px');
+  el.style.setProperty('--dur', dur + 's');
+  el.style.setProperty('--sc', String(sc));
+  el.style.setProperty('--rot', rot + 'deg');
+
+  document.body.appendChild(el);
+  el.addEventListener('animationend', function() { el.remove(); });
+}
+
+var faceMesh = new FaceMesh({
+  locateFile: function(file) {
+    return 'https://cdn.jsdelivr.net/npm/@mediapipe/face_mesh@0.4.1633559619/' + file;
+  }
+});
+
+faceMesh.setOptions({
+  maxNumFaces: MAX_FACES,
+  refineLandmarks: true,
+  minDetectionConfidence: 0.5,
+  minTrackingConfidence: 0.5
+});
+
+faceMesh.onResults(onResults);
+
+statusEl.textContent = '正在启动摄像头…';
+
+navigator.mediaDevices.getUserMedia({
+  video: { width: 640, height: 480, facingMode: 'user' }
+}).then(function(stream) {
+  video.srcObject = stream;
+  video.onloadedmetadata = function() {
+    video.play();
+    overlay.width  = video.videoWidth  || 640;
+    overlay.height = video.videoHeight || 480;
+    statusEl.textContent = '模型加载中，请稍候…';
+
+    var camera = new Camera(video, {
+      onFrame: function() {
+        return faceMesh.send({ image: video });
+      },
+      width: 640,
+      height: 480
+    });
+    camera.start();
+  };
+}).catch(function(err) {
+  statusEl.textContent = '摄像头启动失败：' + err.message;
+  statusEl.className = 'status no-face';
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>线条小人 - 全身体感</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{width:100%;height:100%;overflow:hidden;background:#0a0a0f}
+body{font-family:'Segoe UI','Microsoft YaHei',system-ui,sans-serif}
+#c{display:block;position:fixed;top:0;left:0;width:100vw;height:100vh}
+.cam-box{position:fixed;bottom:16px;right:16px;width:180px;height:135px;
+  border-radius:12px;overflow:hidden;border:1px solid rgba(255,255,255,.1);
+  box-shadow:0 4px 20px rgba(0,0,0,.6);z-index:20;opacity:.7;transition:opacity .3s}
+.cam-box:hover{opacity:1}
+.cam-box video{display:block;width:100%;height:100%;object-fit:cover;transform:scaleX(-1)}
+.cam-box canvas{position:absolute;top:0;left:0;width:100%;height:100%;transform:scaleX(-1)}
+.hud{position:fixed;z-index:10;pointer-events:none;font-family:inherit}
+.hud-title{top:22px;left:50%;transform:translateX(-50%);text-align:center}
+.hud-title h1{font-size:1.3rem;font-weight:300;color:rgba(255,255,255,.3);letter-spacing:6px;text-transform:uppercase}
+.hud-title p{font-size:.72rem;color:rgba(255,255,255,.18);margin-top:4px}
+.hud-status{bottom:20px;left:20px;display:flex;gap:14px;font-size:.7rem;color:rgba(255,255,255,.25)}
+.hand-ind{display:flex;align-items:center;gap:4px}
+.dot{width:6px;height:6px;border-radius:50%;transition:all .3s}
+.music-btn{position:fixed;bottom:18px;left:50%;transform:translateX(-50%);z-index:20;
+  background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);
+  color:rgba(255,255,255,.45);padding:7px 24px;border-radius:30px;cursor:pointer;
+  font-family:inherit;font-size:.8rem;transition:all .2s;backdrop-filter:blur(4px)}
+.music-btn:hover{background:rgba(255,255,255,.12);color:rgba(255,255,255,.7)}
+</style>
+</head>
+<body>
+<canvas id="c"></canvas>
+<div class="cam-box"><video id="vid" playsinline></video><canvas id="hc" width="640" height="480"></canvas></div>
+<div class="hud hud-title">
+  <h1>线条小人</h1>
+  <p id="statusText">请站在摄像头前</p>
+</div>
+<div class="hud hud-status">
+  <div class="hand-ind"><span class="dot" id="dBody" style="background:#333"></span>身体</div>
+  <div class="hand-ind"><span class="dot" id="dFace" style="background:#333"></span>表情</div>
+  <div class="hand-ind"><span class="dot" id="dLH" style="background:#333"></span>左手</div>
+  <div class="hand-ind"><span class="dot" id="dRH" style="background:#333"></span>右手</div>
+</div>
+<button class="music-btn" id="musicBtn" onclick="toggleMusic()">🎵 播放音乐</button>
+
+<script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils@0.3.1675466862/camera_utils.js" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/@mediapipe/holistic@0.5.1675471629/holistic.js" crossorigin="anonymous"></script>
+<script>
+var cv=document.getElementById('c'),ctx=cv.getContext('2d');
+var W,H;
+function resize(){W=innerWidth;H=innerHeight;cv.width=W;cv.height=H;}
+addEventListener('resize',resize);resize();
+
+/* ===== 状态 ===== */
+var rawPose=null,rawFace=null,rawLH=null,rawRH=null;
+var sPose=null,sLH=null,sRH=null;
+var expr={le:1,re:1,mo:0,sm:0,lb:0,rb:0};
+var sE={le:1,re:1,mo:0,sm:0,lb:0,rb:0};
+var beatPulse=0;
+
+/* ===== 星星 ===== */
+var stars=[];
+for(var i=0;i<50;i++) stars.push({x:Math.random()*3e3,y:Math.random()*2e3,r:.3+Math.random()*1,sp:.02+Math.random()*.08,ph:Math.random()*6.28});
+var beatRings=[];
+
+/* ===== 音乐 ===== */
+var audioCtx=null,musicOn=false,nextBeat=0,beatNum=0,lastKickT=0,BPM=124;
+function toggleMusic(){
+  if(!audioCtx) audioCtx=new(window.AudioContext||window.webkitAudioContext)();
+  if(audioCtx.state==='suspended') audioCtx.resume();
+  musicOn=!musicOn;
+  if(musicOn){nextBeat=audioCtx.currentTime;beatNum=0;document.getElementById('musicBtn').textContent='🔇 暂停音乐';}
+  else{document.getElementById('musicBtn').textContent='🎵 播放音乐';}
+}
+function mkNoise(dur){var n=audioCtx.sampleRate*dur,b=audioCtx.createBuffer(1,n,audioCtx.sampleRate),d=b.getChannelData(0);for(var i=0;i<n;i++)d[i]=Math.random()*2-1;return b;}
+function kick(t){var o=audioCtx.createOscillator(),g=audioCtx.createGain();o.type='sine';o.frequency.setValueAtTime(150,t);o.frequency.exponentialRampToValueAtTime(30,t+.15);g.gain.setValueAtTime(.7,t);g.gain.exponentialRampToValueAtTime(.001,t+.3);o.connect(g);g.connect(audioCtx.destination);o.start(t);o.stop(t+.3);}
+function snare(t){var ns=audioCtx.createBufferSource();ns.buffer=mkNoise(.12);var f=audioCtx.createBiquadFilter();f.type='bandpass';f.frequency.value=3500;var g=audioCtx.createGain();g.gain.setValueAtTime(.25,t);g.gain.exponentialRampToValueAtTime(.001,t+.12);ns.connect(f);f.connect(g);g.connect(audioCtx.destination);ns.start(t);ns.stop(t+.15);var o=audioCtx.createOscillator(),og=audioCtx.createGain();o.type='triangle';o.frequency.value=185;og.gain.setValueAtTime(.22,t);og.gain.exponentialRampToValueAtTime(.001,t+.07);o.connect(og);og.connect(audioCtx.destination);o.start(t);o.stop(t+.1);}
+function hihat(t){var ns=audioCtx.createBufferSource();ns.buffer=mkNoise(.04);var f=audioCtx.createBiquadFilter();f.type='highpass';f.frequency.value=9000;var g=audioCtx.createGain();g.gain.setValueAtTime(.1,t);g.gain.exponentialRampToValueAtTime(.001,t+.04);ns.connect(f);f.connect(g);g.connect(audioCtx.destination);ns.start(t);ns.stop(t+.06);}
+function bass(t,fr){var o=audioCtx.createOscillator(),f=audioCtx.createBiquadFilter(),g=audioCtx.createGain();o.type='sawtooth';o.frequency.value=fr;f.type='lowpass';f.frequency.value=350;g.gain.setValueAtTime(.18,t);g.gain.exponentialRampToValueAtTime(.001,t+.14);o.connect(f);f.connect(g);g.connect(audioCtx.destination);o.start(t);o.stop(t+.18);}
+function scheduleBeat(){
+  if(!musicOn||!audioCtx)return;var now=audioCtx.currentTime,step=60/BPM/2;
+  while(nextBeat<now+.12){var b=beatNum%8;
+    if(b===0||b===4){kick(nextBeat);lastKickT=nextBeat;}
+    if(b===2||b===6)snare(nextBeat);hihat(nextBeat);
+    var bn=[55,0,0,65.41,55,0,0,73.42];if(bn[b]>0)bass(nextBeat,bn[b]);
+    if(b===0)beatRings.push({r:0,a:1});
+    nextBeat+=step;beatNum++;}
+}
+
+/* ===== 工具 ===== */
+function circ(x,y,r,c){ctx.fillStyle=c;ctx.beginPath();ctx.arc(x,y,r,0,6.283);ctx.fill();}
+function ln(x1,y1,x2,y2,w,c){ctx.strokeStyle=c;ctx.lineWidth=w;ctx.lineCap='round';ctx.beginPath();ctx.moveTo(x1,y1);ctx.lineTo(x2,y2);ctx.stroke();}
+function d2(a,b){var dx=a.x-b.x,dy=a.y-b.y;return Math.sqrt(dx*dx+dy*dy);}
+
+function smoothArr(raw,prev,t){
+  if(!prev||prev.length!==raw.length){var a=[];for(var i=0;i<raw.length;i++)a.push({x:raw[i].x,y:raw[i].y,v:raw[i].visibility||1});return a;}
+  for(var i=0;i<raw.length;i++){var v=raw[i].visibility||1;if(v>.35){prev[i].x+=(raw[i].x-prev[i].x)*t;prev[i].y+=(raw[i].y-prev[i].y)*t;}prev[i].v=v;}
+  return prev;
+}
+function smoothHand(raw,prev,t){
+  if(!prev||prev.length!==raw.length){var a=[];for(var i=0;i<raw.length;i++)a.push({x:raw[i].x,y:raw[i].y});return a;}
+  for(var i=0;i<raw.length;i++){prev[i].x+=(raw[i].x-prev[i].x)*t;prev[i].y+=(raw[i].y-prev[i].y)*t;}
+  return prev;
+}
+
+/* ===== 表情检测 ===== */
+function detectExpr(f){
+  var leh=d2(f[159],f[145]),lew=d2(f[33],f[133]);
+  expr.le=lew>0?Math.min(1,Math.max(0,leh/lew/.28)):1;
+  var reh=d2(f[386],f[374]),rew=d2(f[263],f[362]);
+  expr.re=rew>0?Math.min(1,Math.max(0,reh/rew/.28)):1;
+  var mh=d2(f[13],f[14]),mw=d2(f[61],f[291]);
+  expr.mo=mw>0?Math.min(1,Math.max(0,mh/mw/.55)):0;
+  var mcY=(f[13].y+f[14].y)/2,coY=(f[61].y+f[291].y)/2;
+  expr.sm=Math.max(0,Math.min(1,(mcY-coY)*20));
+  if(lew>0){var lby=f[70].y,ley=f[159].y;expr.lb=Math.max(0,Math.min(1,(ley-lby)/lew/.7));}
+  if(rew>0){var rby=f[300].y,rey=f[386].y;expr.rb=Math.max(0,Math.min(1,(rey-rby)/rew/.7));}
+}
+
+/* ===== 背景 ===== */
+function drawBg(t){
+  ctx.fillStyle='#0a0a0f';ctx.fillRect(0,0,W,H);
+  for(var i=0;i<stars.length;i++){var st=stars[i];st.x-=st.sp;if(st.x<-10)st.x=W+10;
+    var a=.1+Math.sin(t*.001+st.ph)*.08;ctx.fillStyle='rgba(255,255,255,'+a+')';
+    ctx.beginPath();ctx.arc(((st.x%W)+W)%W,((st.y%H)+H)%H,st.r,0,6.283);ctx.fill();}
+  var fy=H*.88;
+  ctx.strokeStyle='rgba(255,255,255,.04)';ctx.lineWidth=1;
+  for(var gx=-200;gx<W+200;gx+=80){ctx.beginPath();ctx.moveTo(gx,fy);ctx.lineTo(gx+(W/2-gx)*.3,H);ctx.stroke();}
+  ctx.strokeStyle='rgba(255,255,255,.06)';ctx.beginPath();ctx.moveTo(0,fy);ctx.lineTo(W,fy);ctx.stroke();
+  var gg=ctx.createRadialGradient(W/2,fy,0,W/2,fy,300);
+  gg.addColorStop(0,'rgba(255,255,255,'+(0.025+beatPulse*.04)+')');gg.addColorStop(1,'rgba(0,0,0,0)');
+  ctx.fillStyle=gg;ctx.fillRect(0,fy-80,W,200);
+  for(var i=beatRings.length-1;i>=0;i--){var ring=beatRings[i];ring.r+=3;ring.a-=.015;
+    if(ring.a<=0){beatRings.splice(i,1);continue;}
+    ctx.strokeStyle='rgba(255,255,255,'+ring.a*.1+')';ctx.lineWidth=1;
+    ctx.beginPath();ctx.ellipse(W/2,fy,ring.r,ring.r*.1,0,0,6.28);ctx.stroke();}
+}
+
+/* ===== 手指绘制 ===== */
+function drawHand(hLM,s){
+  if(!hLM)return;
+  function hp(i){return{x:(1-hLM[i].x)*W,y:hLM[i].y*H};}
+  var PC=[[0,5],[5,9],[9,13],[13,17],[0,17]];
+  for(var i=0;i<PC.length;i++){var a=hp(PC[i][0]),b=hp(PC[i][1]);ln(a.x,a.y,b.x,b.y,1.2*s,'rgba(255,255,255,.2)');}
+  var FG=[[0,1,2,3,4],[5,6,7,8],[9,10,11,12],[13,14,15,16],[17,18,19,20]];
+  for(var fi=0;fi<FG.length;fi++){var f=FG[fi];
+    for(var j=0;j<f.length-1;j++){var a=hp(f[j]),b=hp(f[j+1]);ln(a.x,a.y,b.x,b.y,Math.max(1,(3-j)*s*.6),'rgba(255,255,255,.5)');}
+    var tip=hp(f[f.length-1]);circ(tip.x,tip.y,1.5*s,'rgba(255,255,255,.65)');}
+}
+
+/* ===== 表情绘制 ===== */
+function drawFace(cx,cy,r,s){
+  var eOff=r*.3,eY=cy-r*.1;
+  var lR=1.5*s+sE.le*2*s,rR=1.5*s+sE.re*2*s;
+  if(sE.le<.3){ln(cx-eOff-3*s,eY,cx-eOff+3*s,eY,1.5*s,'#fff');}
+  else{circ(cx-eOff,eY,lR,'#fff');}
+  if(sE.re<.3){ln(cx+eOff-3*s,eY,cx+eOff+3*s,eY,1.5*s,'#fff');}
+  else{circ(cx+eOff,eY,rR,'#fff');}
+  var lBY=eY-r*.23-sE.lb*r*.14;
+  var rBY=eY-r*.23-sE.rb*r*.14;
+  ln(cx-eOff-5*s,lBY+1*s,cx-eOff+5*s,lBY-1*s,1.8*s,'#fff');
+  ln(cx+eOff-5*s,rBY-1*s,cx+eOff+5*s,rBY+1*s,1.8*s,'#fff');
+  var mY=cy+r*.35,mW=r*.25,openH=sE.mo*r*.28,smC=sE.sm*r*.15;
+  ctx.strokeStyle='#fff';ctx.lineWidth=1.5*s;
+  if(openH>1.5*s){ctx.beginPath();ctx.ellipse(cx,mY,mW,Math.max(2*s,openH),0,0,6.283);ctx.stroke();}
+  else{ctx.beginPath();ctx.moveTo(cx-mW,mY);ctx.quadraticCurveTo(cx,mY+smC+2*s,cx+mW,mY);ctx.stroke();}
+}
+
+/* ===== 全身绘制 ===== */
+function drawBody(t){
+  if(!sPose)return;
+  var s=Math.min(W,H)/750;
+  function p(i){return{x:(1-sPose[i].x)*W,y:sPose[i].y*H};}
+  function vis(i){return(sPose[i].v||0)>.4;}
+
+  var nose=p(0);
+  var lSh=p(11),rSh=p(12),lEl=p(13),rEl=p(14),lWr=p(15),rWr=p(16);
+  var lHip=p(23),rHip=p(24),lKn=p(25),rKn=p(26),lAn=p(27),rAn=p(28);
+  var neck={x:(lSh.x+rSh.x)/2,y:(lSh.y+rSh.y)/2};
+  var hip={x:(lHip.x+rHip.x)/2,y:(lHip.y+rHip.y)/2};
+
+  var lw=3*s;
+  var glow=.3+beatPulse*.35;
+  ctx.shadowBlur=8+beatPulse*10;ctx.shadowColor='rgba(255,255,255,'+glow+')';
+
+  /* 腿 */
+  if(vis(23)&&vis(25)){ln(lHip.x,lHip.y,lKn.x,lKn.y,lw,'#fff');circ(lKn.x,lKn.y,2.5*s,'#fff');}
+  if(vis(25)&&vis(27)){ln(lKn.x,lKn.y,lAn.x,lAn.y,lw,'#fff');circ(lAn.x,lAn.y,3*s,'#fff');}
+  if(vis(24)&&vis(26)){ln(rHip.x,rHip.y,rKn.x,rKn.y,lw,'#fff');circ(rKn.x,rKn.y,2.5*s,'#fff');}
+  if(vis(26)&&vis(28)){ln(rKn.x,rKn.y,rAn.x,rAn.y,lw,'#fff');circ(rAn.x,rAn.y,3*s,'#fff');}
+
+  /* 脊柱 */
+  ln(neck.x,neck.y,hip.x,hip.y,lw,'#fff');
+
+  /* 肩线 + 胯线 */
+  ln(lSh.x,lSh.y,rSh.x,rSh.y,lw*.7,'rgba(255,255,255,.6)');
+  ln(lHip.x,lHip.y,rHip.x,rHip.y,lw*.7,'rgba(255,255,255,.6)');
+
+  /* 右臂 */
+  if(vis(12)&&vis(14)){ln(rSh.x,rSh.y,rEl.x,rEl.y,lw,'#fff');circ(rEl.x,rEl.y,2.5*s,'#fff');}
+  if(vis(14)&&vis(16)){ln(rEl.x,rEl.y,rWr.x,rWr.y,lw*.85,'#fff');circ(rWr.x,rWr.y,2.5*s,'#fff');}
+
+  /* 左臂 */
+  if(vis(11)&&vis(13)){ln(lSh.x,lSh.y,lEl.x,lEl.y,lw,'#fff');circ(lEl.x,lEl.y,2.5*s,'#fff');}
+  if(vis(13)&&vis(15)){ln(lEl.x,lEl.y,lWr.x,lWr.y,lw*.85,'#fff');circ(lWr.x,lWr.y,2.5*s,'#fff');}
+
+  /* 关节点 */
+  circ(lSh.x,lSh.y,3.5*s,'#fff');circ(rSh.x,rSh.y,3.5*s,'#fff');
+  circ(hip.x,hip.y,3.5*s,'#fff');
+  circ(lHip.x,lHip.y,3*s,'#fff');circ(rHip.x,rHip.y,3*s,'#fff');
+
+  /* 头部 */
+  var shW=d2(lSh,rSh);
+  var headR=Math.max(18*s,shW*.28);
+  var headX=nose.x,headY=nose.y-headR*.15;
+
+  ln(neck.x,neck.y,headX,headY+headR*.75,lw*.7,'#fff');
+
+  ctx.shadowBlur=0;
+
+  ctx.strokeStyle='#fff';ctx.lineWidth=2.5*s;
+  ctx.beginPath();ctx.arc(headX,headY,headR,0,6.283);ctx.stroke();
+
+  if(rawFace) drawFace(headX,headY,headR,s);
+  else{circ(headX-headR*.25,headY-headR*.1,2*s,'#fff');circ(headX+headR*.25,headY-headR*.1,2*s,'#fff');
+    ctx.strokeStyle='#fff';ctx.lineWidth=1.5*s;ctx.beginPath();ctx.moveTo(headX-headR*.2,headY+headR*.3);ctx.lineTo(headX+headR*.2,headY+headR*.3);ctx.stroke();}
+
+  /* 手指细节 */
+  drawHand(sLH,s);
+  drawHand(sRH,s);
+}
+
+/* ===== Holistic 回调 ===== */
+var vid=document.getElementById('vid'),hc=document.getElementById('hc'),hcx=hc.getContext('2d');
+
+function onResults(res){
+  hcx.clearRect(0,0,hc.width,hc.height);
+  rawPose=res.poseLandmarks||null;
+  rawFace=res.faceLandmarks||null;
+  rawLH=res.leftHandLandmarks||null;
+  rawRH=res.rightHandLandmarks||null;
+
+  if(rawFace) detectExpr(rawFace);
+
+  if(rawPose){
+    var cw=hc.width,ch=hc.height;
+    hcx.strokeStyle='rgba(255,255,255,.25)';hcx.lineWidth=1;
+    var conns=[[11,12],[11,13],[13,15],[12,14],[14,16],[11,23],[12,24],[23,24],[23,25],[25,27],[24,26],[26,28]];
+    for(var i=0;i<conns.length;i++){var a=rawPose[conns[i][0]],b=rawPose[conns[i][1]];
+      hcx.beginPath();hcx.moveTo(a.x*cw,a.y*ch);hcx.lineTo(b.x*cw,b.y*ch);hcx.stroke();}
+    for(var i=0;i<conns.length;i++){var c=conns[i];
+      hcx.fillStyle='rgba(255,255,255,.3)';
+      hcx.beginPath();hcx.arc(rawPose[c[0]].x*cw,rawPose[c[0]].y*ch,2,0,6.28);hcx.fill();}
+  }
+
+  document.getElementById('dBody').style.background=rawPose?'#fff':'#333';
+  document.getElementById('dFace').style.background=rawFace?'#fff':'#333';
+  document.getElementById('dLH').style.background=rawLH?'#fff':'#333';
+  document.getElementById('dRH').style.background=rawRH?'#fff':'#333';
+
+  var parts=[];
+  if(rawPose)parts.push('身体');if(rawFace)parts.push('表情');if(rawLH)parts.push('左手');if(rawRH)parts.push('右手');
+  document.getElementById('statusText').textContent=parts.length?parts.join(' · '):'请站在摄像头前';
+}
+
+/* ===== 主循环 ===== */
+function loop(t){
+  requestAnimationFrame(loop);
+
+  if(rawPose) sPose=smoothArr(rawPose,sPose,.3);
+  if(rawLH) sLH=smoothHand(rawLH,sLH,.35); else sLH=null;
+  if(rawRH) sRH=smoothHand(rawRH,sRH,.35); else sRH=null;
+
+  var et=.2;
+  sE.le+=(expr.le-sE.le)*et;sE.re+=(expr.re-sE.re)*et;
+  sE.mo+=(expr.mo-sE.mo)*et;sE.sm+=(expr.sm-sE.sm)*et;
+  sE.lb+=(expr.lb-sE.lb)*et;sE.rb+=(expr.rb-sE.rb)*et;
+
+  scheduleBeat();
+  if(audioCtx&&musicOn){var dt=audioCtx.currentTime-lastKickT;beatPulse=Math.max(0,1-dt*8);}
+  else{beatPulse*=.9;}
+
+  drawBg(t);
+  drawBody(t);
+}
+
+/* ===== 初始化 Holistic ===== */
+var holistic=new Holistic({locateFile:function(f){return'https://cdn.jsdelivr.net/npm/@mediapipe/holistic@0.5.1675471629/'+f;}});
+holistic.setOptions({modelComplexity:1,smoothLandmarks:true,enableSegmentation:false,
+  minDetectionConfidence:.6,minTrackingConfidence:.5,refineFaceLandmarks:true});
+holistic.onResults(onResults);
+
+navigator.mediaDevices.getUserMedia({video:{width:640,height:480,facingMode:'user'}}).then(function(stream){
+  vid.srcObject=stream;
+  vid.onloadedmetadata=function(){
+    vid.play();hc.width=vid.videoWidth||640;hc.height=vid.videoHeight||480;
+    var cam=new Camera(vid,{onFrame:function(){return holistic.send({image:vid});},width:640,height:480});
+    cam.start();
+  };
+}).catch(function(){document.getElementById('statusText').textContent='⚠️ 摄像头未启用';});
+
+requestAnimationFrame(loop);
+</script>
+</body>
+</html>

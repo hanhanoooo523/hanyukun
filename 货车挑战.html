@@ -1,0 +1,655 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>货车挑战 - 山路送货</title>
+<style>
+  *{margin:0;padding:0;box-sizing:border-box}
+  html,body{width:100%;height:100%;overflow:hidden;background:#2a1a0a}
+  body{font-family:'Segoe UI',system-ui,sans-serif}
+  #c{display:block;position:fixed;top:0;left:0;width:100vw;height:100vh}
+
+  .cam-box{position:fixed;bottom:16px;right:16px;width:200px;height:150px;
+    border-radius:16px;overflow:hidden;border:3px solid rgba(255,200,100,.35);
+    box-shadow:0 4px 20px rgba(0,0,0,.3);z-index:20;opacity:.85;transition:opacity .3s}
+  .cam-box:hover{opacity:1}
+  .cam-box video{display:block;width:100%;height:100%;object-fit:cover;transform:scaleX(-1)}
+  .cam-box canvas{position:absolute;top:0;left:0;width:100%;height:100%;transform:scaleX(-1)}
+
+  .hud{position:fixed;z-index:15;pointer-events:none}
+
+  .hud-cargo{top:16px;left:50%;transform:translateX(-50%);text-align:center;
+    background:rgba(0,0,0,.35);border-radius:16px;padding:8px 24px;backdrop-filter:blur(6px)}
+  .cargo-count{font-size:1.8rem;font-weight:800;color:#fbbf24}
+  .prog-wrap{margin-top:4px;width:240px;height:8px;background:rgba(255,255,255,.12);border-radius:4px;overflow:hidden}
+  .prog-bar{height:100%;border-radius:4px;background:linear-gradient(90deg,#4ade80,#22d3ee);transition:width .3s}
+  .prog-label{font-size:.7rem;color:rgba(255,255,255,.45);margin-top:2px;display:block}
+
+  .hud-speed{top:18px;left:20px;font-size:.85rem;color:rgba(255,255,255,.55);
+    background:rgba(0,0,0,.3);border-radius:12px;padding:6px 14px;backdrop-filter:blur(4px)}
+  .hud-speed .v{color:#4ade80;font-weight:700;font-size:1.1rem}
+
+  .hud-hands{top:18px;right:230px;display:flex;gap:12px;
+    background:rgba(0,0,0,.3);border-radius:12px;padding:6px 14px;backdrop-filter:blur(4px);font-size:.78rem;color:rgba(255,255,255,.55)}
+  .hand-ind{display:flex;align-items:center;gap:5px}
+  .hand-icon{width:10px;height:10px;border-radius:50%;background:#555;transition:all .2s}
+  .hand-icon.gas{background:#4ade80;box-shadow:0 0 8px rgba(74,222,128,.5)}
+  .hand-icon.brake{background:#f87171;box-shadow:0 0 8px rgba(248,113,113,.5)}
+
+  .pedal-hud{position:fixed;bottom:20px;z-index:15;pointer-events:none}
+  .pedal-hud.left{left:20px}
+  .pedal-hud.right{right:230px}
+  .pedal-label{font-size:.75rem;color:rgba(255,255,255,.4);margin-bottom:4px;text-align:center}
+  .pedal-bar{width:110px;height:14px;background:rgba(255,255,255,.08);border-radius:7px;overflow:hidden}
+  .pedal-fill{height:100%;border-radius:7px;width:0%;transition:width .08s}
+  .gas-fill{background:linear-gradient(90deg,#22c55e,#86efac)}
+  .brake-fill{background:linear-gradient(90deg,#ef4444,#fca5a5)}
+
+  .warn-text{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);
+    font-size:2.2rem;font-weight:900;color:#fbbf24;pointer-events:none;z-index:25;
+    opacity:0;text-shadow:0 2px 12px rgba(251,191,36,.5);transition:opacity .2s}
+  .warn-text.show{opacity:1}
+
+  .overlay{position:fixed;inset:0;z-index:30;display:flex;flex-direction:column;
+    align-items:center;justify-content:center;
+    background:linear-gradient(135deg,rgba(30,20,10,.95),rgba(50,35,15,.95));
+    transition:opacity .4s;backdrop-filter:blur(8px)}
+  .overlay.hidden{opacity:0;pointer-events:none}
+  .overlay h2{font-size:2.6rem;font-weight:800;margin-bottom:8px;color:#fbbf24}
+  .overlay .icon{font-size:4rem;margin-bottom:12px}
+  .overlay p{color:rgba(255,255,255,.5);font-size:.95rem;margin-bottom:24px;text-align:center;line-height:1.9}
+  .overlay .big-score{font-size:3.5rem;font-weight:800;color:#4ade80;margin-bottom:4px}
+  .overlay .big-label{font-size:.85rem;color:rgba(255,255,255,.35);margin-bottom:16px}
+  .overlay .btn{
+    background:linear-gradient(135deg,#f59e0b,#ef4444);border:none;
+    color:#fff;padding:14px 44px;border-radius:50px;font-size:1.1rem;font-weight:600;
+    cursor:pointer;transition:all .2s;pointer-events:auto;
+    box-shadow:0 4px 15px rgba(245,158,11,.3)}
+  .overlay .btn:hover{transform:scale(1.06);box-shadow:0 6px 20px rgba(245,158,11,.4)}
+</style>
+</head>
+<body>
+<canvas id="c"></canvas>
+
+<div class="cam-box"><video id="vid" playsinline></video><canvas id="hc" width="640" height="480"></canvas></div>
+
+<div class="hud hud-cargo">
+  <div class="cargo-count" id="cargoDisp">📦 6/6</div>
+  <div class="level-name" id="levelName" style="font-size:.85rem;color:#4ade80;font-weight:700;margin-bottom:2px">第1关 · 乡间小路</div>
+  <div class="prog-wrap"><div class="prog-bar" id="progBar" style="width:0%"></div></div>
+  <span class="prog-label" id="progLabel">0m / 1000m</span>
+</div>
+<div class="hud hud-speed">速度: <span class="v" id="spdDisp">0</span></div>
+<div class="hud hud-hands">
+  <div class="hand-ind"><div class="hand-icon" id="lhIcon"></div><span id="lhLabel">左手:油门</span></div>
+  <div class="hand-ind"><div class="hand-icon" id="rhIcon"></div><span id="rhLabel">右手:刹车</span></div>
+</div>
+<div class="pedal-hud left"><div class="pedal-label">🟢 油门 (左手张开)</div><div class="pedal-bar"><div class="pedal-fill gas-fill" id="gasFill"></div></div></div>
+<div class="pedal-hud right"><div class="pedal-label">🔴 刹车 (右手张开)</div><div class="pedal-bar"><div class="pedal-fill brake-fill" id="brakeFill"></div></div></div>
+<div class="warn-text" id="warnText">⚠️ 货物不稳！</div>
+
+<div class="overlay" id="startOv">
+  <div class="icon">🚛</div>
+  <h2>山路送货挑战</h2>
+  <p>🤚 左手张开幅度 → 控制油门大小<br>✋ 右手张开幅度 → 控制刹车力度<br>👊 握拳 = 松开 · 🖐️ 全张 = 最大<br>⛰️ 平稳驾驶，别让货物掉落！🏁 送达终点即胜利！</p>
+  <button class="btn" id="btnStart" onclick="startGame()">🚀 出发！</button>
+</div>
+<div class="overlay hidden" id="lvOv">
+  <div class="icon" id="lvIcon">🎉</div>
+  <h2 id="lvTitle">第1关通过！</h2>
+  <div class="big-score" id="lvBoxes">📦 6/6</div>
+  <div class="big-label">货物剩余</div>
+  <p id="lvDesc">准备进入下一关…</p>
+  <button class="btn" id="btnNext" onclick="nextLevel()">🚀 下一关</button>
+</div>
+<div class="overlay hidden" id="winOv">
+  <div class="icon">🏆</div>
+  <h2>全部通关！</h2>
+  <div class="big-score" id="winBoxes">📦 6/6</div>
+  <div class="big-label">三关全部通过！</div>
+  <p id="winDesc">完美驾驶！</p>
+  <button class="btn" id="btnWin" onclick="restartGame()">🔄 再来一次</button>
+</div>
+<div class="overlay hidden" id="loseOv">
+  <div class="icon">😱</div>
+  <h2>货物全掉了！</h2>
+  <div class="big-score" id="loseDist">0m</div>
+  <div class="big-label">行驶距离</div>
+  <p>提示：慢一点，注意上坡和下坡！</p>
+  <button class="btn" id="btnLose" onclick="restartGame()">🔄 重新出发</button>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils@0.3.1675466862/camera_utils.js" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/@mediapipe/hands@0.4.1646424915/hands.js" crossorigin="anonymous"></script>
+<script>
+var cv=document.getElementById('c'),cx=cv.getContext('2d');
+var W,H,GND;
+function resize(){W=innerWidth;H=innerHeight;cv.width=W;cv.height=H;GND=H*.68;}
+addEventListener('resize',resize);resize();
+
+var MAX_SPD=3.8,GAS_F=.09,BRAKE_F=.1,DRAG=.008,SLOPE_F=.06;
+var WHEEL_BASE=70,BED_HW=42,BOX_H=26,LEAN_MAX=50,TOTAL_BOXES=6;
+
+var ST_W=0,ST_R=1,ST_LV=3,ST_WIN=4,ST_LOSE=5,state=ST_W;
+var curLevel=0;
+
+/* ===== 关卡定义 ===== */
+var LEVELS=[
+  {name:'乡间小路',len:1500,ampB:15,ampG:10,bmpG:3,
+   sky:['#4a90d9','#87ceeb','#c8e6c9','#a5d6a7'],grass:'#5d9b3a',earth:'#8B6F47',
+   obs:[
+     {pos:400,type:'bump'},{pos:800,type:'puddle'},{pos:1200,type:'bump'}
+   ]},
+  {name:'盘山公路',len:1800,ampB:22,ampG:20,bmpG:6,
+   sky:['#5c6bc0','#7986cb','#b0bec5','#90a4ae'],grass:'#4a8a5a',earth:'#7a6a52',
+   obs:[
+     {pos:300,type:'puddle'},{pos:600,type:'rock'},{pos:900,type:'bump'},
+     {pos:1200,type:'rock'},{pos:1500,type:'puddle'}
+   ]},
+  {name:'悬崖险道',len:2200,ampB:28,ampG:28,bmpG:10,
+   sky:['#ff8a65','#ffab91','#ffe0b2','#ffcc80'],grass:'#6d8c3a',earth:'#8a6840',
+   obs:[
+     {pos:250,type:'rock'},{pos:500,type:'barrier'},{pos:750,type:'puddle'},
+     {pos:1000,type:'rock'},{pos:1300,type:'bump'},{pos:1600,type:'barrier'},
+     {pos:1900,type:'rock'}
+   ]}
+];
+
+var OBS_DEFS={
+  rock:    {emoji:'🪨',label:'落石',  w:28,h:22,color:'#78909C',bumpF:7},
+  bump:    {emoji:'🔶',label:'减速带',w:50,h:8, color:'#fdd835',bumpF:5},
+  puddle:  {emoji:'💧',label:'水坑',  w:45,h:8, color:'#42a5f5',bumpF:4},
+  barrier: {emoji:'🚧',label:'路障',  w:32,h:28,color:'#ef5350',bumpF:9}
+};
+
+var roadLen=1000,levelObs=[];
+
+/* ===== 地形 ===== */
+function tY(wx){
+  var lv=LEVELS[curLevel];
+  var p=Math.max(0,Math.min(1,wx/roadLen));
+  var a=lv.ampB+p*lv.ampG;
+  return GND-Math.sin(wx*.004)*a-Math.sin(wx*.009+2)*a*.3-Math.sin(wx*.002+1)*20-Math.sin(wx*.022)*(3+p*lv.bmpG);
+}
+
+/* ===== 车辆 ===== */
+var car={x:100,spd:0,prevSpd:0,tilt:0,wheelRot:0};
+
+/* ===== 货物 ===== */
+var boxes=[],fallenBoxes=[],stackLean=0,stackLeanV=0,prevTdY=0;
+var BOX_DEF=[
+  {x:-26,row:0,w:26,h:26,color:'#e74c3c',emoji:'📦'},
+  {x:0,  row:0,w:26,h:26,color:'#3498db',emoji:'📺'},
+  {x:26, row:0,w:26,h:26,color:'#2ecc71',emoji:'🎁'},
+  {x:-13,row:1,w:24,h:24,color:'#f39c12',emoji:'🧸'},
+  {x:13, row:1,w:24,h:24,color:'#9b59b6',emoji:'🎒'},
+  {x:0,  row:2,w:22,h:22,color:'#e67e22',emoji:'👑'}
+];
+
+function initBoxes(){
+  boxes=[];fallenBoxes=[];stackLean=0;stackLeanV=0;prevTdY=0;
+  for(var i=0;i<BOX_DEF.length;i++) boxes.push({x:BOX_DEF[i].x,row:BOX_DEF[i].row,w:BOX_DEF[i].w,h:BOX_DEF[i].h,color:BOX_DEF[i].color,emoji:BOX_DEF[i].emoji});
+}
+
+function dropBox(){
+  if(!boxes.length)return;
+  var maxR=0;
+  for(var i=0;i<boxes.length;i++) if(boxes[i].row>maxR) maxR=boxes[i].row;
+  var dir=Math.sign(stackLean)||1,best=-1,bestS=-1e9;
+  for(var i=0;i<boxes.length;i++){
+    if(boxes[i].row===maxR){var s=boxes[i].x*dir+boxes[i].row*8;if(s>bestS){bestS=s;best=i;}}
+  }
+  if(best<0)return;
+  var b=boxes.splice(best,1)[0];
+  var fy=tY(car.x)-20-b.row*BOX_H;
+  fallenBoxes.push({wx:car.x+b.x*.8,wy:fy,vx:dir*2.5+car.spd*.4,vy:-4,ang:0,angV:dir*.12,w:b.w,h:b.h,color:b.color,emoji:b.emoji,life:100});
+  stackLeanV*=-.15;stackLean=Math.sign(stackLean)*LEAN_MAX*.3;
+  document.getElementById('cargoDisp').textContent='📦 '+boxes.length+'/'+TOTAL_BOXES;
+  if(!boxes.length) lose();
+}
+
+/* ===== 云和装饰 ===== */
+var clouds=[];
+function initClouds(){clouds=[];for(var i=0;i<10;i++)clouds.push({x:Math.random()*W*3,y:30+Math.random()*GND*.3,w:80+Math.random()*120,spd:.08+Math.random()*.15});}
+
+/* ===== 游戏状态 ===== */
+function goFS(){var e=document.documentElement;if(e.requestFullscreen)e.requestFullscreen();else if(e.webkitRequestFullscreen)e.webkitRequestFullscreen();}
+function initLevel(){
+  var lv=LEVELS[curLevel];
+  roadLen=lv.len;
+  levelObs=[];
+  for(var i=0;i<lv.obs.length;i++) levelObs.push({pos:lv.obs[i].pos,type:lv.obs[i].type,hit:false});
+  car.x=100;car.spd=0;car.prevSpd=0;car.tilt=0;car.wheelRot=0;
+  prevTdY=0;stackLean=0;stackLeanV=0;fallenBoxes=[];
+  initClouds();
+  document.getElementById('levelName').textContent='第'+(curLevel+1)+'关 · '+lv.name;
+  document.getElementById('progBar').style.width='0%';
+  document.getElementById('progLabel').textContent='0m / '+roadLen+'m';
+  document.getElementById('spdDisp').textContent='0';
+  document.getElementById('warnText').classList.remove('show');
+}
+function resetGame(){
+  curLevel=0;
+  initBoxes();initLevel();
+  document.getElementById('cargoDisp').textContent='📦 '+TOTAL_BOXES+'/'+TOTAL_BOXES;
+}
+function startGame(){goFS();resetGame();state=ST_R;
+  document.getElementById('startOv').classList.add('hidden');
+  document.getElementById('winOv').classList.add('hidden');
+  document.getElementById('loseOv').classList.add('hidden');
+  document.getElementById('lvOv').classList.add('hidden');
+}
+function levelClear(){
+  state=ST_LV;
+  if(curLevel>=LEVELS.length-1){
+    document.getElementById('winBoxes').textContent='📦 '+boxes.length+'/'+TOTAL_BOXES;
+    document.getElementById('winDesc').textContent='三关全部通过！剩余 '+boxes.length+' 个货物';
+    document.getElementById('winOv').classList.remove('hidden');
+  }else{
+    document.getElementById('lvIcon').textContent=['🎉','🌟','🏆'][curLevel];
+    document.getElementById('lvTitle').textContent='第'+(curLevel+1)+'关通过！';
+    document.getElementById('lvBoxes').textContent='📦 '+boxes.length+'/'+TOTAL_BOXES;
+    document.getElementById('lvDesc').textContent='即将进入: '+LEVELS[curLevel+1].name;
+    document.getElementById('lvOv').classList.remove('hidden');
+  }
+}
+function nextLevel(){
+  curLevel++;initLevel();state=ST_R;
+  document.getElementById('lvOv').classList.add('hidden');
+  document.getElementById('cargoDisp').textContent='📦 '+boxes.length+'/'+TOTAL_BOXES;
+}
+function lose(){
+  state=ST_LOSE;
+  document.getElementById('loseDist').textContent='第'+(curLevel+1)+'关 · '+Math.floor(car.x-100)+'m';
+  document.getElementById('loseOv').classList.remove('hidden');
+}
+
+/* ===== 物理更新 ===== */
+var gasAmt=0,brakeAmt=0;
+
+function update(){
+  if(state!==ST_R)return;
+  car.prevSpd=car.spd;
+  var fwx=car.x+WHEEL_BASE/2,rwx=car.x-WHEEL_BASE/2;
+  var fwy=tY(fwx),rwy=tY(rwx);
+  car.tilt=Math.atan2(fwy-rwy,WHEEL_BASE);
+
+  var accel=gasAmt*GAS_F-brakeAmt*BRAKE_F*Math.max(.3,car.spd)+Math.sin(car.tilt)*SLOPE_F-car.spd*DRAG;
+  car.spd=Math.max(0,Math.min(MAX_SPD,car.spd+accel));
+  car.x+=car.spd;
+  car.wheelRot+=car.spd*.08;
+
+  document.getElementById('spdDisp').textContent=(car.spd*20).toFixed(0);
+  var prog=Math.max(0,Math.min(1,(car.x-100)/(roadLen-100)));
+  document.getElementById('progBar').style.width=Math.floor(prog*100)+'%';
+  document.getElementById('progLabel').textContent=Math.floor(car.x-100)+'m / '+roadLen+'m';
+  document.getElementById('gasFill').style.width=Math.floor(gasAmt*100)+'%';
+  document.getElementById('brakeFill').style.width=Math.floor(brakeAmt*100)+'%';
+
+  if(car.x>=roadLen&&boxes.length>0){levelClear();return;}
+
+  // 障碍物碰撞
+  for(var i=0;i<levelObs.length;i++){
+    var ob=levelObs[i];if(ob.hit)continue;
+    if(car.x>ob.pos-20&&car.x<ob.pos+20){
+      ob.hit=true;
+      var od=OBS_DEFS[ob.type];
+      var dir=(Math.random()>.5?1:-1);
+      stackLeanV+=dir*od.bumpF*.06;
+      if(ob.type==='puddle') car.spd*=.7;
+      if(ob.type==='barrier'){car.spd*=.5;stackLeanV+=dir*od.bumpF*.04;}
+    }
+  }
+
+  // 货物物理
+  var cAccel=car.spd-car.prevSpd;
+  var slopeF=Math.sin(car.tilt)*8;
+  var accelF=-cAccel*15;
+  var curTdY=tY(car.x)-tY(car.x-Math.max(.5,car.spd));
+  var bumpF=(curTdY-prevTdY)*car.spd*3*(Math.random()>.5?1:-1);
+  prevTdY=curTdY;
+
+  stackLeanV+=(slopeF+accelF+bumpF)*.018;
+  stackLeanV*=.88;
+  stackLean+=stackLeanV;
+  stackLean*=.95;
+
+  var absLean=Math.abs(stackLean);
+  if(absLean>LEAN_MAX*.75){document.getElementById('warnText').classList.add('show');}
+  else{document.getElementById('warnText').classList.remove('show');}
+  if(absLean>LEAN_MAX) dropBox();
+
+  // 掉落物体
+  for(var i=fallenBoxes.length-1;i>=0;i--){
+    var fb=fallenBoxes[i];fb.vy+=.35;fb.wx+=fb.vx;fb.wy+=fb.vy;fb.ang+=fb.angV;fb.life--;
+    if(fb.wy>tY(fb.wx)+10){fb.vy*=-.3;fb.vx*=.5;fb.wy=tY(fb.wx)+10;fb.angV*=.5;
+      if(Math.abs(fb.vy)<1)fb.vy=0;}
+    if(fb.life<=0)fallenBoxes.splice(i,1);
+  }
+  for(var i=0;i<clouds.length;i++){clouds[i].x-=clouds[i].spd+car.spd*.1;if(clouds[i].x<car.x-W)clouds[i].x=car.x+W+Math.random()*500;}
+}
+
+/* ===== 渲染 ===== */
+function draw(time){
+  cx.clearRect(0,0,W,H);
+  var camX=car.x-W*.3;
+
+  var lv=LEVELS[curLevel];
+  // 天空
+  var sky=cx.createLinearGradient(0,0,0,GND+30);
+  sky.addColorStop(0,lv.sky[0]);sky.addColorStop(.5,lv.sky[1]);sky.addColorStop(.85,lv.sky[2]);sky.addColorStop(1,lv.sky[3]);
+  cx.fillStyle=sky;cx.fillRect(0,0,W,GND+30);
+
+  // 远山
+  cx.fillStyle='#6a9f7a';
+  cx.beginPath();cx.moveTo(0,GND-20);
+  for(var sx=0;sx<=W;sx+=4){var wx=sx+camX*.08;cx.lineTo(sx,GND-60-Math.sin(wx*.002)*70-Math.sin(wx*.005+1)*35);}
+  cx.lineTo(W,GND-20);cx.fill();
+
+  cx.fillStyle='#508a60';
+  cx.beginPath();cx.moveTo(0,GND-10);
+  for(var sx=0;sx<=W;sx+=4){var wx=sx+camX*.18;cx.lineTo(sx,GND-30-Math.sin(wx*.003+2)*50-Math.sin(wx*.008)*20);}
+  cx.lineTo(W,GND-10);cx.fill();
+
+  // 云
+  for(var i=0;i<clouds.length;i++){
+    var cl=clouds[i],csx=cl.x-camX*.15;
+    if(csx<-200||csx>W+200)continue;
+    cx.fillStyle='rgba(255,255,255,.55)';
+    cx.beginPath();cx.ellipse(csx,cl.y,cl.w*.5,cl.w*.18,0,0,6.28);cx.fill();
+    cx.beginPath();cx.ellipse(csx-cl.w*.2,cl.y-cl.w*.06,cl.w*.3,cl.w*.15,0,0,6.28);cx.fill();
+    cx.beginPath();cx.ellipse(csx+cl.w*.15,cl.y-cl.w*.08,cl.w*.35,cl.w*.14,0,0,6.28);cx.fill();
+  }
+
+  // 地形
+  cx.fillStyle=lv.earth;
+  cx.beginPath();cx.moveTo(0,H);
+  for(var sx=0;sx<=W;sx+=3){cx.lineTo(sx,tY(sx+camX));}
+  cx.lineTo(W,H);cx.fill();
+
+  // 草皮
+  cx.strokeStyle=lv.grass;cx.lineWidth=10;cx.lineCap='round';
+  cx.beginPath();
+  for(var sx=0;sx<=W;sx+=3){var sy=tY(sx+camX);sx===0?cx.moveTo(sx,sy):cx.lineTo(sx,sy);}
+  cx.stroke();
+  cx.strokeStyle='#7ab856';cx.lineWidth=4;
+  cx.beginPath();
+  for(var sx=0;sx<=W;sx+=3){var sy=tY(sx+camX);sx===0?cx.moveTo(sx,sy-2):cx.lineTo(sx,sy-2);}
+  cx.stroke();
+
+  // 路面纹理
+  cx.strokeStyle='rgba(160,130,80,.2)';cx.lineWidth=2;cx.setLineDash([15,25]);
+  cx.beginPath();
+  for(var sx=0;sx<=W;sx+=4){var sy=tY(sx+camX);sx===0?cx.moveTo(sx,sy+6):cx.lineTo(sx,sy+6);}
+  cx.stroke();cx.setLineDash([]);
+
+  // 树
+  var treeStart=Math.floor((camX-100)/180)*180;
+  for(var twx=treeStart;twx<camX+W+100;twx+=180){
+    if(twx<0)continue;
+    var tsx=twx-camX,tsy=tY(twx);
+    var side=((twx/180|0)%2===0)?-1:1;
+    var tx=tsx+side*(25+Math.sin(twx*.03)*15);
+    cx.fillStyle='#5D4037';cx.fillRect(tx-3,tsy-50,6,50);
+    cx.fillStyle='#2E7D32';cx.beginPath();cx.moveTo(tx,tsy-85);cx.lineTo(tx-22,tsy-45);cx.lineTo(tx+22,tsy-45);cx.fill();
+    cx.fillStyle='#388E3C';cx.beginPath();cx.moveTo(tx,tsy-105);cx.lineTo(tx-17,tsy-70);cx.lineTo(tx+17,tsy-70);cx.fill();
+  }
+
+  // 路面障碍物
+  for(var oi=0;oi<levelObs.length;oi++){
+    var ob=levelObs[oi],osx=ob.pos-camX;
+    if(osx<-60||osx>W+60)continue;
+    var osy=tY(ob.pos),od=OBS_DEFS[ob.type];
+    if(ob.hit){cx.globalAlpha=.3;}
+    // 阴影
+    cx.fillStyle='rgba(0,0,0,.12)';cx.beginPath();cx.ellipse(osx,osy+2,od.w*.4,4,0,0,6.28);cx.fill();
+    // 物体
+    cx.fillStyle=od.color;
+    if(ob.type==='rock'){
+      cx.beginPath();cx.moveTo(osx-od.w/2,osy);cx.lineTo(osx-od.w*.3,osy-od.h);cx.lineTo(osx+od.w*.2,osy-od.h*.9);cx.lineTo(osx+od.w/2,osy);cx.fill();
+      cx.fillStyle='rgba(255,255,255,.2)';cx.beginPath();cx.moveTo(osx-od.w*.2,osy-od.h*.8);cx.lineTo(osx,osy-od.h*.6);cx.lineTo(osx-od.w*.1,osy-od.h*.3);cx.fill();
+    }else if(ob.type==='bump'){
+      cx.fillStyle='#fdd835';for(var bi=0;bi<3;bi++){var bx=osx-18+bi*18;cx.beginPath();cx.moveTo(bx-7,osy);cx.lineTo(bx,osy-od.h);cx.lineTo(bx+7,osy);cx.fill();}
+      cx.fillStyle='#333';for(var bi=0;bi<3;bi++){var bx=osx-18+bi*18;cx.beginPath();cx.moveTo(bx-5,osy);cx.lineTo(bx,osy-od.h+2);cx.lineTo(bx+5,osy);cx.fill();}
+    }else if(ob.type==='puddle'){
+      cx.fillStyle='rgba(66,165,245,.5)';cx.beginPath();cx.ellipse(osx,osy-1,od.w/2,5,0,0,6.28);cx.fill();
+      cx.fillStyle='rgba(144,202,249,.4)';cx.beginPath();cx.ellipse(osx+5,osy-2,od.w*.25,3,0,0,6.28);cx.fill();
+    }else if(ob.type==='barrier'){
+      cx.fillStyle='#ef5350';cx.fillRect(osx-2,osy-od.h,4,od.h);cx.fillRect(osx-16,osy-od.h,32,6);
+      cx.fillStyle='#fff';cx.fillRect(osx-14,osy-od.h+1,8,4);cx.fillRect(osx+2,osy-od.h+1,8,4);
+    }
+    // emoji标签
+    cx.globalAlpha=1;
+    if(!ob.hit){cx.font='14px sans-serif';cx.textAlign='center';cx.fillText(od.emoji,osx,osy-od.h-8);}
+  }
+
+  // 距离标志
+  for(var dm=250;dm<roadLen;dm+=250){
+    var dsx=dm-camX;if(dsx<-40||dsx>W+40)continue;
+    var dsy=tY(dm);
+    cx.fillStyle='#795548';cx.fillRect(dsx-2,dsy-42,4,42);
+    cx.fillStyle='#fff';cx.beginPath();
+    cx.moveTo(dsx+2,dsy-42);cx.lineTo(dsx+28,dsy-35);cx.lineTo(dsx+2,dsy-28);cx.fill();
+    cx.fillStyle='#333';cx.font='bold 9px sans-serif';cx.textAlign='left';
+    cx.fillText(dm+'m',dsx+5,dsy-33);
+  }
+
+  // 终点线
+  var flx=roadLen-camX;
+  if(flx>-60&&flx<W+60){
+    var fly=tY(roadLen);
+    cx.fillStyle='#333';cx.fillRect(flx-2,fly-80,4,80);
+    for(var r=0;r<4;r++)for(var c=0;c<6;c++){
+      cx.fillStyle=(r+c)%2===0?'#111':'#fff';
+      cx.fillRect(flx+2+c*5,fly-80+r*5,5,5);
+    }
+    cx.fillStyle='#fbbf24';cx.font='bold 14px sans-serif';cx.textAlign='center';
+    cx.fillText('🏁 终点',flx,fly-86);
+  }
+
+  // 掉落的箱子
+  for(var i=0;i<fallenBoxes.length;i++){
+    var fb=fallenBoxes[i],fsx=fb.wx-camX;
+    if(fsx<-60||fsx>W+60)continue;
+    cx.save();cx.translate(fsx,fb.wy);cx.rotate(fb.ang);
+    cx.globalAlpha=Math.min(1,fb.life/25);
+    cx.fillStyle=fb.color;cx.fillRect(-fb.w/2,-fb.h/2,fb.w,fb.h);
+    cx.strokeStyle='rgba(0,0,0,.2)';cx.lineWidth=1.5;cx.strokeRect(-fb.w/2,-fb.h/2,fb.w,fb.h);
+    cx.font=(fb.h*.55|0)+'px sans-serif';cx.textAlign='center';cx.textBaseline='middle';cx.fillText(fb.emoji,0,0);
+    cx.restore();cx.globalAlpha=1;
+  }
+
+  // 车辆
+  drawTruck(camX,time);
+}
+
+function drawTruck(camX,time){
+  var fwx=car.x+WHEEL_BASE/2,rwx=car.x-WHEEL_BASE/2;
+  var fwy=tY(fwx),rwy=tY(rwx);
+  var carCX=car.x-camX,carCY=(fwy+rwy)/2;
+
+  cx.save();
+  cx.translate(carCX,carCY);
+  cx.rotate(car.tilt);
+
+  // 货物床
+  cx.fillStyle='#5D4037';
+  cx.fillRect(-BED_HW-10,-24,BED_HW*2+5,6);
+  // 后挡板
+  cx.fillStyle='#4E342E';
+  cx.fillRect(-BED_HW-12,-52,5,30);
+  // 前挡板
+  cx.fillRect(BED_HW-7,-46,5,24);
+
+  // 画货物
+  var maxR=0;
+  for(var i=0;i<boxes.length;i++) if(boxes[i].row>maxR)maxR=boxes[i].row;
+  for(var i=0;i<boxes.length;i++){
+    var b=boxes[i];
+    var leanFactor=(b.row+1)/(maxR+1);
+    var loff=stackLean*leanFactor;
+    var wobble=Math.sin((time||0)*.005+i*1.5)*Math.abs(stackLeanV)*1.2;
+    var bx=b.x+loff+wobble;
+    var by=-24-b.row*BOX_H-b.h/2;
+
+    cx.fillStyle=b.color;
+    cx.fillRect(bx-b.w/2,by-b.h/2,b.w,b.h);
+    // 高光
+    cx.fillStyle='rgba(255,255,255,.2)';
+    cx.fillRect(bx-b.w/2,by-b.h/2,b.w,b.h*.3);
+    // 边框
+    cx.strokeStyle='rgba(0,0,0,.15)';cx.lineWidth=1.5;
+    cx.strokeRect(bx-b.w/2,by-b.h/2,b.w,b.h);
+    // emoji
+    cx.font=(b.h*.5|0)+'px sans-serif';cx.textAlign='center';cx.textBaseline='middle';
+    cx.fillText(b.emoji,bx,by);
+  }
+
+  // 车身
+  cx.fillStyle='#43A047';
+  roundRect(cx,WHEEL_BASE/2-40,-48,52,30,6);cx.fill();
+  // 车窗
+  cx.fillStyle='#81D4FA';
+  roundRect(cx,WHEEL_BASE/2-34,-45,38,16,4);cx.fill();
+  // 车窗反光
+  cx.fillStyle='rgba(255,255,255,.25)';
+  cx.beginPath();cx.moveTo(WHEEL_BASE/2-34,-45);cx.lineTo(WHEEL_BASE/2-20,-45);cx.lineTo(WHEEL_BASE/2-34,-33);cx.fill();
+  // 车顶
+  cx.fillStyle='#2E7D32';
+  roundRect(cx,WHEEL_BASE/2-43,-52,58,7,3);cx.fill();
+  // 车门
+  cx.fillStyle='#388E3C';
+  roundRect(cx,WHEEL_BASE/2-38,-20,48,22,4);cx.fill();
+  // 底盘
+  cx.fillStyle='#333';
+  cx.fillRect(-WHEEL_BASE/2-8,-2,WHEEL_BASE+20,6);
+
+  // 前灯
+  cx.fillStyle='#FFE082';cx.beginPath();cx.arc(WHEEL_BASE/2+12,-12,4,0,6.28);cx.fill();
+  cx.fillStyle='rgba(255,224,130,.15)';cx.beginPath();cx.arc(WHEEL_BASE/2+12,-12,12,0,6.28);cx.fill();
+  // 尾灯
+  cx.fillStyle='#ef4444';cx.beginPath();cx.arc(-WHEEL_BASE/2-10,-10,3,0,6.28);cx.fill();
+  // 保险杠
+  cx.fillStyle='#78909C';
+  cx.fillRect(WHEEL_BASE/2+8,-6,5,8);
+  cx.fillRect(-WHEEL_BASE/2-14,-6,5,8);
+
+  // 轮子
+  drawWheel(cx,WHEEL_BASE/2,4,14);
+  drawWheel(cx,-WHEEL_BASE/2,4,14);
+
+  cx.restore();
+}
+
+function drawWheel(c,wx,wy,r){
+  c.fillStyle='#222';c.beginPath();c.arc(wx,wy,r,0,6.28);c.fill();
+  c.fillStyle='#555';c.beginPath();c.arc(wx,wy,r*.65,0,6.28);c.fill();
+  c.save();c.translate(wx,wy);c.rotate(car.wheelRot);
+  c.strokeStyle='#777';c.lineWidth=2;
+  for(var i=0;i<5;i++){var a=i*6.28/5;c.beginPath();c.moveTo(0,0);c.lineTo(Math.cos(a)*r*.5,Math.sin(a)*r*.5);c.stroke();}
+  c.fillStyle='#888';c.beginPath();c.arc(0,0,3,0,6.28);c.fill();
+  c.restore();
+}
+
+function roundRect(c,x,y,w,h,r){
+  c.beginPath();c.moveTo(x+r,y);c.lineTo(x+w-r,y);c.quadraticCurveTo(x+w,y,x+w,y+r);
+  c.lineTo(x+w,y+h-r);c.quadraticCurveTo(x+w,y+h,x+w-r,y+h);c.lineTo(x+r,y+h);
+  c.quadraticCurveTo(x,y+h,x,y+h-r);c.lineTo(x,y+r);c.quadraticCurveTo(x,y,x+r,y);c.closePath();
+}
+
+/* ===== 手势 ===== */
+var vid=document.getElementById('vid'),hc=document.getElementById('hc'),hcx=hc.getContext('2d');
+var HC_CONN=[[0,1],[1,2],[2,3],[3,4],[0,5],[5,6],[6,7],[7,8],[0,9],[9,10],[10,11],[11,12],[0,13],[13,14],[14,15],[15,16],[0,17],[17,18],[18,19],[19,20],[5,9],[9,13],[13,17]];
+
+function countF(lm){
+  var c=0,r=lm[17].x<lm[5].x;
+  if(r){if(lm[4].x<lm[3].x)c++}else{if(lm[4].x>lm[3].x)c++}
+  if(lm[8].y<lm[6].y)c++;if(lm[12].y<lm[10].y)c++;if(lm[16].y<lm[14].y)c++;if(lm[20].y<lm[18].y)c++;
+  return c;
+}
+function handOpen(lm){
+  var dx=lm[9].x-lm[0].x,dy=lm[9].y-lm[0].y;
+  var palm=Math.sqrt(dx*dx+dy*dy);
+  if(palm<.01)return 0;
+  var tips=[4,8,12,16,20],td=0;
+  for(var i=0;i<5;i++){var fx=lm[tips[i]].x-lm[9].x,fy=lm[tips[i]].y-lm[9].y;td+=Math.sqrt(fx*fx+fy*fy);}
+  var avg=td/5;
+  return Math.max(0,Math.min(1,(avg/palm-.3)/1.1));
+}
+
+function drawHSkel(lm,color){
+  var cw=hc.width,ch=hc.height;
+  hcx.strokeStyle=color;hcx.lineWidth=2;
+  for(var i=0;i<HC_CONN.length;i++){var a=lm[HC_CONN[i][0]],b=lm[HC_CONN[i][1]];hcx.beginPath();hcx.moveTo(a.x*cw,a.y*ch);hcx.lineTo(b.x*cw,b.y*ch);hcx.stroke();}
+  for(var i=0;i<lm.length;i++){hcx.beginPath();hcx.arc(lm[i].x*cw,lm[i].y*ch,2.5,0,6.28);hcx.fillStyle=color;hcx.fill();}
+}
+
+function onHR(res){
+  hcx.clearRect(0,0,hc.width,hc.height);
+  var lh=null,rh=null;
+  if(res.multiHandLandmarks&&res.multiHandedness){
+    for(var i=0;i<res.multiHandLandmarks.length;i++){
+      var label=res.multiHandedness[i].label;
+      if(label==='Left') lh=res.multiHandLandmarks[i];
+      else rh=res.multiHandLandmarks[i];
+    }
+  }
+  if(lh){
+    drawHSkel(lh,'rgba(74,222,128,.7)');
+    var openL=handOpen(lh);
+    gasAmt+=(openL-gasAmt)*.3;
+    gasAmt=Math.max(0,Math.min(1,gasAmt));
+    document.getElementById('lhIcon').className=gasAmt>.1?'hand-icon gas':'hand-icon';
+    document.getElementById('lhLabel').textContent='油门: '+(gasAmt*100|0)+'%';
+  }else{gasAmt*=.85;document.getElementById('lhIcon').className='hand-icon';document.getElementById('lhLabel').textContent='左手:油门';}
+  if(rh){
+    drawHSkel(rh,'rgba(248,113,113,.7)');
+    var openR=handOpen(rh);
+    brakeAmt+=(openR-brakeAmt)*.3;
+    brakeAmt=Math.max(0,Math.min(1,brakeAmt));
+    document.getElementById('rhIcon').className=brakeAmt>.1?'hand-icon brake':'hand-icon';
+    document.getElementById('rhLabel').textContent='刹车: '+(brakeAmt*100|0)+'%';
+  }else{brakeAmt*=.85;document.getElementById('rhIcon').className='hand-icon';document.getElementById('rhLabel').textContent='右手:刹车';}
+}
+
+/* ===== 键盘 ===== */
+var keys={};
+addEventListener('keydown',function(e){keys[e.code]=true;
+  if(e.code==='Space'){e.preventDefault();if(state===ST_W)startGame();else if(state===ST_LV)nextLevel();else if(state===ST_WIN||state===ST_LOSE)restartGame();}
+});
+addEventListener('keyup',function(e){keys[e.code]=false;});
+function handleKeys(){
+  if(state!==ST_R)return;
+  if(keys['ArrowRight']||keys['KeyD'])gasAmt=Math.min(1,gasAmt+.05);
+  if(keys['ArrowLeft']||keys['KeyA'])brakeAmt=Math.min(1,brakeAmt+.05);
+  if(!keys['ArrowRight']&&!keys['KeyD']&&!document.getElementById('lhIcon').classList.contains('gas')) gasAmt*=.9;
+  if(!keys['ArrowLeft']&&!keys['KeyA']&&!document.getElementById('rhIcon').classList.contains('brake')) brakeAmt*=.9;
+}
+function restartGame(){
+  document.getElementById('winOv').classList.add('hidden');
+  document.getElementById('loseOv').classList.add('hidden');
+  document.getElementById('lvOv').classList.add('hidden');
+  startGame();
+}
+
+/* ===== 游戏循环 ===== */
+function loop(time){
+  requestAnimationFrame(loop);
+  handleKeys();update();draw(time);
+}
+
+/* 按钮事件已通过 HTML onclick 属性绑定，不再重复 addEventListener */
+
+var hands=new Hands({locateFile:function(f){return'https://cdn.jsdelivr.net/npm/@mediapipe/hands@0.4.1646424915/'+f;}});
+hands.setOptions({maxNumHands:2,modelComplexity:1,minDetectionConfidence:.7,minTrackingConfidence:.6});
+hands.onResults(onHR);
+navigator.mediaDevices.getUserMedia({video:{width:640,height:480,facingMode:'user'}}).then(function(s){
+  vid.srcObject=s;vid.onloadedmetadata=function(){vid.play();hc.width=vid.videoWidth||640;hc.height=vid.videoHeight||480;
+  var cam=new Camera(vid,{onFrame:function(){return hands.send({image:vid});},width:640,height:480});cam.start();};
+}).catch(function(){});
+
+initClouds();requestAnimationFrame(loop);
+</script>
+</body>
+</html>

@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>螺旋球 p5.js</title>
+  <script src="https://cdn.jsdelivr.net/npm/p5@1.9.0/lib/p5.min.js"></script>
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      overflow: hidden;
+      background: #000;
+    }
+  </style>
+  <script>
+    let angle = 0;
+
+    function setup() {
+      createCanvas(880, 880, WEBGL);
+      pixelDensity(2);
+    }
+
+    function draw() {
+      background(0);
+      orbitControl(0.8, 0.8, 0.2);
+      
+      rotateY(angle * 0.4);
+      rotateX(angle * 0.15);
+      angle += 0.006;
+
+      stroke(255);
+      strokeWeight(2.1);
+      noFill();
+
+      const radius = 280;
+      const segmentsPerPath = 280;     // 每条路径细分段数
+      const numPaths = 5;              // 画几条缠绕路径（3~8 条通常能盖满且无明显竖线）
+      const twistsPerPath = 8.5;       // 每条路径缠绕的圈数（小数可避免对齐）
+      const twistOffset = 5.2;         // 额外扭曲强度
+
+      for (let p = 0; p < numPaths; p++) {
+        let pathOffset = p * 0.618 * TWO_PI;  // 黄金分割偏移，避免路径重叠对齐
+        
+        beginShape(LINES);
+        
+        for (let i = 0; i < segmentsPerPath; i++) {
+          let t = map(i, 0, segmentsPerPath - 1, -1, 1);
+          let phi = acos(t);
+          let sinPhi = sin(phi);
+          let cosPhi = cos(phi);
+
+          // 每条路径的缠绕角度 + 路径间偏移 + 额外扭曲
+          let theta = twistsPerPath * TWO_PI * (phi / PI) + pathOffset;
+          theta += twistOffset * (phi - HALF_PI);
+
+          let x = radius * sinPhi * cos(theta);
+          let y = radius * cosPhi;
+          let z = radius * sinPhi * sin(theta);
+
+          // 下一段
+          let t2 = map(i + 1, 0, segmentsPerPath - 1, -1, 1);
+          let phi2 = acos(t2);
+          let sinPhi2 = sin(phi2);
+          let cosPhi2 = cos(phi2);
+
+          let theta2 = twistsPerPath * TWO_PI * (phi2 / PI) + pathOffset;
+          theta2 += twistOffset * (phi2 - HALF_PI);
+
+          let x2 = radius * sinPhi2 * cos(theta2);
+          let y2 = radius * cosPhi2;
+          let z2 = radius * sinPhi2 * sin(theta2);
+
+          vertex(x, y, z);
+          vertex(x2, y2, z2);
+        }
+        
+        endShape();
+      }
+    }
+  </script>
+</head>
+<body></body>
+</html>

@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <title>像素表情可视化</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- p5 不是必须，这里只用原生 + face-api.js -->
+  <script src="https://cdn.jsdelivr.net/npm/face-api.js@0.22.2/dist/face-api.min.js"></script>
+
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      background: radial-gradient(circle at top, #222 0, #050509 60%, #000 100%);
+      color: #f5f5f5;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      overflow: hidden;
+    }
+    header {
+      padding: 12px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      backdrop-filter: blur(16px);
+      background: rgba(0, 0, 0, 0.35);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+      z-index: 2;
+    }
+    header h1 {
+      font-size: 18px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      font-weight: 500;
+      opacity: 0.9;
+    }
+    header span {
+      font-size: 12px;
+      opacity: 0.7;
+    }
+    main {
+      flex: 1;
+      display: flex;
+      align-items: stretch;
+      padding: 14px 18px 18px;
+      gap: 16px;
+    }
+    .panel {
+      flex: 1;
+      border-radius: 18px;
+      background: rgba(0, 0, 0, 0.5);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      box-shadow: 0 18px 45px rgba(0, 0, 0, 0.6);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      min-width: 0;
+    }
+    .panel-header {
+      padding: 10px 14px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+      font-size: 12px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      opacity: 0.8;
+    }
+    .panel-body {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 12px;
+      position: relative;
+    }
+
+    #video {
+      max-width: 100%;
+      max-height: 100%;
+      border-radius: 14px;
+      transform: scaleX(-1); /* 镜像，符合自拍习惯 */
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.8);
+    }
+
+    #pixelCanvas {
+      width: 100%;
+      height: 100%;
+      border-radius: 14px;
+      background: radial-gradient(circle at center, #111 0, #020208 60%, #000 100%);
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.9);
+    }
+
+    .expression-label {
+      position: absolute;
+      left: 16px;
+      bottom: 16px;
+      padding: 6px 10px;
+      border-radius: 999px;
+      font-size: 11px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      background: rgba(0, 0, 0, 0.7);
+      border: 1px solid rgba(255, 255, 255, 0.16);
+      display: flex;
+      gap: 8px;
+      align-items: center;
+    }
+    .expression-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+    }
+    .status {
+      position: absolute;
+      right: 16px;
+      top: 16px;
+      font-size: 11px;
+      opacity: 0.7;
+      padding: 4px 8px;
+      border-radius: 999px;
+      background: rgba(0, 0, 0, 0.55);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    /* 小屏适配 */
+    @media (max-width: 900px) {
+      main {
+        flex-direction: column;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>PIXEL EMOTION</h1>
+    <span>允许摄像头后，动一动你的表情 :)</span>
+  </header>
+
+  <main>
+    <section class="panel">
+      <div class="panel-header">
+        <span>Camera</span>
+        <span id="camStatus">等待授权...</span>
+      </div>
+      <div class="panel-body">
+        <video id="video" autoplay muted playsinline></video>
+      </div>
+    </section>
+
+    <section class="panel">
+      <div class="panel-header">
+        <span>Pixel Expression Map</span>
+        <span>自动在多种表情之间流动</span>
+      </div>
+      <div class="panel-body">
+        <canvas id="pixelCanvas"></canvas>
+        <div class="expression-label">
+          <span class="expression-dot" id="exprDot"></span>
+          <span id="exprText">No Face</span>
+        </div>
+        <div class="status" id="modelStatus">Loading model...</div>
+      </div>
+    </section>
+  </main>
+
+  <!-- 隐藏的人脸裁剪画布，用于计算像素马赛克 -->
+  <canvas id="faceCanvas" width="40" height="40" style="display:none;"></canvas>
+
+  <script>
+    const video = document.getElementById('video');
+    const pixelCanvas = document.getElementById('pixelCanvas');
+    const pixelCtx = pixelCanvas.getContext('2d');
+
+    const faceCanvas = document.getElementById('faceCanvas');
+    const faceCtx = faceCanvas.getContext('2d');
+
+    const camStatus = document.getElementById('camStatus');
+    const modelStatus = document.getElementById('modelStatus');
+    const exprText = document.getElementById('exprText');
+    const exprDot = document.getElementById('exprDot');
+
+    // 调整 pixelCanvas 尺寸匹配容器
+    function resizePixelCanvas() {
+      const rect = pixelCanvas.getBoundingClientRect();
+      pixelCanvas.width = rect.width * window.devicePixelRatio;
+      pixelCanvas.height = rect.height * window.devicePixelRatio;
+      pixelCtx.setTransform(window.devicePixelRatio, 0, 0, window.devicePixelRatio, 0, 0);
+    }
+    window.addEventListener('resize', resizePixelCanvas);
+    resizePixelCanvas();
+
+    // 1. 打开摄像头
+    async function initCamera() {
+      try {
+        const stream = await navigator.mediaDevices.getUserMedia({
+          video: { width: 640, height: 480, facingMode: 'user' },
+          audio: false
+        });
+        video.srcObject = stream;
+        camStatus.textContent = 'Camera On';
+      } catch (err) {
+        console.error(err);
+        camStatus.textContent = '无法访问摄像头';
+      }
+    }
+
+    // 2. 加载 face-api.js 模型
+    async function loadModels() {
+      // 这里从 CDN 加载模型权重（使用 @vladmandic/face-api 镜像）
+      const MODEL_URL =
+        'https://cdn.jsdelivr.net/gh/vladmandic/face-api/model/';
+
+      await faceapi.nets.tinyFaceDetector.loadFromUri(MODEL_URL);
+      await faceapi.nets.faceExpressionNet.loadFromUri(MODEL_URL);
+
+      modelStatus.textContent = 'Model Ready';
+    }
+
+    // 3. 表情 → 颜色映射
+    function expressionToColor(expr) {
+      switch (expr) {
+        case 'happy':
+          return '#ffd166';
+        case 'angry':
+          return '#ef476f';
+        case 'surprised':
+          return '#06d6a0';
+        case 'sad':
+          return '#118ab2';
+        case 'fearful':
+          return '#9b5de5';
+        case 'disgusted':
+          return '#ff6b6b';
+        default:
+          return '#ffffff';
+      }
+    }
+
+    // 4. 主循环：检测表情 + 绘制像素马赛克
+    async function processFrame() {
+      if (video.readyState < 2) {
+        requestAnimationFrame(processFrame);
+        return;
+      }
+
+      const options = new faceapi.TinyFaceDetectorOptions({ inputSize: 224, scoreThreshold: 0.5 });
+      const result = await faceapi
+        .detectSingleFace(video, options)
+        .withFaceExpressions()
+        .catch(err => {
+          console.error(err);
+          return null;
+        });
+
+      pixelCtx.clearRect(0, 0, pixelCanvas.width, pixelCanvas.height);
+
+      let mainExpr = 'No Face';
+      let exprColor = '#555';
+
+      if (result && result.detection) {
+        const { x, y, width, height } = result.detection.box;
+
+        // 把人脸区域画到小画布上（40x40）
+        faceCtx.drawImage(
+          video,
+          x, y, width, height,
+          0, 0, faceCanvas.width, faceCanvas.height
+        );
+
+        // 获取像素数据
+        const imgData = faceCtx.getImageData(0, 0, faceCanvas.width, faceCanvas.height);
+        const data = imgData.data;
+
+        // 找出主表情
+        const exprs = result.expressions;
+        mainExpr = Object.keys(exprs).reduce((a, b) =>
+          exprs[a] > exprs[b] ? a : b
+        );
+        exprColor = expressionToColor(mainExpr);
+
+        // 根据主表情设置色调
+        const base = exprColor; // 十六进制
+        const baseRGB = hexToRgb(base) || { r: 255, g: 255, b: 255 };
+
+        // 把 40x40 的像素放大填满整个 pixelCanvas
+        const cols = faceCanvas.width;
+        const rows = faceCanvas.height;
+
+        const cellW = pixelCanvas.width / cols;
+        const cellH = pixelCanvas.height / rows;
+
+        for (let j = 0; j < rows; j++) {
+          for (let i = 0; i < cols; i++) {
+            const idx = (j * cols + i) * 4;
+            const r = data[idx];
+            const g = data[idx + 1];
+            const b = data[idx + 2];
+            const a = data[idx + 3];
+
+            if (a === 0) continue;
+
+            const gray = (r + g + b) / 3 / 255;
+
+            // 亮度混合主色
+            const mix = gray * 0.9 + 0.1;
+            const rr = baseRGB.r * mix;
+            const gg = baseRGB.g * mix;
+            const bb = baseRGB.b * mix;
+
+            // 加一点呼吸感
+            const t = performance.now() * 0.001;
+            const wobble = 0.25 * Math.sin(t * 2 + (i + j) * 0.15);
+            const alpha = 0.4 + 0.6 * (gray + wobble);
+
+            pixelCtx.fillStyle = `rgba(${rr.toFixed(0)}, ${gg.toFixed(0)}, ${bb.toFixed(0)}, ${alpha})`;
+            pixelCtx.fillRect(
+              i * cellW,
+              j * cellH,
+              cellW * 1.05,
+              cellH * 1.05
+            );
+          }
+        }
+      }
+
+      // 更新表情标签
+      exprText.textContent = mainExpr;
+      exprDot.style.background = exprColor;
+
+      requestAnimationFrame(processFrame);
+    }
+
+    function hexToRgb(hex) {
+      const m = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+      return m ? {
+        r: parseInt(m[1], 16),
+        g: parseInt(m[2], 16),
+        b: parseInt(m[3], 16)
+      } : null;
+    }
+
+    // 启动
+    (async function start() {
+      await initCamera();
+      await loadModels();
+      processFrame();
+    })();
+  </script>
+</body>
+</html>
