@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>StyleShift 使用指南 — 设计风格迁移工具</title>
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --bg: #0c0c14;
+  --surface: #16162a;
+  --surface2: #1e1e3a;
+  --border: #2a2a4a;
+  --accent: #7c5cfc;
+  --accent2: #c084fc;
+  --accent-glow: rgba(124,92,252,0.2);
+  --text: #e8e6f0;
+  --text2: #9896b0;
+  --success: #34d399;
+  --warn: #fbbf24;
+  --radius: 14px;
+}
+html { scroll-behavior: smooth; }
+body {
+  font-family: 'Segoe UI', system-ui, -apple-system, 'PingFang SC', 'Microsoft YaHei', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.65;
+  font-size: 16px;
+}
+a { color: var(--accent2); text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+/* Top bar */
+.site-head {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+  padding: 14px 24px;
+  background: rgba(22,22,42,0.92);
+  backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--border);
+}
+.site-logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-weight: 700;
+  font-size: 1.15rem;
+  background: linear-gradient(135deg, var(--accent), var(--accent2));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+.site-nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 16px;
+  font-size: 14px;
+}
+.site-nav a {
+  color: var(--text2);
+}
+.site-nav a:hover { color: var(--text); }
+.btn-open {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 20px;
+  border-radius: 10px;
+  border: none;
+  background: linear-gradient(135deg, var(--accent), var(--accent2));
+  color: #fff;
+  font-weight: 600;
+  font-size: 14px;
+  cursor: pointer;
+  text-decoration: none;
+}
+.btn-open:hover { opacity: 0.92; transform: translateY(-1px); text-decoration: none; }
+
+/* Hero */
+.hero {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 48px 24px 32px;
+  text-align: center;
+}
+.hero h1 {
+  font-size: clamp(1.75rem, 4vw, 2.35rem);
+  font-weight: 700;
+  margin-bottom: 16px;
+  line-height: 1.25;
+}
+.hero-lead {
+  color: var(--text2);
+  max-width: 640px;
+  margin: 0 auto 28px;
+  font-size: 1.05rem;
+}
+
+/* Layout mock — 三栏示意图 */
+.mock-3col {
+  display: grid;
+  grid-template-columns: 1fr 120px 1fr;
+  gap: 8px;
+  max-width: 720px;
+  margin: 0 auto 8px;
+  padding: 16px;
+  background: var(--surface);
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
+  min-height: 180px;
+}
+.mock-col {
+  background: var(--surface2);
+  border-radius: 10px;
+  border: 1px dashed var(--border);
+  padding: 12px;
+  font-size: 11px;
+  color: var(--text2);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.mock-col.mid { background: rgba(124,92,252,0.08); border-color: rgba(124,92,252,0.35); }
+.mock-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--accent); }
+.mock-title { display: flex; align-items: center; gap: 6px; font-weight: 600; color: var(--text); text-transform: uppercase; letter-spacing: 0.06em; font-size: 10px; }
+.mock-box {
+  flex: 1;
+  min-height: 72px;
+  border-radius: 8px;
+  background: linear-gradient(145deg, rgba(255,255,255,0.04), rgba(0,0,0,0.2));
+  border: 1px solid var(--border);
+}
+.mock-grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 4px; }
+.mock-pill { height: 22px; border-radius: 6px; background: var(--surface); border: 1px solid var(--border); }
+.mock-pill.on { border-color: var(--accent); background: rgba(124,92,252,0.12); }
+
+/* Sections */
+.wrap {
+  max-width: 860px;
+  margin: 0 auto;
+  padding: 0 24px 64px;
+}
+.section {
+  margin-bottom: 56px;
+}
+.section h2 {
+  font-size: 1.35rem;
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.section h2 .step-num {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 10px;
+  background: linear-gradient(135deg, var(--accent), var(--accent2));
+  color: #fff;
+  font-size: 15px;
+  font-weight: 700;
+}
+.section .sub {
+  color: var(--text2);
+  font-size: 15px;
+  margin-bottom: 20px;
+}
+.figure {
+  margin: 20px 0 24px;
+  padding: 20px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+.figure svg { display: block; max-width: 100%; height: auto; }
+.figure-caption {
+  margin-top: 14px;
+  font-size: 14px;
+  color: var(--text2);
+  line-height: 1.5;
+}
+.figure-label {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--warn);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin-bottom: 12px;
+}
+
+ul.steps-list {
+  margin: 12px 0 0 1.2em;
+  color: var(--text2);
+}
+ul.steps-list li { margin-bottom: 8px; }
+ul.steps-list strong { color: var(--text); }
+
+.note {
+  margin-top: 16px;
+  padding: 14px 16px;
+  border-radius: 10px;
+  background: rgba(251,191,36,0.08);
+  border: 1px solid rgba(251,191,36,0.25);
+  font-size: 14px;
+  color: var(--text2);
+}
+.note strong { color: var(--warn); }
+
+/* 对比/分屏示意 */
+.mock-compare {
+  position: relative;
+  height: 120px;
+  border-radius: 10px;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  display: flex;
+}
+.mock-compare .half { flex: 1; display: flex; align-items: center; justify-content: center; font-size: 12px; color: var(--text2); }
+.mock-compare .half.a { background: linear-gradient(90deg, #3d3d5c, #2a2a45); }
+.mock-compare .half.b { background: linear-gradient(90deg, #4a3d6e, #5c3d7a); }
+.mock-compare .split-line {
+  position: absolute;
+  left: 50%;
+  top: 0;
+  bottom: 0;
+  width: 3px;
+  background: #fff;
+  transform: translateX(-50%);
+  box-shadow: 0 0 8px rgba(0,0,0,0.5);
+}
+
+.mock-split {
+  display: flex;
+  gap: 6px;
+  height: 120px;
+}
+.mock-split > div {
+  flex: 1;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  color: var(--text2);
+}
+.mock-split .l { background: rgba(61,61,92,0.8); }
+.mock-split .r { background: rgba(90,61,122,0.8); }
+
+/* 元素拆解示意 */
+.mock-chips { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
+.mock-chip {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 10px;
+  border-radius: 8px;
+  border: 2px solid var(--border);
+  font-size: 11px;
+  background: var(--surface2);
+}
+.mock-chip.active { border-color: var(--accent); box-shadow: 0 0 12px var(--accent-glow); }
+.mock-swatch { width: 16px; height: 16px; border-radius: 4px; }
+
+footer.site-foot {
+  border-top: 1px solid var(--border);
+  padding: 28px 24px 40px;
+  text-align: center;
+  color: var(--text2);
+  font-size: 14px;
+}
+
+@media (max-width: 640px) {
+  .mock-3col { grid-template-columns: 1fr; }
+  .site-head { flex-direction: column; align-items: flex-start; }
+}
+</style>
+</head>
+<body>
+
+<header class="site-head">
+  <div class="site-logo">
+    <svg width="28" height="28" viewBox="0 0 32 32" fill="none" aria-hidden="true">
+      <rect width="32" height="32" rx="8" fill="url(#lg0)"/>
+      <path d="M8 16c0-4.4 3.6-8 8-8s8 3.6 8 8" stroke="#fff" stroke-width="2.5" stroke-linecap="round"/>
+      <defs><linearGradient id="lg0" x1="0" y1="0" x2="32" y2="32"><stop stop-color="#7c5cfc"/><stop offset="1" stop-color="#c084fc"/></linearGradient></defs>
+    </svg>
+    StyleShift 使用指南
+  </div>
+  <nav class="site-nav" aria-label="本页导航">
+    <a href="#layout">界面布局</a>
+    <a href="#step-upload">上传</a>
+    <a href="#step-style">风格参数</a>
+    <a href="#step-result">结果与导出</a>
+    <a href="#step-element">元素拆解</a>
+    <a href="#step-extra">其它功能</a>
+  </nav>
+  <a class="btn-open" href="设计风格迁移-改进版.html">打开工具（改进版）</a>
+</header>
+
+<section class="hero">
+  <h1>设计风格迁移工具<br>图文操作说明</h1>
+  <p class="hero-lead">本页根据 <strong>StyleShift 改进版</strong> 的真实界面结构编写，帮助你快速完成：上传图片 → 选择风格 → 生成结果 →（可选）按区域再编辑。下方配有<strong>界面结构示意图</strong>；你在实际工具中截图后，也可自行替换为真机效果图。</p>
+</section>
+
+<div class="wrap">
+  <section class="section" id="layout">
+    <h2><span class="step-num">0</span> 界面总览：三栏在做什么？</h2>
+    <p class="sub">工具采用「左图 · 中控 · 右结果」布局，与下表一致。</p>
+
+    <div class="figure">
+      <div class="figure-label">示意图 · 三栏布局</div>
+      <div class="mock-3col" aria-label="三栏布局示意">
+        <div class="mock-col">
+          <div class="mock-title"><span class="mock-dot" style="background:var(--accent)"></span> 原始作品</div>
+          <div class="mock-box"></div>
+          <span>上传 / 拖拽图片，下方可保留历史缩略图。</span>
+        </div>
+        <div class="mock-col mid">
+          <div class="mock-title"><span class="mock-dot" style="background:var(--accent2)"></span> 风格选择</div>
+          <div class="mock-grid-2">
+            <div class="mock-pill on"></div><div class="mock-pill"></div>
+            <div class="mock-pill"></div><div class="mock-pill"></div>
+          </div>
+          <div class="mock-pill" style="margin-top:4px;height:8px;opacity:0.6"></div>
+          <div class="mock-pill" style="height:8px;opacity:0.5"></div>
+          <span>八种风格卡片 + 滑块 + 色调 + 视图切换 + 生成按钮。</span>
+        </div>
+        <div class="mock-col">
+          <div class="mock-title"><span class="mock-dot" style="background:var(--success)"></span> 迁移结果</div>
+          <div class="mock-box" style="min-height:56px;border-color:rgba(52,211,153,0.4)"></div>
+          <div class="mock-box" style="min-height:40px;opacity:0.85"></div>
+          <span>大图预览；生成后出现「元素拆解」面板（可拖拽分隔条调高度）。</span>
+        </div>
+      </div>
+      <p class="figure-caption">左栏只管原图与历史；中间集中完成「选风格 + 调参 + 生成」；右栏看图、对比、下载，并对局部做拆解编辑。</p>
+    </div>
+  </section>
+
+  <section class="section" id="step-upload">
+    <h2><span class="step-num">1</span> 上传原始作品</h2>
+    <p class="sub">在左侧「原始作品」虚线框内点击，或把图片拖进去。支持常见网页图片格式，单张大小上限以工具内提示为准。</p>
+    <div class="figure">
+      <div class="figure-label">图示 · 上传区</div>
+      <svg viewBox="0 0 360 200" width="100%" height="200" role="img" aria-label="上传区域示意">
+        <defs>
+          <linearGradient id="g1" x1="0" y1="0" x2="360" y2="200"><stop offset="0" stop-color="#1e1e3a"/><stop offset="1" stop-color="#16162a"/></linearGradient>
+        </defs>
+        <rect width="360" height="200" rx="14" fill="url(#g1)" stroke="#2a2a4a" stroke-width="2" stroke-dasharray="8 6"/>
+        <path d="M140 75h80v50h-80zM160 60c0-8 8-14 18-14s18 6 18 14" fill="none" stroke="#6b6988" stroke-width="2"/>
+        <circle cx="172" cy="70" r="3" fill="#6b6988"/>
+        <path d="M228 115l-22-20-38 42h100z" fill="none" stroke="#6b6988" stroke-width="1.5"/>
+        <text x="180" y="165" text-anchor="middle" fill="#9896b0" font-size="13" font-family="system-ui,sans-serif">点击选择或拖拽图片到此处</text>
+      </svg>
+      <p class="figure-caption">已有图片时，悬停上传区可出现「更换图片」。左下角历史条可保存多版缩略对比（视你的操作而定）。</p>
+    </div>
+    <ul class="steps-list">
+      <li><strong>建议：</strong>主体清晰、光线正常的照片更容易看出风格差异。</li>
+    </ul>
+  </section>
+
+  <section class="section" id="step-style">
+    <h2><span class="step-num">2</span> 选择风格并调节参数</h2>
+    <p class="sub">中间栏先点选一种风格（油画、水彩、赛博朋克等），再按需拖动「风格强度、饱和度、对比度、亮度、模糊」。「色调叠加」用色块给整图统一色偏（可选）。</p>
+    <div class="figure">
+      <div class="figure-label">图示 · 风格卡片与滑块</div>
+      <svg viewBox="0 0 400 220" width="100%" height="220" role="img" aria-label="风格与参数示意">
+        <rect width="400" height="220" rx="12" fill="#16162a" stroke="#2a2a4a"/>
+        <g transform="translate(16,16)">
+          <rect x="0" y="0" width="80" height="54" rx="8" fill="rgba(124,92,252,0.2)" stroke="#7c5cfc" stroke-width="2"/>
+          <text x="40" y="32" text-anchor="middle" fill="#e8e6f0" font-size="11">风格 A ✓</text>
+          <rect x="88" y="0" width="80" height="54" rx="8" fill="#1e1e3a" stroke="#2a2a4a"/>
+          <text x="128" y="32" text-anchor="middle" fill="#9896b0" font-size="11">风格 B</text>
+          <rect x="176" y="0" width="80" height="54" rx="8" fill="#1e1e3a" stroke="#2a2a4a"/>
+          <rect x="264" y="0" width="80" height="54" rx="8" fill="#1e1e3a" stroke="#2a2a4a"/>
+        </g>
+        <text x="24" y="105" fill="#9896b0" font-size="11">风格强度</text>
+        <text x="330" y="105" fill="#c084fc" font-size="11">90%</text>
+        <rect x="24" y="112" width="352" height="6" rx="3" fill="#2a2a4a"/>
+        <circle cx="310" cy="115" r="8" fill="url(#gradThumb)"/>
+        <defs><linearGradient id="gradThumb"><stop stop-color="#7c5cfc"/><stop offset="1" stop-color="#c084fc"/></linearGradient></defs>
+        <rect x="24" y="138" width="352" height="28" rx="8" fill="#1e1e3a" stroke="#2a2a4a"/>
+        <text x="180" y="156" text-anchor="middle" fill="#9896b0" font-size="10">效果图 · 对比 · 分屏</text>
+        <rect x="24" y="176" width="352" height="36" rx="10" fill="url(#gradBtn)"/>
+        <text x="200" y="199" text-anchor="middle" fill="#fff" font-size="13" font-weight="600">生成风格迁移</text>
+        <defs><linearGradient id="gradBtn" x1="0" y1="0" x2="352" y2="36"><stop stop-color="#7c5cfc"/><stop offset="1" stop-color="#c084fc"/></linearGradient></defs>
+      </svg>
+      <p class="figure-caption">需先上传图片后，「生成」按钮才会可用。视图模式「效果图 / 对比 / 分屏」在生成后用于查看整图差异（对比条可拖动，分屏为左右对照）。</p>
+    </div>
+  </section>
+
+  <section class="section" id="step-result">
+    <h2><span class="step-num">3</span> 查看结果、缩放与导出</h2>
+    <p class="sub">生成完成后，右侧大图区会显示结果。鼠标移入可出现左下角缩放、右下角下载/保存。</p>
+    <div class="figure">
+      <div class="figure-label">图示 · 对比模式（拖动中线）</div>
+      <div class="mock-compare" aria-label="对比模式示意">
+        <div class="half a">原图一侧</div>
+        <div class="half b">结果一侧</div>
+        <div class="split-line"></div>
+      </div>
+      <p class="figure-caption" style="margin-top:14px">对比模式：同一张图上以竖线分割，左一般为原图、右为结果，拖动白线查看过渡。</p>
+      <div class="figure-label" style="margin-top:20px">图示 · 分屏模式</div>
+      <div class="mock-split">
+        <div class="l">左：原图</div>
+        <div class="r">右：结果</div>
+      </div>
+      <p class="figure-caption">分屏模式：左右两栏各自完整显示，便于整体对照。</p>
+    </div>
+    <ul class="steps-list">
+      <li><strong>导出：</strong>顶栏「导出」可保存当前结果图；结果区内的「下载」「保存」也可使用。</li>
+      <li><strong>重置：</strong>顶栏「重置」清空当前会话回到初始状态。</li>
+    </ul>
+  </section>
+
+  <section class="section" id="step-element">
+    <h2><span class="step-num">4</span> 元素拆解与局部再迁移（进阶）</h2>
+    <p class="sub">在已生成结果的前提下，右下方面板可进行「按颜色分块」选区，并对选中区域单独换风格或还原等。</p>
+    <div class="figure">
+      <div class="figure-label">图示 · 色块列表与选区</div>
+      <div style="background:#1e1e3a;border-radius:10px;padding:14px;border:1px solid var(--border)">
+        <div style="font-size:11px;color:var(--warn);margin-bottom:8px;font-weight:600">● 元素拆解与替换</div>
+        <div class="mock-pill" style="height:6px;width:60%;opacity:0.5;margin-bottom:10px"></div>
+        <div class="mock-chips">
+          <div class="mock-chip active"><span class="mock-swatch" style="background:#c77dff"></span> 色桶 1</div>
+          <div class="mock-chip"><span class="mock-swatch" style="background:#69db7c"></span> 色桶 2</div>
+          <div class="mock-chip"><span class="mock-swatch" style="background:#4dabf7"></span> 色桶 3</div>
+        </div>
+        <p style="margin-top:12px;font-size:12px;color:var(--text2)">画布上用紫色标出当前选区；列表点选与图上单击规则以工具内说明为准。</p>
+      </div>
+      <p class="figure-caption">典型流程：<strong>分析 / 刷新元素</strong> → 在列表或画面上选中区域 → 在面板中为该区域选风格并调「区域参数」→ 点击 <strong>仅此区域再迁移</strong>。可用 <strong>与中间栏同步</strong> 快速把全局滑块数值抄到区域参数。</p>
+    </div>
+    <div class="note">
+      <strong>提示：</strong>右栏预览图与工具面板之间的<strong>灰色横条可上下拖动</strong>，自定义预览区与面板区高度；高度会记在浏览器本地，下次打开仍保留。
+    </div>
+    <ul class="steps-list">
+      <li><strong>只选不拖：</strong>勾选后便于在图上精确点击选区，但无法再拖动画布平移（视工具说明）。</li>
+      <li><strong>撤销：</strong>顶栏「撤销」可退回对结果图的上一步操作（含区域编辑等）。</li>
+    </ul>
+  </section>
+
+  <section class="section" id="step-extra">
+    <h2><span class="step-num">5</span> 语言与其它</h2>
+    <p class="sub">顶栏可切换 <strong>中文 / English</strong>，界面文案会整体切换（偏好保存在本机浏览器）。</p>
+    <div class="figure">
+      <div class="figure-label">真机截图位（可选）</div>
+      <div style="min-height:140px;border:2px dashed var(--border);border-radius:10px;display:flex;align-items:center;justify-content:center;color:var(--text2);font-size:14px;padding:20px;text-align:center">
+        可将「导出」后的效果图，或对工具界面截屏保存为 <code style="color:var(--accent2)">guide-screenshots/</code> 下图片，在此用 <code style="color:var(--accent2)">&lt;img src="..."&gt;</code> 引用。
+      </div>
+      <p class="figure-caption">教学站点推荐：每一步配一张 1280px 左右宽度的截图，读者会更直观。</p>
+    </div>
+  </section>
+</div>
+
+<footer class="site-foot">
+  <p>文档对应工具文件：<a href="设计风格迁移-改进版.html">设计风格迁移-改进版.html</a></p>
+  <p style="margin-top:8px">StyleShift · 设计风格迁移（改进版）功能介绍页 · 纯静态 HTML，可随项目一并部署</p>
+</footer>
+
+</body>
+</html>

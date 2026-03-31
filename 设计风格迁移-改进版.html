@@ -43,6 +43,132 @@ header {
   top: 0;
   z-index: 100;
 }
+/* 右上角固定：语言切换 */
+.floating-corner-actions {
+  position: fixed;
+  top: max(12px, env(safe-area-inset-top, 0px));
+  right: max(14px, env(safe-area-inset-right, 0px));
+  z-index: 250;
+}
+.lang-float-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 18px;
+  border-radius: 999px;
+  border: 1px solid rgba(192, 132, 252, 0.45);
+  background: rgba(22, 22, 42, 0.94);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  color: var(--text);
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  cursor: pointer;
+  box-shadow: 0 4px 28px rgba(0, 0, 0, 0.45), 0 0 0 1px rgba(124, 92, 252, 0.12);
+  transition: border-color .2s, transform .15s, box-shadow .2s;
+}
+.lang-float-btn:hover {
+  border-color: var(--accent2);
+  box-shadow: 0 6px 32px rgba(124, 92, 252, 0.2);
+  transform: translateY(-1px);
+}
+.lang-float-btn:active { transform: translateY(0); }
+.lang-float-btn svg { flex-shrink: 0; opacity: 0.9; }
+.lang-float-btn .lang-toggle-label { line-height: 1; }
+
+/* 历史记录全屏查看 */
+.history-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 400;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  pointer-events: none;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.2s, visibility 0.2s;
+}
+.history-modal.is-open {
+  pointer-events: auto;
+  opacity: 1;
+  visibility: visible;
+}
+.history-modal-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(6, 6, 12, 0.72);
+  backdrop-filter: blur(6px);
+}
+.history-modal-panel {
+  position: relative;
+  width: min(560px, 100%);
+  max-height: min(82vh, 720px);
+  display: flex;
+  flex-direction: column;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: 0 24px 80px rgba(0, 0, 0, 0.55);
+  z-index: 1;
+  overflow: hidden;
+}
+.history-modal-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 16px 18px;
+  border-bottom: 1px solid var(--border);
+  flex-shrink: 0;
+}
+.history-modal-head h2 {
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: var(--text);
+  margin: 0;
+}
+.history-modal-body {
+  padding: 14px 18px 18px;
+  overflow-y: auto;
+  flex: 1;
+  min-height: 0;
+}
+.history-modal-hint {
+  font-size: 0.82rem;
+  color: var(--text2);
+  line-height: 1.5;
+  margin: 0 0 12px;
+}
+.history-modal-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+.history-thumb--panel {
+  width: 88px;
+  height: 88px;
+  border-radius: 10px;
+  border: 2px solid var(--border);
+  overflow: hidden;
+  cursor: default;
+  flex-shrink: 0;
+  transition: border-color 0.2s;
+}
+.history-thumb--panel img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.history-modal-empty {
+  font-size: 0.92rem;
+  color: var(--text2);
+  margin: 24px 0;
+  text-align: center;
+}
+.history-modal-empty[hidden] { display: none !important; }
 .logo {
   display: flex; align-items: center; gap: 12px;
   font-size: 22px; font-weight: 700;
@@ -84,6 +210,78 @@ header {
   flex-direction: column;
   padding: 20px;
   overflow-y: auto;
+  min-height: 0;
+}
+/* 右栏：结果区 + 可拖拽调节高度的元素面板（result-stack） */
+.panel.panel-result {
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+.panel.panel-result .panel-header {
+  flex-shrink: 0;
+  margin-bottom: 10px;
+}
+.panel.panel-result .result-stack {
+  flex: 1 1 auto;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+.panel.panel-result .element-panel .seg-select {
+  padding: 6px 8px;
+  font-size: 12px;
+  margin-bottom: 4px;
+}
+.panel.panel-result .element-panel .seg-label {
+  margin-bottom: 4px;
+  font-size: 10px;
+}
+.panel.panel-result .result-stack > .result-zone {
+  flex: 1 1 0%;
+  min-height: clamp(96px, 16vh, 260px);
+}
+.panel.panel-result .result-stack-resizer {
+  flex: 0 0 10px;
+  min-height: 10px;
+  margin: 0;
+  border-radius: 5px;
+  background: var(--border);
+  cursor: ns-resize;
+  touch-action: none;
+  position: relative;
+  z-index: 5;
+}
+.panel.panel-result .result-stack-resizer:hover,
+.panel.panel-result .result-stack-resizer:focus {
+  background: var(--accent);
+  outline: none;
+}
+.panel.panel-result .result-stack-resizer::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 36px;
+  height: 4px;
+  border-radius: 2px;
+  background: rgba(255,255,255,0.25);
+  pointer-events: none;
+}
+.panel.panel-result .element-panel {
+  flex: 0 0 auto;
+  height: 360px;
+  min-height: 200px;
+  max-height: none;
+  overflow-y: auto;
+  overflow-x: hidden;
+  margin-top: 0;
+  padding: 10px 12px;
+  -webkit-overflow-scrolling: touch;
+}
+.panel.panel-result .element-panel .segment-strip {
+  max-height: min(200px, 28vh);
 }
 .panel-header {
   display: flex; align-items: center; gap: 8px;
@@ -407,25 +605,40 @@ input[type="range"]::-webkit-slider-thumb {
   font-size: 13px;
 }
 
-/* Comparison slider */
-.result-zone.has-result .comparison-container {
+/* Comparison slider — 内层用 JS 按容器等比缩放，避免百分比高度失效导致裁切 */
+.result-zone.has-result .comparison-outer {
   flex: 1;
   min-height: 0;
   width: 100%;
   align-self: stretch;
-}
-.comparison-container {
-  position: relative;
-  width: 100%;
-  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
   cursor: col-resize;
   border-radius: var(--radius);
-  overflow: hidden;
+  box-sizing: border-box;
 }
-.comparison-container canvas {
-  position: absolute;
-  top: 0; left: 0;
-  width: 100%; height: 100%;
+.comparison-inner {
+  width: 100%;
+  height: 100%;
+  min-width: 0;
+  min-height: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+}
+.comparison-canvas-wrap {
+  position: relative;
+  flex-shrink: 0;
+  line-height: 0;
+}
+.comparison-canvas-wrap > canvas {
+  display: block;
+  border-radius: var(--radius);
+  -webkit-user-drag: none;
+  user-select: none;
 }
 .comparison-line {
   position: absolute;
@@ -449,6 +662,39 @@ input[type="range"]::-webkit-slider-thumb {
   justify-content: center;
   box-shadow: 0 4px 15px rgba(0,0,0,0.3);
   cursor: col-resize;
+}
+
+/* 分屏：左原图 / 右结果，各占一半，各自等比 contain */
+.result-zone.has-result .split-view {
+  flex: 1;
+  min-height: 0;
+  width: 100%;
+  align-self: stretch;
+  display: flex;
+  flex-direction: row;
+  gap: 8px;
+  min-width: 0;
+}
+.split-pane {
+  flex: 1;
+  min-width: 0;
+  min-height: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  background: var(--surface2);
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
+}
+.split-pane canvas {
+  display: block;
+  max-width: 100%;
+  max-height: 100%;
+  width: auto;
+  height: auto;
+  -webkit-user-drag: none;
+  user-select: none;
 }
 .comparison-handle::before, .comparison-handle::after {
   content: '';
@@ -564,6 +810,79 @@ input[type="range"]::-webkit-slider-thumb {
   line-height: 1.45;
   margin-bottom: 12px;
 }
+.panel.panel-result .element-hint {
+  font-size: 11px;
+  line-height: 1.35;
+  margin-bottom: 8px;
+}
+.element-panel .seg-label-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-top: 12px;
+  margin-bottom: 8px;
+}
+.panel.panel-result .element-panel .seg-label-row {
+  margin-top: 4px;
+  margin-bottom: 4px;
+}
+.element-panel .seg-label-compact {
+  font-size: 10px;
+  line-height: 1.3;
+  margin-bottom: 0;
+  flex: 1;
+  min-width: 0;
+}
+.element-panel .btn-sync-region {
+  padding: 6px 12px;
+  font-size: 12px;
+  flex-shrink: 0;
+}
+.panel.panel-result .element-panel .btn-sync-region {
+  padding: 4px 8px;
+  font-size: 11px;
+}
+.element-panel .region-params-block {
+  margin-top: 2px;
+  padding: 8px 8px 6px;
+  border-radius: 10px;
+  background: rgba(0, 0, 0, 0.12);
+  border: 1px solid var(--border);
+}
+.element-panel .region-params-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4px 10px;
+  align-items: end;
+}
+.element-panel .region-params-grid .region-param-span-2 {
+  grid-column: 1 / -1;
+}
+.element-panel .region-params-block .region-param {
+  margin-bottom: 0;
+}
+.element-panel .region-param .control-label {
+  font-size: 11px;
+  margin-bottom: 2px;
+}
+.element-panel .region-param .control-label span:last-child {
+  font-size: 10px;
+}
+.element-panel .region-param input[type="range"] {
+  height: 4px;
+  margin-bottom: 2px;
+}
+.element-panel .region-param input[type="range"]::-webkit-slider-thumb {
+  width: 14px;
+  height: 14px;
+}
+.element-panel .region-param .control-label span.text-muted {
+  color: var(--text2);
+  font-size: 10px;
+  font-weight: 500;
+}
 .segment-strip {
   display: flex;
   flex-wrap: wrap;
@@ -572,6 +891,10 @@ input[type="range"]::-webkit-slider-thumb {
   overflow-y: auto;
   margin: 10px 0;
   padding: 4px 0;
+}
+.panel.panel-result .element-panel .segment-strip {
+  margin: 6px 0;
+  gap: 6px;
 }
 .segment-chip {
   display: flex;
@@ -680,6 +1003,21 @@ input[type="range"]::-webkit-slider-thumb {
 </head>
 <body>
 
+<div class="history-modal" id="historyModal" aria-hidden="true" role="dialog" aria-labelledby="historyModalTitle">
+  <div class="history-modal-backdrop" onclick="closeHistoryModal()"></div>
+  <div class="history-modal-panel">
+    <div class="history-modal-head">
+      <h2 id="historyModalTitle" data-i18n="history.panelTitle">历史记录</h2>
+      <button type="button" class="btn" onclick="closeHistoryModal()" data-i18n-aria="history.closeAria" aria-label="关闭">✕</button>
+    </div>
+    <div class="history-modal-body">
+      <p class="history-modal-hint" data-i18n="history.panelHint">在结果区点击「保存」可将当前效果图加入列表，便于对比不同版本。</p>
+      <div class="history-modal-grid" id="historyModalGrid"></div>
+      <p class="history-modal-empty" id="historyModalEmpty" data-i18n="history.empty">暂无保存的记录</p>
+    </div>
+  </div>
+</div>
+
 <header>
   <div class="logo">
     <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
@@ -692,8 +1030,8 @@ input[type="range"]::-webkit-slider-thumb {
     StyleShift
   </div>
   <div class="header-actions">
-    <button type="button" class="btn" id="langToggleBtn" onclick="toggleLanguage()" title="Switch language / 切换语言">
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 8l6 6M4 14l6-6 2-3M2 5h12M7 2h1M22 22l-5-10-5 10M14 18h6"/></svg>
+    <button type="button" class="btn" id="langToggleBtn" onclick="toggleLanguage()" title="Switch language / 切换语言" aria-live="polite">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 014 8 15.3 15.3 0 01-4 8 15.310 15.310 0 01-4-8 15.310 15.310 0 014-8z"/></svg>
       <span class="lang-toggle-label">English</span>
     </button>
     <button type="button" class="btn" id="undoStepBtn" onclick="undoLastStep()" disabled data-i18n-title="header.undoTitle">
@@ -703,6 +1041,10 @@ input[type="range"]::-webkit-slider-thumb {
     <button type="button" class="btn" onclick="resetAll()">
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 4v6h6M23 20v-6h-6"/><path d="M20.49 9A9 9 0 005.64 5.64L1 10m22 4l-4.64 4.36A9 9 0 013.51 15"/></svg>
       <span data-i18n="header.reset">重置</span>
+    </button>
+    <button type="button" class="btn" id="historyHeaderBtn" onclick="openHistoryModal()" data-i18n-title="header.historyTitle" data-i18n-aria="header.historyTitle">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M3 3v5h5"/><path d="M3 14a9 9 0 009 9 9 9 0 006-2.3L21 16"/><path d="M21 3v5h-5"/><path d="M21 10a9 9 0 01-9 9 9 9 0 01-6-2.3L3 16"/></svg>
+      <span data-i18n="header.history">历史</span>
     </button>
     <button type="button" class="btn btn-primary" onclick="downloadResult()">
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>
@@ -838,8 +1180,9 @@ input[type="range"]::-webkit-slider-thumb {
   </div>
 
   <!-- Right: Result -->
-  <div class="panel">
+  <div class="panel panel-result">
     <div class="panel-header"><span class="dot" style="background:var(--success)"></span> <span data-i18n="panel.result">迁移结果</span></div>
+    <div class="result-stack" id="resultStack">
     <div class="result-zone" id="resultZone">
       <div class="result-placeholder">
         <svg width="80" height="80" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1">
@@ -859,6 +1202,7 @@ input[type="range"]::-webkit-slider-thumb {
         </button>
       </div>
     </div>
+    <div class="result-stack-resizer" id="resultStackResizer" hidden role="separator" aria-orientation="horizontal" tabindex="0" data-i18n-title="seg.stackResizeTitle"></div>
 
     <div class="element-panel" id="elementPanel" hidden>
       <div class="panel-header small"><span class="dot" style="background:var(--warn)"></span> <span data-i18n="elem.title">元素拆解与替换</span></div>
@@ -875,9 +1219,37 @@ input[type="range"]::-webkit-slider-thumb {
       <div id="segmentTools" hidden>
         <span class="seg-label" data-i18n="seg.remixLabel">对此区域使用的风格（可与左侧全局不同）</span>
         <select id="regionRemixStyle" class="seg-select"></select>
+        <div class="region-params-block" id="regionParamsBlock">
+          <div class="seg-label-row">
+            <span class="seg-label seg-label-compact" data-i18n="seg.regionParamsTitle">此区域参数（仅用于下方「仅此区域再迁移」）</span>
+            <button type="button" class="btn btn-sync-region" id="btnSyncRegionParams" data-i18n="seg.syncFromCenter">与中间栏同步</button>
+          </div>
+          <div class="region-params-grid">
+            <div class="control-group region-param">
+              <div class="control-label"><span data-i18n="ctrl.intensity">风格强度</span><span id="regionIntensityVal">90%</span></div>
+              <input type="range" id="regionIntensity" min="0" max="100" value="90">
+            </div>
+            <div class="control-group region-param">
+              <div class="control-label"><span data-i18n="ctrl.saturation">色彩饱和度</span><span id="regionSaturationVal">100%</span></div>
+              <input type="range" id="regionSaturation" min="0" max="200" value="100">
+            </div>
+            <div class="control-group region-param">
+              <div class="control-label"><span data-i18n="ctrl.contrast">对比度</span><span id="regionContrastVal">100%</span></div>
+              <input type="range" id="regionContrast" min="50" max="200" value="100">
+            </div>
+            <div class="control-group region-param">
+              <div class="control-label"><span data-i18n="ctrl.brightness">亮度</span><span id="regionBrightnessVal">100%</span></div>
+              <input type="range" id="regionBrightness" min="50" max="200" value="100">
+            </div>
+            <div class="control-group region-param region-param-span-2">
+              <div class="control-label"><span data-i18n="ctrl.blur">模糊程度</span><span id="regionBlurVal">0</span></div>
+              <input type="range" id="regionBlur" min="0" max="10" value="0" step="0.5">
+            </div>
+          </div>
+        </div>
         <div class="segment-strip" id="segmentStrip"></div>
         <div class="region-actions" id="regionActions" hidden>
-          <button type="button" class="btn btn-primary" id="btnRegionRemix" data-i18n="seg.btnRemix">仅此区域再迁移（当前参数）</button>
+          <button type="button" class="btn btn-primary" id="btnRegionRemix" data-i18n="seg.btnRemix">仅此区域再迁移</button>
           <button type="button" class="btn" id="btnRegionRestore" data-i18n="seg.btnRestore">将此区域还原为原图</button>
           <button type="button" class="btn" id="btnRegionExtract" data-i18n="seg.btnExtract">提取此区域主色（结果图）</button>
           <div class="region-actions-row">
@@ -892,6 +1264,7 @@ input[type="range"]::-webkit-slider-thumb {
           <button type="button" class="btn" id="btnApplyExtractedTint" data-i18n="seg.applyTint">叠加强调到该区域</button>
         </div>
       </div>
+    </div>
     </div>
   </div>
 </div>
@@ -933,6 +1306,12 @@ const I18N_BASE_ZH = {
   'header.reset': '重置',
   'header.export': '导出',
   'header.undoTitle': '撤销对结果图的上一操作（全局生成、区域重算、还原、换色等）',
+  'header.history': '历史',
+  'header.historyTitle': '查看已保存的效果图缩略图',
+  'history.panelTitle': '历史记录',
+  'history.panelHint': '在结果区工具栏点击「保存」，可将当前效果图以缩略图形式加入列表，便于对比不同生成版本（与左栏下方条带同步）。',
+  'history.empty': '暂无保存的记录',
+  'history.closeAria': '关闭',
   'panel.source': '原始作品',
   'panel.styles': '风格选择',
   'panel.result': '迁移结果',
@@ -959,7 +1338,10 @@ const I18N_BASE_ZH = {
   'seg.analyze': '分析 / 刷新元素',
   'seg.pickMode': '只选不拖（开启后无法在结果区平移画布，适合精确单击）',
   'seg.remixLabel': '对此区域使用的风格（可与左侧全局不同）',
-  'seg.btnRemix': '仅此区域再迁移（当前参数）',
+  'seg.regionParamsTitle': '区域参数（仅「区域再迁移」）',
+  'seg.syncFromCenter': '与中间栏同步',
+  'seg.stackResizeTitle': '上下拖拽：调节预览图与下方工具区高度（设置会自动保存）',
+  'seg.btnRemix': '仅此区域再迁移',
   'seg.btnRestore': '将此区域还原为原图',
   'seg.btnExtract': '提取此区域主色（结果图）',
   'seg.replaceTitle': '替换颜色',
@@ -997,7 +1379,8 @@ const I18N_BASE_ZH = {
   'toast.noExport': '暂无可导出的结果',
   'toast.exportOk': '图片已保存到下载文件夹',
   'toast.historySaved': '已保存到历史记录',
-  'toast.resetDone': '已重置所有设置'
+  'toast.resetDone': '已重置所有设置',
+  'toast.regionParamsSynced': '已用中间栏的参数覆盖本区滑动条'
 };
 
 const I18N_BASE_EN = {
@@ -1033,7 +1416,10 @@ const I18N_BASE_EN = {
   'seg.analyze': 'Analyze / refresh regions',
   'seg.pickMode': 'Select only (no pan) — easier precise clicks',
   'seg.remixLabel': 'Style for this region (can differ from global)',
-  'seg.btnRemix': 'Re-apply style to region (current settings)',
+  'seg.regionParamsTitle': 'Region params (re-apply only)',
+  'seg.syncFromCenter': 'Copy from center panel',
+  'seg.stackResizeTitle': 'Drag up/down to resize the image area vs. tools (saved automatically)',
+  'seg.btnRemix': 'Re-apply style to region',
   'seg.btnRestore': 'Restore region from source photo',
   'seg.btnExtract': 'Pick dominant color from region',
   'seg.replaceTitle': 'Replacement color',
@@ -1071,7 +1457,8 @@ const I18N_BASE_EN = {
   'toast.noExport': 'No result to export',
   'toast.exportOk': 'Saved to your downloads folder',
   'toast.historySaved': 'Saved to strip history',
-  'toast.resetDone': 'Everything reset'
+  'toast.resetDone': 'Everything reset',
+  'toast.regionParamsSynced': 'Region sliders updated from center panel'
 };
 
 const I18N = {
@@ -1108,6 +1495,10 @@ function applyI18n() {
     const k = el.getAttribute('data-i18n-title');
     if (k) el.title = t(k);
   });
+  document.querySelectorAll('[data-i18n-aria]').forEach(el => {
+    const k = el.getAttribute('data-i18n-aria');
+    if (k) el.setAttribute('aria-label', t(k));
+  });
   updateStyleCardsI18n();
   fillRegionStyleSelectOptions();
   syncSegDetailLabelI18n();
@@ -1130,6 +1521,7 @@ function updateLangToggleButton() {
   const span = btn.querySelector('.lang-toggle-label');
   if (span) span.textContent = t('header.langSwitch');
   btn.title = currentLang === 'zh' ? 'Switch to English' : '切换到中文';
+  btn.setAttribute('aria-label', currentLang === 'zh' ? 'Switch interface to English' : '将界面切换为中文');
 }
 
 function fillRegionStyleSelectOptions() {
@@ -1317,6 +1709,34 @@ function getStyleParamsFromUI() {
   };
 }
 
+function getRegionStyleParamsFromUI() {
+  return {
+    intensity: document.getElementById('regionIntensity').value / 100,
+    sat: document.getElementById('regionSaturation').value,
+    con: document.getElementById('regionContrast').value,
+    bri: document.getElementById('regionBrightness').value,
+    blurVal: document.getElementById('regionBlur').value,
+    tint: 'none'
+  };
+}
+
+function syncRegionParamsFromCenter() {
+  const pairs = [
+    ['intensity', 'regionIntensity', 'regionIntensityVal', false],
+    ['saturation', 'regionSaturation', 'regionSaturationVal', false],
+    ['contrast', 'regionContrast', 'regionContrastVal', false],
+    ['brightness', 'regionBrightness', 'regionBrightnessVal', false],
+    ['blur', 'regionBlur', 'regionBlurVal', true]
+  ];
+  pairs.forEach(([srcId, dstId, valId, isBlur]) => {
+    const s = document.getElementById(srcId);
+    const d = document.getElementById(dstId);
+    const v = document.getElementById(valId);
+    if (s && d) d.value = s.value;
+    if (s && v) v.textContent = isBlur ? s.value : s.value + '%';
+  });
+}
+
 function applyStylePipeline(ctx, canvas, sourceImg, w, h, styleKey, params) {
   const intensity = params.intensity;
   const sat = params.sat;
@@ -1421,6 +1841,95 @@ function invalidateSegmentation() {
   if (ex) ex.hidden = true;
 }
 
+const ELEMENT_PANEL_H_STORAGE = 'styleshift-element-panel-h';
+const RESULT_STACK_RESIZER_H = 10;
+const ELEMENT_PANEL_MIN_H = 200;
+const RESULT_ZONE_MIN_H = 96;
+
+let elementPanelUserHeightPx = (() => {
+  const v = parseInt(localStorage.getItem(ELEMENT_PANEL_H_STORAGE) || '', 10);
+  return Number.isFinite(v) && v >= ELEMENT_PANEL_MIN_H ? v : 360;
+})();
+
+function clampElementPanelHeight(px) {
+  const stack = document.getElementById('resultStack');
+  const ep = document.getElementById('elementPanel');
+  if (!stack || !ep || ep.hidden) return px;
+  const total = stack.getBoundingClientRect().height;
+  if (total < RESULT_STACK_RESIZER_H + ELEMENT_PANEL_MIN_H + RESULT_ZONE_MIN_H) return px;
+  const maxEp = total - RESULT_STACK_RESIZER_H - RESULT_ZONE_MIN_H;
+  return Math.max(ELEMENT_PANEL_MIN_H, Math.min(maxEp, px));
+}
+
+function applyResultStackLayout() {
+  const ep = document.getElementById('elementPanel');
+  const resizer = document.getElementById('resultStackResizer');
+  const stack = document.getElementById('resultStack');
+  if (!ep || !resizer || !stack) return;
+  if (ep.hidden) {
+    resizer.hidden = true;
+    return;
+  }
+  resizer.hidden = false;
+  const h = clampElementPanelHeight(elementPanelUserHeightPx);
+  elementPanelUserHeightPx = h;
+  ep.style.height = h + 'px';
+  ep.style.flex = '0 0 auto';
+  ep.style.maxHeight = 'none';
+  localStorage.setItem(ELEMENT_PANEL_H_STORAGE, String(h));
+}
+
+let resultStackResizerDrag = false;
+let resultStackDragStartY = 0;
+let resultStackDragStartH = 0;
+
+function setupResultStackResizer() {
+  const resizer = document.getElementById('resultStackResizer');
+  if (!resizer || resizer.dataset.bound === '1') return;
+  resizer.dataset.bound = '1';
+  const endDrag = () => {
+    if (!resultStackResizerDrag) return;
+    resultStackResizerDrag = false;
+    document.body.style.cursor = '';
+    document.body.style.userSelect = '';
+    applyResultStackLayout();
+  };
+  const moveFromClientY = (clientY) => {
+    if (!resultStackResizerDrag) return;
+    const dy = clientY - resultStackDragStartY;
+    elementPanelUserHeightPx = clampElementPanelHeight(resultStackDragStartH - dy);
+    const ep = document.getElementById('elementPanel');
+    if (ep && !ep.hidden) ep.style.height = elementPanelUserHeightPx + 'px';
+  };
+  resizer.addEventListener('mousedown', e => {
+    const ep = document.getElementById('elementPanel');
+    if (!ep || ep.hidden) return;
+    e.preventDefault();
+    resultStackResizerDrag = true;
+    resultStackDragStartY = e.clientY;
+    resultStackDragStartH = elementPanelUserHeightPx;
+    document.body.style.cursor = 'ns-resize';
+    document.body.style.userSelect = 'none';
+  });
+  window.addEventListener('mousemove', e => moveFromClientY(e.clientY));
+  window.addEventListener('mouseup', endDrag);
+  resizer.addEventListener('touchstart', e => {
+    const ep = document.getElementById('elementPanel');
+    if (!ep || ep.hidden || !e.touches[0]) return;
+    resultStackResizerDrag = true;
+    resultStackDragStartY = e.touches[0].clientY;
+    resultStackDragStartH = elementPanelUserHeightPx;
+    document.body.style.userSelect = 'none';
+  }, { passive: true });
+  window.addEventListener('touchmove', e => {
+    if (!resultStackResizerDrag || !e.touches[0]) return;
+    e.preventDefault();
+    moveFromClientY(e.touches[0].clientY);
+  }, { passive: false });
+  window.addEventListener('touchend', endDrag);
+  window.addEventListener('resize', () => requestAnimationFrame(applyResultStackLayout));
+}
+
 function updateElementPanelVisibility() {
   const ep = document.getElementById('elementPanel');
   if (!ep) return;
@@ -1430,6 +1939,7 @@ function updateElementPanelVisibility() {
     ep.hidden = true;
     invalidateSegmentation();
   }
+  requestAnimationFrame(() => applyResultStackLayout());
 }
 
 function syncRegionStyleSelect() {
@@ -1484,9 +1994,10 @@ document.getElementById('styleGrid').addEventListener('click', e => {
 
 /* Palette */
 document.getElementById('paletteRow').addEventListener('click', e => {
+  const row = e.currentTarget;
   const dot = e.target.closest('.palette-dot');
-  if (!dot) return;
-  document.querySelectorAll('.palette-dot').forEach(d => d.classList.remove('active'));
+  if (!dot || !row.contains(dot)) return;
+  row.querySelectorAll('.palette-dot').forEach(d => d.classList.remove('active'));
   dot.classList.add('active');
   currentColor = dot.dataset.color;
 });
@@ -1498,6 +2009,24 @@ document.getElementById('paletteRow').addEventListener('click', e => {
   el.addEventListener('input', () => {
     valEl.textContent = id === 'blur' ? el.value : el.value + '%';
   });
+});
+
+/* 右侧区域参数滑块：同步数值显示（与中间栏逻辑一致） */
+[
+  ['regionIntensity', 'regionIntensityVal', false],
+  ['regionSaturation', 'regionSaturationVal', false],
+  ['regionContrast', 'regionContrastVal', false],
+  ['regionBrightness', 'regionBrightnessVal', false],
+  ['regionBlur', 'regionBlurVal', true]
+].forEach(([rangeId, valId, isBlur]) => {
+  const el = document.getElementById(rangeId);
+  const valEl = document.getElementById(valId);
+  if (!el || !valEl) return;
+  const sync = () => {
+    valEl.textContent = isBlur ? el.value : el.value + '%';
+  };
+  el.addEventListener('input', sync);
+  el.addEventListener('change', sync);
 });
 
 /* View Toggle */
@@ -1567,9 +2096,35 @@ function renderResult() {
   resultZone.classList.add('has-result');
   resultActions.style.display = 'flex';
 
-  if (currentView === 'compare' || currentView === 'split') {
-    const container = document.createElement('div');
-    container.className = 'comparison-container';
+  if (currentView === 'split') {
+    const wrap = document.createElement('div');
+    wrap.className = 'split-view';
+    const lw = resultCanvas.width;
+    const lh = resultCanvas.height;
+    const leftPane = document.createElement('div');
+    leftPane.className = 'split-pane';
+    const rightPane = document.createElement('div');
+    rightPane.className = 'split-pane';
+    const leftCv = document.createElement('canvas');
+    leftCv.width = lw;
+    leftCv.height = lh;
+    leftCv.getContext('2d').drawImage(sourceImage, 0, 0, lw, lh);
+    const rightCv = document.createElement('canvas');
+    rightCv.width = lw;
+    rightCv.height = lh;
+    rightCv.getContext('2d').drawImage(resultCanvas, 0, 0);
+    leftPane.appendChild(leftCv);
+    rightPane.appendChild(rightCv);
+    wrap.appendChild(leftPane);
+    wrap.appendChild(rightPane);
+    resultZone.appendChild(wrap);
+  } else if (currentView === 'compare') {
+    const outer = document.createElement('div');
+    outer.className = 'comparison-outer';
+    const inner = document.createElement('div');
+    inner.className = 'comparison-inner';
+    const wrap = document.createElement('div');
+    wrap.className = 'comparison-canvas-wrap';
 
     const origCanvas = document.createElement('canvas');
     origCanvas.width = resultCanvas.width;
@@ -1587,10 +2142,29 @@ function renderResult() {
     const handle = document.createElement('div');
     handle.className = 'comparison-handle';
 
-    container.appendChild(displayCanvas);
-    container.appendChild(line);
-    container.appendChild(handle);
-    resultZone.appendChild(container);
+    wrap.appendChild(displayCanvas);
+    wrap.appendChild(line);
+    wrap.appendChild(handle);
+    inner.appendChild(wrap);
+    outer.appendChild(inner);
+    resultZone.appendChild(outer);
+
+    function syncCompareLayout() {
+      const r = outer.getBoundingClientRect();
+      const bw = displayCanvas.width;
+      const bh = displayCanvas.height;
+      if (r.width < 2 || r.height < 2 || bw < 1 || bh < 1) return;
+      const pad = 2;
+      const availW = Math.max(1, r.width - pad * 2);
+      const availH = Math.max(1, r.height - pad * 2);
+      const s = Math.min(availW / bw, availH / bh, 1);
+      const dw = bw * s;
+      const dh = bh * s;
+      displayCanvas.style.width = dw + 'px';
+      displayCanvas.style.height = dh + 'px';
+      wrap.style.width = dw + 'px';
+      wrap.style.height = dh + 'px';
+    }
 
     function drawComparison(pos) {
       const cw = displayCanvas.width;
@@ -1617,21 +2191,25 @@ function renderResult() {
     }
 
     drawComparison(comparePosition);
+    requestAnimationFrame(syncCompareLayout);
+    const compareResizeObserver = new ResizeObserver(() => syncCompareLayout());
+    compareResizeObserver.observe(outer);
 
     let dragging = false;
-    container.addEventListener('mousedown', () => dragging = true);
-    container.addEventListener('touchstart', () => dragging = true);
-    window.addEventListener('mouseup', () => dragging = false);
-    window.addEventListener('touchend', () => dragging = false);
+    outer.addEventListener('mousedown', () => { dragging = true; });
+    outer.addEventListener('touchstart', () => { dragging = true; }, { passive: true });
+    window.addEventListener('mouseup', () => { dragging = false; });
+    window.addEventListener('touchend', () => { dragging = false; });
     const moveHandler = (clientX) => {
       if (!dragging) return;
-      const rect = container.getBoundingClientRect();
+      const rect = wrap.getBoundingClientRect();
+      if (!rect.width) return;
       const pos = Math.max(0, Math.min(100, (clientX - rect.left) / rect.width * 100));
       comparePosition = pos;
       drawComparison(pos);
     };
-    container.addEventListener('mousemove', e => moveHandler(e.clientX));
-    container.addEventListener('touchmove', e => { e.preventDefault(); moveHandler(e.touches[0].clientX); });
+    outer.addEventListener('mousemove', e => moveHandler(e.clientX));
+    outer.addEventListener('touchmove', e => { e.preventDefault(); moveHandler(e.touches[0].clientX); }, { passive: false });
   } else {
     setupZoomableView();
   }
@@ -1936,6 +2514,7 @@ function analyzeSegments() {
   document.getElementById('regionActions').hidden = true;
   document.getElementById('extractedColorRow').hidden = true;
   document.getElementById('segmentTools').hidden = false;
+  syncRegionParamsFromCenter();
   renderSegmentStrip();
   showToast('🎨', tc('toast.analyzeDone', { n: regions.length }));
   drawSegmentOutline();
@@ -2059,7 +2638,7 @@ function remixSelectedRegion() {
   sub.width = bw;
   sub.height = bh;
   const sctx = sub.getContext('2d');
-  applyStylePipeline(sctx, sub, cropCanvas, bw, bh, styleKey, getStyleParamsFromUI());
+  applyStylePipeline(sctx, sub, cropCanvas, bw, bh, styleKey, getRegionStyleParamsFromUI());
 
   const out = resultCanvas.getContext('2d');
   const styled = sctx.getImageData(0, 0, bw, bh);
@@ -2753,16 +3332,48 @@ function addToHistory() {
   showToast('✅', t('toast.historySaved'));
 }
 
-function renderHistory() {
-  historyStrip.innerHTML = '';
-  histories.forEach((h, i) => {
+function paintHistoryThumbs(container, thumbClass) {
+  if (!container) return;
+  container.innerHTML = '';
+  histories.forEach(h => {
     const div = document.createElement('div');
-    div.className = 'history-thumb';
-    div.innerHTML = `<img src="${h.thumb}" alt="${h.style}">`;
+    div.className = thumbClass;
+    div.innerHTML = `<img src="${h.thumb}" alt="">`;
     div.title = h.style;
-    historyStrip.appendChild(div);
+    container.appendChild(div);
   });
 }
+
+function renderHistory() {
+  paintHistoryThumbs(historyStrip, 'history-thumb');
+  const grid = document.getElementById('historyModalGrid');
+  const empty = document.getElementById('historyModalEmpty');
+  paintHistoryThumbs(grid, 'history-thumb history-thumb--panel');
+  if (empty) empty.hidden = histories.length > 0;
+}
+
+function openHistoryModal() {
+  const m = document.getElementById('historyModal');
+  if (!m) return;
+  renderHistory();
+  m.classList.add('is-open');
+  m.setAttribute('aria-hidden', 'false');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeHistoryModal() {
+  const m = document.getElementById('historyModal');
+  if (!m) return;
+  m.classList.remove('is-open');
+  m.setAttribute('aria-hidden', 'true');
+  document.body.style.overflow = '';
+}
+
+document.addEventListener('keydown', e => {
+  if (e.key !== 'Escape') return;
+  const m = document.getElementById('historyModal');
+  if (m && m.classList.contains('is-open')) closeHistoryModal();
+});
 
 function resetAll() {
   sourceImage = null;
@@ -2802,10 +3413,26 @@ function resetAll() {
   document.getElementById('blur').value = 0;
   document.getElementById('blurVal').textContent = '0';
 
+  if (document.getElementById('regionIntensity')) {
+    document.getElementById('regionIntensity').value = 90;
+    document.getElementById('regionIntensityVal').textContent = '90%';
+    document.getElementById('regionSaturation').value = 100;
+    document.getElementById('regionSaturationVal').textContent = '100%';
+    document.getElementById('regionContrast').value = 100;
+    document.getElementById('regionContrastVal').textContent = '100%';
+    document.getElementById('regionBrightness').value = 100;
+    document.getElementById('regionBrightnessVal').textContent = '100%';
+    document.getElementById('regionBlur').value = 0;
+    document.getElementById('regionBlurVal').textContent = '0';
+  }
+
   invalidateSegmentation();
   const ep = document.getElementById('elementPanel');
   if (ep) ep.hidden = true;
   resultUndoStack = [];
+  histories = [];
+  renderHistory();
+  closeHistoryModal();
   updateUndoButtonState();
   applyI18n();
   showToast('🔄', t('toast.resetDone'));
@@ -2820,10 +3447,15 @@ function showToast(icon, msg) {
 }
 
 (function initElementDecompositionUi() {
+  setupResultStackResizer();
   const sd = document.getElementById('segDetail');
   const syncSd = () => syncSegDetailLabelI18n();
   sd?.addEventListener('input', syncSd);
   document.getElementById('btnAnalyzeSeg')?.addEventListener('click', analyzeSegments);
+  document.getElementById('btnSyncRegionParams')?.addEventListener('click', () => {
+    syncRegionParamsFromCenter();
+    showToast('🔗', t('toast.regionParamsSynced'));
+  });
   document.getElementById('btnRegionRemix')?.addEventListener('click', remixSelectedRegion);
   document.getElementById('btnRegionRestore')?.addEventListener('click', restoreRegionFromSource);
   document.getElementById('btnRegionExtract')?.addEventListener('click', extractRegionColorFromResult);

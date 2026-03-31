@@ -70,6 +70,40 @@ header {
 }
 .btn-primary:hover { opacity: 0.9; transform: translateY(-1px); box-shadow: 0 4px 20px var(--accent-glow); }
 
+/* 网页内嵌汇报演示（iframe 全屏） */
+.presentation-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 500;
+  flex-direction: column;
+  background: var(--bg);
+}
+.presentation-overlay.is-open { display: flex; }
+.presentation-overlay-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 12px 20px;
+  border-bottom: 1px solid var(--border);
+  background: rgba(22,22,42,0.96);
+  backdrop-filter: blur(12px);
+  flex-shrink: 0;
+}
+.presentation-overlay-bar h2 {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--text2);
+  margin: 0;
+}
+.presentation-overlay iframe {
+  flex: 1;
+  width: 100%;
+  border: 0;
+  background: var(--bg);
+}
+
 /* Main Layout */
 .main-container {
   display: grid;
@@ -548,6 +582,10 @@ input[type="range"]::-webkit-slider-thumb {
     StyleShift
   </div>
   <div class="header-actions">
+    <button type="button" class="btn" id="openPresentationBtn" title="在网页内全屏打开设计陈述 / 汇报幻灯片">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="18" rx="2"/><path d="M8 11h8M8 15h5"/></svg>
+      汇报演示
+    </button>
     <button class="btn" onclick="resetAll()">
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 4v6h6M23 20v-6h-6"/><path d="M20.49 9A9 9 0 005.64 5.64L1 10m22 4l-4.64 4.36A9 9 0 013.51 15"/></svg>
       重置
@@ -558,6 +596,17 @@ input[type="range"]::-webkit-slider-thumb {
     </button>
   </div>
 </header>
+
+<div class="presentation-overlay" id="presentationOverlay" aria-hidden="true">
+  <div class="presentation-overlay-bar">
+    <h2>StyleShift · 设计陈述 / 汇报演示 <span style="font-weight:400;opacity:0.75">（← → 或空格翻页）</span></h2>
+    <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
+      <a class="btn" href="StyleShift-设计演示.html" target="_blank" rel="noopener noreferrer">新标签打开</a>
+      <button type="button" class="btn btn-primary" id="closePresentationBtn">关闭</button>
+    </div>
+  </div>
+  <iframe id="presentationFrame" title="StyleShift 设计陈述幻灯片" src="about:blank"></iframe>
+</div>
 
 <div class="main-container">
   <!-- Left: Source Image -->
@@ -1800,6 +1849,38 @@ function showToast(icon, msg) {
   toast.classList.add('show');
   setTimeout(() => toast.classList.remove('show'), 2500);
 }
+
+(function initPresentationEmbed() {
+  const overlay = document.getElementById('presentationOverlay');
+  const frame = document.getElementById('presentationFrame');
+  const openBtn = document.getElementById('openPresentationBtn');
+  const closeBtn = document.getElementById('closePresentationBtn');
+  const deckUrl = 'StyleShift-设计演示.html';
+
+  function openPresentation() {
+    if (frame.getAttribute('data-deck-loaded') !== '1') {
+      frame.src = deckUrl;
+      frame.setAttribute('data-deck-loaded', '1');
+    }
+    overlay.classList.add('is-open');
+    overlay.setAttribute('aria-hidden', 'false');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closePresentation() {
+    overlay.classList.remove('is-open');
+    overlay.setAttribute('aria-hidden', 'true');
+    document.body.style.overflow = '';
+  }
+
+  if (openBtn) openBtn.addEventListener('click', openPresentation);
+  if (closeBtn) closeBtn.addEventListener('click', closePresentation);
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape' && overlay && overlay.classList.contains('is-open')) {
+      closePresentation();
+    }
+  });
+})();
 </script>
 </body>
 </html>

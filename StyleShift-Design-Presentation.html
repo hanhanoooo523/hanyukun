@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>StyleShift — Design Presentation</title>
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --bg: #0c0c14;
+  --surface: #16162a;
+  --accent: #7c5cfc;
+  --accent2: #c084fc;
+  --text: #e8e6f0;
+  --text2: #9896b0;
+  --success: #34d399;
+  --warn: #fbbf24;
+}
+html, body { height: 100%; overflow: hidden; }
+body {
+  font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+}
+
+.deck {
+  height: 100vh;
+  overflow: hidden;
+  position: relative;
+}
+
+.slide {
+  position: absolute;
+  inset: 0;
+  padding: clamp(32px, 6vh, 72px) clamp(28px, 5vw, 80px);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.35s ease;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+.slide.active {
+  opacity: 1;
+  pointer-events: auto;
+  z-index: 1;
+}
+
+.slide h1 {
+  font-size: clamp(1.85rem, 4.5vw, 2.75rem);
+  font-weight: 700;
+  line-height: 1.15;
+  margin-bottom: 0.35em;
+  background: linear-gradient(135deg, var(--accent), var(--accent2));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+.slide h2 {
+  font-size: clamp(1.35rem, 3vw, 1.85rem);
+  font-weight: 600;
+  margin-bottom: 0.75em;
+  color: var(--text);
+}
+.slide .meta {
+  font-size: 1.05rem;
+  color: var(--text2);
+  margin-bottom: 1.5rem;
+}
+.slide p, .slide li {
+  font-size: clamp(1rem, 1.9vw, 1.15rem);
+  line-height: 1.6;
+  color: var(--text2);
+  max-width: 52rem;
+}
+.slide p + p { margin-top: 0.85em; }
+.slide ul {
+  margin: 0.75em 0 0 1.25em;
+  max-width: 52rem;
+}
+.slide li { margin-bottom: 0.5em; }
+.slide strong, .slide .highlight { color: var(--text); }
+.slide .tag {
+  display: inline-block;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--accent2);
+  margin-bottom: 0.75rem;
+}
+
+.ui-hint {
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 13px;
+  color: var(--text2);
+  opacity: 0.65;
+  z-index: 10;
+  pointer-events: none;
+}
+.progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--accent), var(--accent2));
+  z-index: 20;
+  transition: width 0.25s ease;
+}
+
+.nav-btn {
+  position: fixed;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 15;
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  border: 1px solid #2a2a4a;
+  background: rgba(30,30,58,0.9);
+  color: var(--text);
+  cursor: pointer;
+  font-size: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.nav-btn:hover { border-color: var(--accent); background: rgba(124,92,252,0.15); }
+.nav-btn.prev { left: 16px; }
+.nav-btn.next { right: 16px; }
+@media (max-width: 600px) {
+  .nav-btn { width: 38px; height: 38px; font-size: 16px; }
+}
+</style>
+</head>
+<body>
+
+<div class="progress" id="progress" style="width:0%"></div>
+<button type="button" class="nav-btn prev" id="prev" aria-label="Previous slide">‹</button>
+<button type="button" class="nav-btn next" id="next" aria-label="Next slide">›</button>
+<p class="ui-hint">Arrow keys · Space · Click sides</p>
+
+<div class="deck" id="deck" role="region" aria-label="Slide deck">
+
+  <!-- 1 -->
+  <section class="slide active" data-slide="0">
+    <p class="tag">Visual communication · Style exploration</p>
+    <h1>StyleShift</h1>
+    <p class="meta">Design presentation — browser-based style transfer &amp; regional editing</p>
+    <p>This deck focuses on <strong class="highlight">why we designed the tool</strong>, how it supports <strong class="highlight">visual communication workflows</strong>, our <strong class="highlight">design thinking</strong>, and <strong class="highlight">key UI/UX decisions</strong>. Development is noted only briefly.</p>
+  </section>
+
+  <!-- 2 -->
+  <section class="slide" data-slide="1">
+    <p class="tag">Motivation</p>
+    <h2>Why we made this tool</h2>
+    <ul>
+      <li><strong>Gap in the loop.</strong> Designers often mood-board and sketch variations in separate tools; rapid, <em>on-image</em> style experimentation is fragmented across apps and plugins.</li>
+      <li><strong>Communication, not novelty.</strong> Brief exploration helps align clients and teams on tone (warm vs. cold, analog vs. digital) before high-fidelity production.</li>
+      <li><strong>Control where it matters.</strong> Global presets are not enough — <strong>local</strong> adjustments matter for brand marks, skin tones, or hero objects without redoing the whole comp.</li>
+    </ul>
+    <p>We built StyleShift as a <strong class="highlight">single-surface workshop</strong>: upload → explore styles → compare → refine by region.</p>
+  </section>
+
+  <!-- 3 -->
+  <section class="slide" data-slide="2">
+    <p class="tag">Workflow fit</p>
+    <h2>Use in visual communication design</h2>
+    <ul>
+      <li><strong>Early ideation:</strong> Quick passes (oil, ink, cyberpunk, etc.) to stress-test art direction on real layout imagery.</li>
+      <li><strong>Client / stakeholder dialogue:</strong> Split and compare views make “before / after” legible in review — less abstract than filter names alone.</li>
+      <li><strong>Iterative refinement:</strong> After a global pass, <strong>element decomposition</strong> supports “only this area” restyling — closer to how designers think in layers and selections.</li>
+      <li><strong>Documentation:</strong> Export and history strip support capturing options for decks and brand guidelines.</li>
+    </ul>
+  </section>
+
+  <!-- 4 -->
+  <section class="slide" data-slide="3">
+    <p class="tag">Design thinking</p>
+    <h2>How we approached the problem</h2>
+    <ul>
+      <li><strong>Empathize:</strong> Personas skewed toward students and designers who work in browsers, need low friction, and lose context when jumping between tools.</li>
+      <li><strong>Define:</strong> Core job — “see many believable style directions on <em>my</em> image without leaving one UI.” Secondary — “fix one region without breaking the rest.”</li>
+      <li><strong>Ideate:</strong> Explored layouts (single canvas vs. triptych); chose a <strong>three-column mental model</strong> matching source → controls → output.</li>
+      <li><strong>Prototype &amp; test:</strong> Paper → low-fi wireframes → interactive HTML; tightened affordances (sliders, compare handle, purple selection overlay) through use.</li>
+    </ul>
+  </section>
+
+  <!-- 5 -->
+  <section class="slide" data-slide="4">
+    <p class="tag">UI / UX — Information architecture</p>
+    <h2>Three-column layout</h2>
+    <ul>
+      <li><strong>Left — Source.</strong> Upload and history stay anchored; users never lose “where the original lives.”</li>
+      <li><strong>Center — Control.</strong> Styles, parameters, tint, view mode, and primary action (<em>generate</em>) form one vertical pipeline — reduces hunting.</li>
+      <li><strong>Right — Result.</strong> Largest share of attention after generation; secondary tools (regions) sit <em>below</em> the canvas so the image stays primary.</li>
+    </ul>
+    <p><strong>Why:</strong> Matches conventional design software (assets / inspector / canvas) and supports teaching walkthroughs left-to-right.</p>
+  </section>
+
+  <!-- 6 -->
+  <section class="slide" data-slide="5">
+    <p class="tag">UI / UX — Feedback &amp; trust</p>
+    <h2>Compare, split, and preview modes</h2>
+    <ul>
+      <li><strong>Compare slider:</strong> Draggable seam — <strong>same framing</strong> for both states; avoids eye movement between two windows.</li>
+      <li><strong>Split view:</strong> Full-width original vs. result — when separation clarity matters more than a single composite.</li>
+      <li><strong>Aspect-safe rendering:</strong> Comparison uses contained scaling so the image is not crushed — <strong>truthful preview</strong> reinforces trust.</li>
+    </ul>
+  </section>
+
+  <!-- 7 -->
+  <section class="slide" data-slide="6">
+    <p class="tag">UI / UX — Progressive disclosure</p>
+    <h2>Element decomposition &amp; regional controls</h2>
+    <ul>
+      <li><strong>Progressive complexity:</strong> Region tools appear only after a result exists — avoids overwhelming first-time users.</li>
+      <li><strong>Color-region metaphor:</strong> Chips + optional “connected patch” click mirrors how designers think about <strong>dominant colors</strong> and <strong>masks</strong>.</li>
+      <li><strong>Regional parameters:</strong> Separate sliders + “sync from center” honor the case where local treatment should diverge from global style strength.</li>
+      <li><strong>Pick mode vs. pan:</strong> Explicit toggle reduces accidental moves when precision selection matters.</li>
+    </ul>
+  </section>
+
+  <!-- 8 -->
+  <section class="slide" data-slide="7">
+    <p class="tag">UI / UX — Ergonomics &amp; access</p>
+    <h2>Resizable stack, undo, language</h2>
+    <ul>
+      <li><strong>Resizable divider</strong> between preview and tool panel: small screens and long forms differ; users <strong>own their vertical real estate</strong>. Preference persists locally.</li>
+      <li><strong>Undo at the header:</strong> Global, discoverable safety net for experimental edits (generate and regional ops).</li>
+      <li><strong>Bilingual UI (ZH / EN):</strong> Supports classroom and portfolio contexts without forking the product.</li>
+      <li><strong>Visual language:</strong> Dark surface, violet accent, restrained chrome — keeps focus on <strong>the image</strong>, not the chrome.</li>
+    </ul>
+  </section>
+
+  <!-- 9 -->
+  <section class="slide" data-slide="8">
+    <p class="tag">UI / UX — Micro-decisions</p>
+    <h2>Details that support the story</h2>
+    <ul>
+      <li><strong>Toast + progress</strong> — lightweight confirmation without modal interrupt.</li>
+      <li><strong>Outlined selection (purple)</strong> — readable on dark UI and varied imagery.</li>
+      <li><strong>Zoom on result</strong> — inspection before export; mimics designer zoom habits.</li>
+      <li><strong>Style cards</strong> — icon + short label + micro-copy to disambiguate presets faster than a dropdown alone.</li>
+    </ul>
+  </section>
+
+  <!-- 10 -->
+  <section class="slide" data-slide="9">
+    <p class="tag">Development (brief)</p>
+    <h2>What we built on</h2>
+    <p>The prototype is implemented as a <strong class="highlight">single-page HTML/JS canvas pipeline</strong> for portability (open file, demo in class, host statically). Engineering choices served design goals: no install friction, fast iteration on layout, and full control over the compare/split and region compositing behaviors.</p>
+    <p>Implementation supports the UX; it is not the subject of this deck — the <strong class="highlight">design rationale above</strong> is.</p>
+  </section>
+
+  <!-- 11 -->
+  <section class="slide" data-slide="10">
+    <p class="tag">Close</p>
+    <h2>Summary</h2>
+    <p>StyleShift is a <strong class="highlight">design-first</strong> tool: it shortens the loop between reference and styled outcome, makes comparison explicit, and adds <strong class="highlight">regional control</strong> where global presets fail communication goals.</p>
+    <p class="meta" style="margin-top:1.5rem">Thank you · Questions welcome</p>
+  </section>
+
+</div>
+
+<script>
+(function () {
+  const slides = Array.from(document.querySelectorAll('.slide'));
+  const n = slides.length;
+  let i = 0;
+
+  function show(idx) {
+    i = Math.max(0, Math.min(n - 1, idx));
+    slides.forEach((s, j) => s.classList.toggle('active', j === i));
+    document.getElementById('progress').style.width = ((i + 1) / n * 100) + '%';
+  }
+
+  document.getElementById('prev').addEventListener('click', () => show(i - 1));
+  document.getElementById('next').addEventListener('click', () => show(i + 1));
+
+  document.addEventListener('keydown', e => {
+    if (e.key === 'ArrowRight' || e.key === ' ' || e.key === 'PageDown') {
+      e.preventDefault();
+      show(i + 1);
+    } else if (e.key === 'ArrowLeft' || e.key === 'PageUp') {
+      e.preventDefault();
+      show(i - 1);
+    } else if (e.key === 'Home') show(0);
+    else if (e.key === 'End') show(n - 1);
+  });
+
+  let startX = 0;
+  document.getElementById('deck').addEventListener('touchstart', e => {
+    startX = e.touches[0].clientX;
+  }, { passive: true });
+  document.getElementById('deck').addEventListener('touchend', e => {
+    const endX = e.changedTouches[0].clientX;
+    const d = endX - startX;
+    if (Math.abs(d) > 50) show(d < 0 ? i + 1 : i - 1);
+  }, { passive: true });
+
+  show(0);
+})();
+</script>
+</body>
+</html>
