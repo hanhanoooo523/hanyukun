@@ -1,9 +1,9 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>StyleShift - 设计风格迁移工具</title>
+<title>StyleShift - 璁捐椋庢牸杩佺Щ宸ュ叿</title>
 <style>
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -70,7 +70,7 @@ header {
 }
 .btn-primary:hover { opacity: 0.9; transform: translateY(-1px); box-shadow: 0 4px 20px var(--accent-glow); }
 
-/* 网页内嵌汇报演示（iframe 全屏） */
+/* 缃戦〉鍐呭祵姹囨姤婕旂ず锛坕frame 鍏ㄥ睆锛?*/
 .presentation-overlay {
   display: none;
   position: fixed;
@@ -215,7 +215,7 @@ header {
 .style-card .style-name { font-size: 12px; font-weight: 600; }
 .style-card .style-desc { font-size: 10px; color: var(--text2); margin-top: 2px; }
 .style-card.active::after {
-  content: '✓';
+  content: '鉁?;
   position: absolute; top: 6px; right: 8px;
   color: var(--accent); font-size: 14px; font-weight: 700;
 }
@@ -582,46 +582,46 @@ input[type="range"]::-webkit-slider-thumb {
     StyleShift
   </div>
   <div class="header-actions">
-    <button type="button" class="btn" id="openPresentationBtn" title="在网页内全屏打开设计陈述 / 汇报幻灯片">
+    <button type="button" class="btn" id="openPresentationBtn" title="鍦ㄧ綉椤靛唴鍏ㄥ睆鎵撳紑璁捐闄堣堪 / 姹囨姤骞荤伅鐗?>
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="18" rx="2"/><path d="M8 11h8M8 15h5"/></svg>
-      汇报演示
+      姹囨姤婕旂ず
     </button>
     <button class="btn" onclick="resetAll()">
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 4v6h6M23 20v-6h-6"/><path d="M20.49 9A9 9 0 005.64 5.64L1 10m22 4l-4.64 4.36A9 9 0 013.51 15"/></svg>
-      重置
+      閲嶇疆
     </button>
     <button class="btn btn-primary" onclick="downloadResult()">
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>
-      导出
+      瀵煎嚭
     </button>
   </div>
 </header>
 
 <div class="presentation-overlay" id="presentationOverlay" aria-hidden="true">
   <div class="presentation-overlay-bar">
-    <h2>StyleShift · 设计陈述 / 汇报演示 <span style="font-weight:400;opacity:0.75">（← → 或空格翻页）</span></h2>
+    <h2>StyleShift 路 璁捐闄堣堪 / 姹囨姤婕旂ず <span style="font-weight:400;opacity:0.75">锛堚啇 鈫?鎴栫┖鏍肩炕椤碉級</span></h2>
     <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
-      <a class="btn" href="StyleShift-设计演示.html" target="_blank" rel="noopener noreferrer">新标签打开</a>
-      <button type="button" class="btn btn-primary" id="closePresentationBtn">关闭</button>
+      <a class="btn" href="StyleShift-璁捐婕旂ず.html" target="_blank" rel="noopener noreferrer">鏂版爣绛炬墦寮€</a>
+      <button type="button" class="btn btn-primary" id="closePresentationBtn">鍏抽棴</button>
     </div>
   </div>
-  <iframe id="presentationFrame" title="StyleShift 设计陈述幻灯片" src="about:blank"></iframe>
+  <iframe id="presentationFrame" title="StyleShift 璁捐闄堣堪骞荤伅鐗? src="about:blank"></iframe>
 </div>
 
 <div class="main-container">
   <!-- Left: Source Image -->
   <div class="panel">
-    <div class="panel-header"><span class="dot"></span> 原始作品</div>
+    <div class="panel-header"><span class="dot"></span> 鍘熷浣滃搧</div>
     <div class="upload-zone" id="uploadZone" onclick="fileInput.click()">
       <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
         <rect x="3" y="3" width="18" height="18" rx="2"/>
         <circle cx="8.5" cy="8.5" r="1.5"/>
         <path d="M21 15l-5-5L5 21"/>
       </svg>
-      <p>拖拽上传或点击选择图片</p>
-      <span class="hint">支持 JPG / PNG / WebP（最大 20MB）</span>
+      <p>鎷栨嫿涓婁紶鎴栫偣鍑婚€夋嫨鍥剧墖</p>
+      <span class="hint">鏀寔 JPG / PNG / WebP锛堟渶澶?20MB锛?/span>
       <div class="upload-overlay">
-        <span class="btn btn-primary">更换图片</span>
+        <span class="btn btn-primary">鏇存崲鍥剧墖</span>
       </div>
     </div>
     <input type="file" id="fileInput" accept="image/*" hidden>
@@ -630,82 +630,82 @@ input[type="range"]::-webkit-slider-thumb {
 
   <!-- Center: Controls -->
   <div class="controls-panel">
-    <div class="panel-header"><span class="dot" style="background:var(--accent2)"></span> 风格选择</div>
+    <div class="panel-header"><span class="dot" style="background:var(--accent2)"></span> 椋庢牸閫夋嫨</div>
 
     <div class="style-grid" id="styleGrid">
       <div class="style-card active" data-style="oil">
-        <span class="style-icon">🎨</span>
-        <div class="style-name">油画风</div>
-        <div class="style-desc">经典油画笔触</div>
+        <span class="style-icon">馃帹</span>
+        <div class="style-name">娌圭敾椋?/div>
+        <div class="style-desc">缁忓吀娌圭敾绗旇Е</div>
       </div>
       <div class="style-card" data-style="watercolor">
-        <span class="style-icon">💧</span>
-        <div class="style-name">水彩风</div>
-        <div class="style-desc">柔和水彩晕染</div>
+        <span class="style-icon">馃挧</span>
+        <div class="style-name">姘村僵椋?/div>
+        <div class="style-desc">鏌斿拰姘村僵鏅曟煋</div>
       </div>
       <div class="style-card" data-style="vintage">
-        <span class="style-icon">📷</span>
-        <div class="style-name">复古风</div>
-        <div class="style-desc">怀旧胶片质感</div>
+        <span class="style-icon">馃摲</span>
+        <div class="style-name">澶嶅彜椋?/div>
+        <div class="style-desc">鎬€鏃ц兌鐗囪川鎰?/div>
       </div>
       <div class="style-card" data-style="cyberpunk">
-        <span class="style-icon">🌆</span>
-        <div class="style-name">赛博朋克</div>
-        <div class="style-desc">霓虹科技美学</div>
+        <span class="style-icon">馃寙</span>
+        <div class="style-name">璧涘崥鏈嬪厠</div>
+        <div class="style-desc">闇撹櫣绉戞妧缇庡</div>
       </div>
       <div class="style-card" data-style="pop">
-        <span class="style-icon">🎪</span>
-        <div class="style-name">波普艺术</div>
-        <div class="style-desc">安迪沃霍尔风</div>
+        <span class="style-icon">馃帾</span>
+        <div class="style-name">娉㈡櫘鑹烘湳</div>
+        <div class="style-desc">瀹夎开娌冮湇灏旈</div>
       </div>
       <div class="style-card" data-style="ink">
-        <span class="style-icon">🖌️</span>
-        <div class="style-name">水墨风</div>
-        <div class="style-desc">东方水墨意境</div>
+        <span class="style-icon">馃枌锔?/span>
+        <div class="style-name">姘村ⅷ椋?/div>
+        <div class="style-desc">涓滄柟姘村ⅷ鎰忓</div>
       </div>
       <div class="style-card" data-style="sketch">
-        <span class="style-icon">✏️</span>
-        <div class="style-name">素描风</div>
-        <div class="style-desc">铅笔手绘质感</div>
+        <span class="style-icon">鉁忥笍</span>
+        <div class="style-name">绱犳弿椋?/div>
+        <div class="style-desc">閾呯瑪鎵嬬粯璐ㄦ劅</div>
       </div>
       <div class="style-card" data-style="neon">
-        <span class="style-icon">✨</span>
-        <div class="style-name">霓虹光效</div>
-        <div class="style-desc">发光线条边缘</div>
+        <span class="style-icon">鉁?/span>
+        <div class="style-name">闇撹櫣鍏夋晥</div>
+        <div class="style-desc">鍙戝厜绾挎潯杈圭紭</div>
       </div>
     </div>
 
     <div class="divider"></div>
 
     <div class="control-group">
-      <div class="control-label"><span>风格强度</span><span id="intensityVal">90%</span></div>
+      <div class="control-label"><span>椋庢牸寮哄害</span><span id="intensityVal">90%</span></div>
       <input type="range" id="intensity" min="0" max="100" value="90">
     </div>
 
     <div class="control-group">
-      <div class="control-label"><span>色彩饱和度</span><span id="saturationVal">100%</span></div>
+      <div class="control-label"><span>鑹插僵楗卞拰搴?/span><span id="saturationVal">100%</span></div>
       <input type="range" id="saturation" min="0" max="200" value="100">
     </div>
 
     <div class="control-group">
-      <div class="control-label"><span>对比度</span><span id="contrastVal">100%</span></div>
+      <div class="control-label"><span>瀵规瘮搴?/span><span id="contrastVal">100%</span></div>
       <input type="range" id="contrast" min="50" max="200" value="100">
     </div>
 
     <div class="control-group">
-      <div class="control-label"><span>亮度</span><span id="brightnessVal">100%</span></div>
+      <div class="control-label"><span>浜害</span><span id="brightnessVal">100%</span></div>
       <input type="range" id="brightness" min="50" max="200" value="100">
     </div>
 
     <div class="control-group">
-      <div class="control-label"><span>模糊程度</span><span id="blurVal">0</span></div>
+      <div class="control-label"><span>妯＄硦绋嬪害</span><span id="blurVal">0</span></div>
       <input type="range" id="blur" min="0" max="10" value="0" step="0.5">
     </div>
 
     <div class="divider"></div>
 
     <div class="control-group">
-      <div class="control-label"><span>色调叠加</span></div>
+      <div class="control-label"><span>鑹茶皟鍙犲姞</span></div>
       <div class="palette-row" id="paletteRow">
         <div class="palette-dot active" data-color="none" style="background:linear-gradient(135deg,#666,#999); position:relative;">
           <svg style="position:absolute;inset:0;margin:auto;" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3"><line x1="4" y1="4" x2="20" y2="20"/></svg>
@@ -723,36 +723,36 @@ input[type="range"]::-webkit-slider-thumb {
     <div class="divider"></div>
 
     <div class="view-toggle" id="viewToggle">
-      <button class="active" data-view="result">效果图</button>
-      <button data-view="compare">对比</button>
-      <button data-view="split">分屏</button>
+      <button class="active" data-view="result">鏁堟灉鍥?/button>
+      <button data-view="compare">瀵规瘮</button>
+      <button data-view="split">鍒嗗睆</button>
     </div>
 
     <button class="generate-btn" id="generateBtn" disabled onclick="generateStyle()">
       <div class="spinner"></div>
-      <span class="btn-text">生成风格迁移</span>
+      <span class="btn-text">鐢熸垚椋庢牸杩佺Щ</span>
     </button>
   </div>
 
   <!-- Right: Result -->
   <div class="panel">
-    <div class="panel-header"><span class="dot" style="background:var(--success)"></span> 迁移结果</div>
+    <div class="panel-header"><span class="dot" style="background:var(--success)"></span> 杩佺Щ缁撴灉</div>
     <div class="result-zone" id="resultZone">
       <div class="result-placeholder">
         <svg width="80" height="80" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1">
           <path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/>
         </svg>
-        <p>上传图片并选择风格后<br>点击"生成风格迁移"查看效果</p>
+        <p>涓婁紶鍥剧墖骞堕€夋嫨椋庢牸鍚?br>鐐瑰嚮"鐢熸垚椋庢牸杩佺Щ"鏌ョ湅鏁堟灉</p>
       </div>
       <div class="progress-bar" id="progressBar"></div>
       <div class="result-actions" id="resultActions" style="display:none">
         <button class="btn" onclick="downloadResult()">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>
-          下载
+          涓嬭浇
         </button>
         <button class="btn" onclick="addToHistory()">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21H5a2 2 0 01-2-2V5a2 2 0 012-2h11l5 5v11a2 2 0 01-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/></svg>
-          保存
+          淇濆瓨
         </button>
       </div>
     </div>
@@ -797,16 +797,16 @@ fileInput.addEventListener('change', e => {
 });
 
 function loadImage(file) {
-  if (file.size > 20 * 1024 * 1024) { showToast('⚠️', '文件大小不能超过 20MB'); return; }
+  if (file.size > 20 * 1024 * 1024) { showToast('鈿狅笍', '鏂囦欢澶у皬涓嶈兘瓒呰繃 20MB'); return; }
   const reader = new FileReader();
   reader.onload = e => {
     const img = new Image();
     img.onload = () => {
       sourceImage = img;
-      uploadZone.innerHTML = `<img src="${e.target.result}" alt="source"><div class="upload-overlay"><span class="btn btn-primary" onclick="event.stopPropagation();fileInput.click()">更换图片</span></div>`;
+      uploadZone.innerHTML = `<img src="${e.target.result}" alt="source"><div class="upload-overlay"><span class="btn btn-primary" onclick="event.stopPropagation();fileInput.click()">鏇存崲鍥剧墖</span></div>`;
       uploadZone.classList.add('has-image');
       generateBtn.disabled = false;
-      showToast('✅', '图片上传成功，选择风格后点击生成');
+      showToast('鉁?, '鍥剧墖涓婁紶鎴愬姛锛岄€夋嫨椋庢牸鍚庣偣鍑荤敓鎴?);
     };
     img.src = e.target.result;
   };
@@ -852,7 +852,7 @@ document.getElementById('viewToggle').addEventListener('click', e => {
 
 /* Generate */
 function generateStyle() {
-  if (!sourceImage) { showToast('⚠️', '请先上传图片'); return; }
+  if (!sourceImage) { showToast('鈿狅笍', '璇峰厛涓婁紶鍥剧墖'); return; }
 
   generateBtn.classList.add('loading');
   generateBtn.disabled = true;
@@ -869,7 +869,7 @@ function generateStyle() {
         progressBar.style.width = '0%';
         generateBtn.classList.remove('loading');
         generateBtn.disabled = false;
-        showToast('🎨', `风格迁移完成 (${ms}ms)`);
+        showToast('馃帹', `椋庢牸杩佺Щ瀹屾垚 (${ms}ms)`);
       }, 200);
     }, 50);
   });
@@ -1079,11 +1079,11 @@ function setupZoomableView() {
   const controls = document.createElement('div');
   controls.className = 'zoom-controls';
   controls.innerHTML = `
-    <button id="zoomOut" title="缩小">−</button>
-    <span class="zoom-level" id="zoomLevel">适应</span>
-    <button id="zoomIn" title="放大">+</button>
-    <button id="zoomFit" title="适应窗口" style="font-size:14px;margin-left:2px;">⊡</button>
-    <button id="zoom100" title="原始大小" style="font-size:11px;font-weight:700;">1:1</button>
+    <button id="zoomOut" title="缂╁皬">鈭?/button>
+    <span class="zoom-level" id="zoomLevel">閫傚簲</span>
+    <button id="zoomIn" title="鏀惧ぇ">+</button>
+    <button id="zoomFit" title="閫傚簲绐楀彛" style="font-size:14px;margin-left:2px;">鈯?/button>
+    <button id="zoom100" title="鍘熷澶у皬" style="font-size:11px;font-weight:700;">1:1</button>
   `;
   resultZone.appendChild(controls);
 
@@ -1099,7 +1099,7 @@ function setupZoomableView() {
     resultCanvas.style.height = ch + 'px';
     const pct = Math.round(s / fitScale() * 100);
     const label = document.getElementById('zoomLevel');
-    if (label) label.textContent = pct === 100 ? '适应' : pct + '%';
+    if (label) label.textContent = pct === 100 ? '閫傚簲' : pct + '%';
   }
 
   function doFit() {
@@ -1774,12 +1774,12 @@ function hslToRgb(h, s, l) {
 
 /* Utils */
 function downloadResult() {
-  if (!resultCanvas) { showToast('⚠️', '暂无可导出的结果'); return; }
+  if (!resultCanvas) { showToast('鈿狅笍', '鏆傛棤鍙鍑虹殑缁撴灉'); return; }
   const link = document.createElement('a');
   link.download = `StyleShift_${currentStyle}_${Date.now()}.png`;
   link.href = resultCanvas.toDataURL('image/png');
   link.click();
-  showToast('✅', '图片已保存到下载文件夹');
+  showToast('鉁?, '鍥剧墖宸蹭繚瀛樺埌涓嬭浇鏂囦欢澶?);
 }
 
 function addToHistory() {
@@ -1787,7 +1787,7 @@ function addToHistory() {
   const thumb = resultCanvas.toDataURL('image/jpeg', 0.5);
   histories.push({ thumb, style: currentStyle });
   renderHistory();
-  showToast('✅', '已保存到历史记录');
+  showToast('鉁?, '宸蹭繚瀛樺埌鍘嗗彶璁板綍');
 }
 
 function renderHistory() {
@@ -1810,9 +1810,9 @@ function resetAll() {
       <circle cx="8.5" cy="8.5" r="1.5"/>
       <path d="M21 15l-5-5L5 21"/>
     </svg>
-    <p>拖拽上传或点击选择图片</p>
-    <span class="hint">支持 JPG / PNG / WebP（最大 20MB）</span>
-    <div class="upload-overlay"><span class="btn btn-primary">更换图片</span></div>`;
+    <p>鎷栨嫿涓婁紶鎴栫偣鍑婚€夋嫨鍥剧墖</p>
+    <span class="hint">鏀寔 JPG / PNG / WebP锛堟渶澶?20MB锛?/span>
+    <div class="upload-overlay"><span class="btn btn-primary">鏇存崲鍥剧墖</span></div>`;
   uploadZone.classList.remove('has-image');
 
   resultZone.innerHTML = `
@@ -1820,7 +1820,7 @@ function resetAll() {
       <svg width="80" height="80" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1">
         <path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/>
       </svg>
-      <p>上传图片并选择风格后<br>点击"生成风格迁移"查看效果</p>
+      <p>涓婁紶鍥剧墖骞堕€夋嫨椋庢牸鍚?br>鐐瑰嚮"鐢熸垚椋庢牸杩佺Щ"鏌ョ湅鏁堟灉</p>
     </div>
     <div class="progress-bar" id="progressBar"></div>`;
   resultZone.classList.remove('has-result');
@@ -1839,7 +1839,7 @@ function resetAll() {
   document.getElementById('blur').value = 0;
   document.getElementById('blurVal').textContent = '0';
 
-  showToast('🔄', '已重置所有设置');
+  showToast('馃攧', '宸查噸缃墍鏈夎缃?);
 }
 
 function showToast(icon, msg) {
@@ -1855,7 +1855,7 @@ function showToast(icon, msg) {
   const frame = document.getElementById('presentationFrame');
   const openBtn = document.getElementById('openPresentationBtn');
   const closeBtn = document.getElementById('closePresentationBtn');
-  const deckUrl = 'StyleShift-设计演示.html';
+  const deckUrl = 'StyleShift-璁捐婕旂ず.html';
 
   function openPresentation() {
     if (frame.getAttribute('data-deck-loaded') !== '1') {

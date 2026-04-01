@@ -27,6 +27,7 @@ body {
   height: 100vh;
   overflow: hidden;
   position: relative;
+  touch-action: pan-y pinch-zoom;
 }
 
 .slide {
@@ -293,15 +294,59 @@ body {
     else if (e.key === 'End') show(n - 1);
   });
 
+  const deckEl = document.getElementById('deck');
+  let swipePtrId = null;
   let startX = 0;
-  document.getElementById('deck').addEventListener('touchstart', e => {
-    startX = e.touches[0].clientX;
-  }, { passive: true });
-  document.getElementById('deck').addEventListener('touchend', e => {
-    const endX = e.changedTouches[0].clientX;
-    const d = endX - startX;
-    if (Math.abs(d) > 50) show(d < 0 ? i + 1 : i - 1);
-  }, { passive: true });
+  let startY = 0;
+
+  deckEl.addEventListener('pointerdown', e => {
+    if (e.pointerType === 'mouse' && e.button !== 0) return;
+    swipePtrId = e.pointerId;
+    startX = e.clientX;
+    startY = e.clientY;
+    try { deckEl.setPointerCapture(e.pointerId); } catch (err) {}
+  });
+
+  const finishSwipe = e => {
+    if (swipePtrId !== e.pointerId) return;
+    swipePtrId = null;
+    try { deckEl.releasePointerCapture(e.pointerId); } catch (err) {}
+    const d = e.clientX - startX;
+    const dy = e.clientY - startY;
+    if (Math.abs(d) < 50 || Math.abs(d) < Math.abs(dy)) return;
+    show(d < 0 ? i + 1 : i - 1);
+  };
+
+  deckEl.addEventListener('pointerup', finishSwipe);
+  deckEl.addEventListener('pointercancel', e => {
+    if (swipePtrId === e.pointerId) swipePtrId = null;
+    try { deckEl.releasePointerCapture(e.pointerId); } catch (err) {}
+  });
+  deckEl.addEventListener('lostpointercapture', e => {
+    if (swipePtrId === e.pointerId) swipePtrId = null;
+  });
+
+  let wheelAccum = 0;
+  let wheelTimer = null;
+  const WHEEL_TH = 65;
+  deckEl.addEventListener('wheel', e => {
+    const dx = e.deltaX;
+    const dy = e.deltaY;
+    const horizontal = Math.abs(dx) >= Math.abs(dy);
+    const amount = horizontal ? dx : (e.shiftKey ? dy : 0);
+    if (!amount) return;
+    if (wheelTimer) clearTimeout(wheelTimer);
+    wheelAccum += amount;
+    if (Math.abs(wheelAccum) >= WHEEL_TH) {
+      const goNext = wheelAccum < 0;
+      wheelAccum = 0;
+      e.preventDefault();
+      show(goNext ? i + 1 : i - 1);
+      return;
+    }
+    wheelTimer = setTimeout(() => { wheelAccum = 0; }, 220);
+    if (horizontal || e.shiftKey) e.preventDefault();
+  }, { passive: false });
 
   show(0);
 })();
