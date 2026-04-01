@@ -38,6 +38,17 @@
 4. **访问地址**必须是项目页格式：`https://hanhanoooo523.github.io/hanyukun/`（含仓库名 `hanyukun`）；文件名区分大小写，例如 [`StyleShift-Presentation.html`](https://hanhanoooo523.github.io/hanyukun/StyleShift-Presentation.html)。
 5. **临时查看文件（不依赖 Pages）**：在仓库中打开：[`StyleShift-Presentation.html`（`main`）](https://github.com/hanhanoooo523/hanyukun/blob/main/StyleShift-Presentation.html)，或 [Raw](https://github.com/hanhanoooo523/hanyukun/raw/main/StyleShift-Presentation.html)（浏览器可能提示下载，属正常）。
 
+### 不依赖 GitHub Pages、任何人用浏览器就能看的几种方式
+
+| 方式 | 说明 |
+|------|------|
+| **入口页 + 在线预览** | 部署任意版本后，把下面链接发给对方即可打开小页，再点按钮进入完整演示（首次加载大图稿可能较慢）：`https://htmlpreview.github.io/?https://raw.githubusercontent.com/hanhanoooo523/hanyukun/main/StyleShift-online-view.html` |
+| **直接预览某一稿** | Presentation：`https://htmlpreview.github.io/?https://raw.githubusercontent.com/hanhanoooo523/hanyukun/main/StyleShift-Presentation.html` · 逐页 15 张：`https://htmlpreview.github.io/?https://raw.githubusercontent.com/hanhanoooo523/hanyukun/main/StyleShift-%E8%AE%BE%E8%AE%A1%E6%BC%94%E7%A4%BA.html` |
+| **单文件（最稳）** | 下载仓库内 [`StyleShift-设计演示.html`](StyleShift-设计演示.html) 或 [`StyleShift-Presentation.html`](StyleShift-Presentation.html)，通过微信 / 网盘发送，对方**双击用浏览器打开**即可（配图已内嵌，无需服务器）。 |
+| **免费小站** | 将上述任一 HTML 拖到 [Netlify Drop](https://app.netlify.com/drop)，可获得 `*.netlify.app` 长期外链。 |
+
+本地入口文件：[`StyleShift-online-view.html`](StyleShift-online-view.html)（体积小，也可下载后本地双击使用上面的链接）。
+
 ---
 
 ## Video presentation

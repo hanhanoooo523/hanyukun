@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>StyleShift · 在线预览（不依赖 GitHub Pages）</title>
+  <style>
+    :root { --bg: #0c0c14; --surface: #16162a; --accent: #7c5cfc; --accent2: #c084fc; --text: #e8e6f0; --text2: #9896b0; --border: #2a2a4a; --r: 14px; }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: system-ui, 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; line-height: 1.65; padding: clamp(20px, 4vw, 40px); }
+    .wrap { max-width: 640px; margin: 0 auto; }
+    h1 { font-size: 1.35rem; font-weight: 700; margin-bottom: 0.5em; background: linear-gradient(135deg, var(--accent), var(--accent2)); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; }
+    .sub { color: var(--text2); font-size: 0.92rem; margin-bottom: 1.5rem; }
+    section { background: var(--surface); border: 1px solid var(--border); border-radius: var(--r); padding: 1.1rem 1.2rem; margin-bottom: 1rem; }
+    h2 { font-size: 0.95rem; color: var(--accent2); margin-bottom: 0.65rem; font-weight: 600; }
+    p, li { color: var(--text2); font-size: 0.9rem; }
+    ul { padding-left: 1.15rem; margin-top: 0.5rem; }
+    li { margin: 0.35em 0; }
+    a.btn { display: inline-block; margin: 6px 8px 6px 0; padding: 10px 16px; border-radius: 10px; background: linear-gradient(135deg, var(--accent), var(--accent2)); color: #fff !important; text-decoration: none; font-weight: 600; font-size: 0.88rem; }
+    a.btn:hover { opacity: 0.92; }
+    a.link { color: var(--accent2); word-break: break-all; font-size: 0.8rem; }
+    code { font-size: 0.78rem; background: rgba(0,0,0,0.35); padding: 2px 6px; border-radius: 6px; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <h1>StyleShift 在线预览</h1>
+    <p class="sub">当 <code>github.io</code> 无法访问时，可用下面方式让任何人用浏览器直接看演示稿（无需登录 GitHub）。配图已内嵌在演示 HTML 内，单文件即可展示。</p>
+
+    <section>
+      <h2>方式一：一键在线预览（推荐先试）</h2>
+      <p>通过 HTML Preview 读取仓库里的原始文件，不依赖 GitHub Pages。</p>
+      <p style="margin-top:10px">
+        <a class="btn" target="_blank" rel="noopener noreferrer" id="linkPresentation" href="#">打开 StyleShift-Presentation</a>
+        <a class="btn" target="_blank" rel="noopener noreferrer" id="linkDeck15" href="#">打开 StyleShift-设计演示（逐页 15 张）</a>
+      </p>
+      <p style="margin-top:10px">若按钮无效，请把下面整段链接复制到浏览器地址栏：</p>
+      <p><a class="link" id="urlPresentation" href="#"></a></p>
+      <p><a class="link" id="urlDeck15" href="#"></a></p>
+      <p style="margin-top:8px;font-size:0.82rem">说明：首次加载大图稿可能需等待十几秒；若页面空白可多刷新一次。</p>
+    </section>
+
+    <section>
+      <h2>方式二：最稳 — 单文件发给别人</h2>
+      <ul>
+        <li>从仓库下载 <code>StyleShift-Presentation.html</code> 或 <code>StyleShift-设计演示.html</code>（或发邮件 / 网盘）。</li>
+        <li>对方用 Chrome / Edge 等<strong>直接双击打开</strong>该文件即可（无需服务器）。</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>方式三：免费临时网站（适合答辩发一条链接）</h2>
+      <ul>
+        <li>打开 <a class="link" href="https://app.netlify.com/drop" target="_blank" rel="noopener noreferrer">Netlify Drop</a>，把上面任意一个 HTML 拖进去，会得到 <code>*.netlify.app</code> 链接，长期可用、任意人均可访问。</li>
+      </ul>
+    </section>
+  </div>
+  <script>
+(function () {
+  var rawBase = 'https://raw.githubusercontent.com/hanhanoooo523/hanyukun/main/';
+  var preview = 'https://htmlpreview.github.io/?';
+  var uPres = preview + rawBase + 'StyleShift-Presentation.html';
+  var uDeck = preview + rawBase + 'StyleShift-%E8%AE%BE%E8%AE%A1%E6%BC%94%E7%A4%BA.html';
+  document.getElementById('linkPresentation').href = uPres;
+  document.getElementById('linkDeck15').href = uDeck;
+  document.getElementById('urlPresentation').href = uPres;
+  document.getElementById('urlPresentation').textContent = uPres;
+  document.getElementById('urlDeck15').href = uDeck;
+  document.getElementById('urlDeck15').textContent = uDeck;
+})();
+  </script>
+</body>
+</html>
