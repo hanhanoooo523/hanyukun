@@ -42,7 +42,7 @@
 
 | 方式 | 说明 |
 |------|------|
-| **入口页 + 在线预览** | 部署任意版本后，把下面链接发给对方即可打开小页，再点按钮进入完整演示（首次加载大图稿可能较慢）：`https://htmlpreview.github.io/?https://raw.githubusercontent.com/hanhanoooo523/hanyukun/main/StyleShift-online-view.html` |
+| **入口页 + 在线预览** | 代码在 `main` 上公开后，把下面整段链接发给对方即可（小页内有按钮进入完整演示；大图稿首次可能加载十余秒）：`https://htmlpreview.github.io/?https://raw.githubusercontent.com/hanhanoooo523/hanyukun/main/StyleShift-online-view.html` |
 | **直接预览某一稿** | Presentation：`https://htmlpreview.github.io/?https://raw.githubusercontent.com/hanhanoooo523/hanyukun/main/StyleShift-Presentation.html` · 逐页 15 张：`https://htmlpreview.github.io/?https://raw.githubusercontent.com/hanhanoooo523/hanyukun/main/StyleShift-%E8%AE%BE%E8%AE%A1%E6%BC%94%E7%A4%BA.html` |
 | **单文件（最稳）** | 下载仓库内 [`StyleShift-设计演示.html`](StyleShift-设计演示.html) 或 [`StyleShift-Presentation.html`](StyleShift-Presentation.html)，通过微信 / 网盘发送，对方**双击用浏览器打开**即可（配图已内嵌，无需服务器）。 |
 | **免费小站** | 将上述任一 HTML 拖到 [Netlify Drop](https://app.netlify.com/drop)，可获得 `*.netlify.app` 长期外链。 |
