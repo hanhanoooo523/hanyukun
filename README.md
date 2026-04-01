@@ -26,7 +26,17 @@
 | **设计演示幻灯（与汇报内容一致）** | […/StyleShift-设计演示.html](https://hanhanoooo523.github.io/hanyukun/StyleShift-%E8%AE%BE%E8%AE%A1%E6%BC%94%E7%A4%BA.html) | [`StyleShift-设计演示.html`](StyleShift-设计演示.html) |
 | **改进版应用** | […/设计风格迁移-改进版.html](https://hanhanoooo523.github.io/hanyukun/%E8%AE%BE%E8%AE%A1%E9%A3%8E%E6%A0%BC%E8%BF%81%E7%A7%BB-%E6%94%B9%E8%BF%9B%E7%89%88.html) | [`设计风格迁移-改进版.html`](设计风格迁移-改进版.html) |
 
-首次部署：**Settings → Pages → Build and deployment → Source: GitHub Actions**，工作流见 [`.github/workflows/pages.yml`](.github/workflows/pages.yml)；向 **`main`** 推送后会自动发布。若首页 404，请到 Actions / Pages 查看最近一次部署是否成功。
+首次部署：**Settings → Pages → Build and deployment → Source: GitHub Actions**，工作流见 [`.github/workflows/pages.yml`](.github/workflows/pages.yml)；向 **`main`** 推送后会自动发布。
+
+### 若 `*.github.io/hanyukun/` 整站显示 404（仓库里的代码却能打开）
+
+说明 **Pages 尚未发布成功**，与某个 HTML 是否上传无关。请按顺序检查：
+
+1. **仓库 → Settings → Pages**：**Build and deployment** 里 **Source** 必须选 **GitHub Actions**（不要选 Deploy from a branch 却留空）。
+2. **仓库 → Actions**：打开 **Deploy GitHub Pages**，最近一条应为绿色 **success**。失败请点击该次运行查看日志。
+3. **Settings → Environments → `github-pages`**：若配置了 **Required reviewers**，首次部署会在 Actions 里 **等待审批**，需手动 **Approve** 后站点才会上线。
+4. **访问地址**必须是项目页格式：`https://hanhanoooo523.github.io/hanyukun/`（含仓库名 `hanyukun`）；文件名区分大小写，例如 [`StyleShift-Presentation.html`](https://hanhanoooo523.github.io/hanyukun/StyleShift-Presentation.html)。
+5. **临时查看文件（不依赖 Pages）**：在仓库中打开：[`StyleShift-Presentation.html`（`main`）](https://github.com/hanhanoooo523/hanyukun/blob/main/StyleShift-Presentation.html)，或 [Raw](https://github.com/hanhanoooo523/hanyukun/raw/main/StyleShift-Presentation.html)（浏览器可能提示下载，属正常）。
 
 ---
 
@@ -86,7 +96,7 @@
 
 **操作（展开版）：** **← →** / **空格** 切换大类页；**鼠标点击** 每条小点标题展开/收起详细介绍；同一大类内 **手风琴互斥**（同时只展开一条）。**操作（逐页版）：** **← →** 逐张翻页。均支持 **中文 / English**；**打印 → 另存为 PDF** 可导出。
 
-**其他页面：** [`StyleShift-Design-Presentation.html`](StyleShift-Design-Presentation.html)、[`StyleShift-功能介绍.html`](StyleShift-功能介绍.html)
+**其他页面：** [`StyleShift-Presentation.html`](StyleShift-Presentation.html)、[`StyleShift-Design-Presentation.html`](StyleShift-Design-Presentation.html)、[`StyleShift-功能介绍.html`](StyleShift-功能介绍.html)
 
 ---
 
