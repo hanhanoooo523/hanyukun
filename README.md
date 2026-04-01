@@ -79,6 +79,8 @@
 | PowerPoint 数据 | [`styleshift-slides.json`](styleshift-slides.json) |
 | 生成 PPT（需本机 PowerPoint） | [`build-styleshift-pptx.ps1`](build-styleshift-pptx.ps1) |
 
+**分享说明：** `StyleShift-设计演示.html` 内的配图已 **内嵌为 base64**，只发这一个文件给同学/老师也能正常显示图片（体积约几 MB）。若你更新了 [`demo-screenshots/`](demo-screenshots/)，请在本机运行 `.\tools\embed-demo-images.ps1` 重新内嵌后再分发或推送。
+
 **操作：** **← →** / **空格** 翻页；支持 **中文 / English**；**打印 → 另存为 PDF** 可导出。
 
 **其他页面：** [`StyleShift-Design-Presentation.html`](StyleShift-Design-Presentation.html)、[`StyleShift-功能介绍.html`](StyleShift-功能介绍.html)
