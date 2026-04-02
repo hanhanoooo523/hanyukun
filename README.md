@@ -67,7 +67,7 @@ StyleShift 是一个直接在界面上完成图片风格转换与局部编辑的
 | 应用界面 | 改进版 · GitHub Pages | [设计风格迁移-改进版（线上）](https://hanhanoooo523.github.io/hanyukun/%E8%AE%BE%E8%AE%A1%E9%A3%8E%E6%A0%BC%E8%BF%81%E7%A7%BB-%E6%94%B9%E8%BF%9B%E7%89%88.html) |
 | 演示界面 | StyleShift-Presentation | [StyleShift-Presentation（线上）](https://hanhanoooo523.github.io/hanyukun/StyleShift-Presentation.html) |
 | GitHub | 源码仓库 | [hanhanoooo523/hanyukun](https://github.com/hanhanoooo523/hanyukun) |
-| 更多入口 | 首页、逐页演示、仓库路径 | [GitHub Pages 主表](#github-pages) · [Course submission](#course-submission课程要求对照) |
+| 更多入口 | 使用指南 | （https://hanhanoooo523.github.io/hanyukun/StyleShift-%E5%8A%9F%E8%83%BD%E4%BB%8B%E7%BB%8D.html） |
 
 ---
 
