@@ -6,14 +6,14 @@
 
 ---
 
-## Course submission（课程要求对照）
+## 课程要求对照
 
-| Requirement | Where |
-|-------------|--------|
-| **Final code on GitHub (`main`)** | Repository: **[hanhanoooo523/hanyukun](https://github.com/hanhanoooo523/hanyukun)** — the **`main`** branch is the final submission. Clone: `git clone https://github.com/hanhanoooo523/hanyukun.git` |
-| **README describing the app, presentation, team** | This file: **[README.md on `main`](https://github.com/hanhanoooo523/hanyukun/blob/main/README.md)** |
-| **Video presentation** | [YouTube 演示](https://youtu.be/ExiegfsCOZk?si=AL3fVtOVhBubnkFS) |
-| **GitHub Pages (site + presentation)** | [GitHub Pages](#github-pages) — link and paths are below; the live site mirrors slides and entry points from the repo |
+| 课程要求 | 对应说明 |
+|----------|----------|
+| **GitHub 最终代码（`main` 分支）** | 仓库 **[hanhanoooo523/hanyukun](https://github.com/hanhanoooo523/hanyukun)** — 正式提交以 **`main`** 分支为准。克隆：`git clone https://github.com/hanhanoooo523/hanyukun.git` |
+| **README（应用说明、演示、小组信息）** | 本文件：**[`main` 上的 README.md](https://github.com/hanhanoooo523/hanyukun/blob/main/README.md)** |
+| **视频演示** | [YouTube 演示](https://youtu.be/ExiegfsCOZk?si=AL3fVtOVhBubnkFS) |
+| **GitHub Pages（站点与演示）** | 见下文 **[GitHub Pages](#github-pages)** — 含线上链接与仓库文件路径；线上站点与幻灯、入口与仓库保持一致 |
 
 ---
 
@@ -176,14 +176,14 @@ Static, front-end **design style transfer** tools and course submission material
 
 ---
 
-### Course submission
+### 课程要求对照 · Course submission
 
-| Requirement | Where |
-|-------------|--------|
-| **Final code on GitHub (`main`)** | **[hanhanoooo523/hanyukun](https://github.com/hanhanoooo523/hanyukun)** on **`main`**. Clone: `git clone https://github.com/hanhanoooo523/hanyukun.git` |
-| **README (app, presentation, team)** | **[README.md](https://github.com/hanhanoooo523/hanyukun/blob/main/README.md)** on `main` |
-| **Video presentation** | **[YouTube demo](https://youtu.be/ExiegfsCOZk?si=AL3fVtOVhBubnkFS)** |
-| **GitHub Pages** | **[GitHub Pages](#github-pages)** — URLs and file mapping are in the table below |
+| 课程要求 | 对应说明 |
+|----------|----------|
+| **GitHub 最终代码（`main` 分支）** | **[hanhanoooo523/hanyukun](https://github.com/hanhanoooo523/hanyukun)** — 正式提交以 **`main`** 为准。Clone：`git clone https://github.com/hanhanoooo523/hanyukun.git` |
+| **README（应用说明、演示、小组信息）** | **[README.md](https://github.com/hanhanoooo523/hanyukun/blob/main/README.md)**（`main` 分支） |
+| **视频演示** | **[YouTube 演示](https://youtu.be/ExiegfsCOZk?si=AL3fVtOVhBubnkFS)** |
+| **GitHub Pages（站点与演示）** | **[GitHub Pages](#github-pages)** — 下表为 URL 与 `main` 分支文件对照 |
 
 ---
 
