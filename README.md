@@ -110,14 +110,63 @@ StyleShift 是一个直接在界面上完成图片风格转换与局部编辑的
 
 ## How to use the app（使用方法）
 
+### 打开应用
 
-1. **本地：** 用浏览器打开 [`设计风格迁移-改进版.html`](设计风格迁移-改进版.html)。  
-   **线上：** 打开 [GitHub Pages 首页](https://hanhanoooo523.github.io/hanyukun/)，点击「改进版应用」。
-2. 左侧上传图片（拖拽或点击），中间选择风格并调节参数，点击生成，在右侧查看结果。
-3. 顶栏：**English / 中文**、撤销、重置、**历史**（已保存缩略图）、导出。
-4. 生成后可使用右侧「元素拆解与替换」等区域能力（详见页面内说明）。
+- **本地：** 用浏览器打开 [`设计风格迁移-改进版.html`](设计风格迁移-改进版.html)。  
+- **线上：** 打开 [GitHub Pages 首页](https://hanhanoooo523.github.io/hanyukun/)，在「快速入口」中点击 **「改进版应用」**（与仓库根目录该 HTML 文件对应）。
 
-**运行说明：** 无需构建；`file://` 或任意静态服务均可。若本地脚本受限，可用 VS Code Live Server。
+**建议环境：** 使用较新版本 **Chrome / Edge / Firefox** 等桌面浏览器；图片一般为常见 **位图**（如 JPG、PNG），分辨率过高时处理时间会更长，可先缩小再试。
+
+### 推荐操作顺序（从整张图到局部精修）
+
+1. **上传原图 → 选风格 → 调参数 → 首次「生成」**  
+   先得到一张整体满意或接近满意的迁移结果，再去拆解色块；若只调滑块未点生成，右侧结果不会更新。  
+2. **用对比 / 分屏确认**  
+   对齐构图后再决定要不要加强风格强度或微调色彩。  
+3. **满意后「加入历史」**  
+   多方案并存时便于对照，避免只依赖浏览器后退。  
+4. **再进入「元素拆解」做局部**  
+   对天空、墙面、主体等分别换风格或还原，实现「一图多风格」混搭。
+
+### 基本流程（三栏）
+
+1. **左侧「原始作品」**  
+   - 将图片**拖到上传区**，或**点击区域**选择文件；已载图后可点 **「更换图片」**。  
+   - 下方会出现本次会话内的**缩略图条**（便于回看当前图源）。
+
+2. **中间「风格选择」**  
+   - 点选一张**风格卡片**（共 8 种：油画、水彩、复古、赛博朋克、波普艺术、水墨、素描、霓虹光效）。  
+   - 用滑块调节 **风格强度、色彩饱和度、对比度、亮度、模糊程度**；可选 **「色调叠加」** 色点（或保持「无叠加」），用于在风格化之上再叠一层整体色相倾向。  
+   - **查看方式：**  
+     - **效果图** — 主要看右侧成品；  
+     - **对比** — 适合快速并排心智对比（具体布局以页面为准）；  
+     - **分屏** — 可**拖动中间分割线**，在同一画面内滑动对比原图与结果，适合汇报或截屏说明。  
+   - 点击 **「生成风格迁移」**；处理时右侧有进度条，完成后在 **「迁移结果」** 中显示。强度与风格差异大时，等待时间会略长，属正常现象。
+
+3. **右侧结果与导出**  
+   - 生成后可用结果区按钮 **下载** 当前图，或 **加入历史**（将缩略图记入「历史记录」）。  
+   - 顶栏 **「导出」** 也可下载当前结果（与结果区内下载一致场景下）。
+
+### 顶栏与历史
+
+- 右上角 **语言**：在 **中文 / English** 间切换（偏好会存在浏览器本地）。  
+- **撤销**：回退**上一步**对结果图的操作（例如局部再迁移、区域还原等会改变画布时）；若连续做了多步局部编辑，可多次撤销直到达到想要的状态。  
+- **重置**：清空当前会话，回到初始状态（与「历史记录」里已保存的条目无关，历史不会被自动清空）。  
+- **历史记录**：打开弹层查看已 **加入历史** 的缩略图棋盘格；适合罗列多版方案，与当前画布上的「撤销」配合使用。
+
+### 元素拆解与局部调整（生成结果后）
+
+- 先完成至少一次全局生成，右下方会出现 **「元素拆解与替换」**。  
+- **「主色概括程度」**（粗 / 中 / 细）决定画面被分成多少主色块：**粗** 块少、大块面编辑快；**细** 块多、适合细节抠换。调整后需再点 **「分析 / 刷新元素」** 刷新列表。  
+- **列表中选一块** 表示按该主色在**全图范围**选中所有相近区域；**在结果图上直接单击** 则通常对应 **与你点击处相连的同色区域**（选区会以高亮标示，具体颜色与提示以页内为准）。二者结合可快速选中「整块天空」或「单条衣袖」等不同粒度。  
+- 可选 **「对此区域使用的风格」** 与全局不同，并用 **「与中间栏同步」** 把中间栏的滑块一键抄到本区域；然后 **「仅此区域再迁移」** 只改选中区域，或 **「将此区域还原为原图」** 从原图贴回该区域（用于保留脸、文字或产品外形）。  
+- **「提取此区域主色」** 后可 **用拾取色覆盖该区域** 或 **叠加强调到该区域**，适合统一品牌色或做海报级色块整理。
+
+**局部编辑小结：** 典型用法是「大面用全局风格 + 个别区域换另一种风格或还原原图」，多轮 **仅此区域再迁移** 与 **撤销** 可渐进逼近目标。
+
+更细的图文说明见双语页面：[StyleShift-功能介绍](StyleShift-功能介绍.html) · [GitHub Pages 功能介绍](https://hanhanoooo523.github.io/hanyukun/StyleShift-%E5%8A%9F%E8%83%BD%E4%BB%8B%E7%BB%8D.html)。
+
+**运行说明：** 无需构建；`file://` 或任意静态服务均可。若本地以 `file://` 打开时脚本被策略拦截，可用 **VS Code Live Server** 或 `npx serve` 等起一个简单的本地静态服务再访问同一 HTML。
 
 ---
 
@@ -217,11 +266,59 @@ It moves from a single “apply to everything” model to a workflow that is **d
 
 ### How to use the app
 
-1. **Local:** open [`设计风格迁移-改进版.html`](设计风格迁移-改进版.html). **Online:** open the [Pages home](https://hanhanoooo523.github.io/hanyukun/) and choose the improved app.  
-2. Upload on the left (drag or click), pick a style and parameters in the center, click generate, view on the right.  
-3. Top bar: **English / 中文**, undo, reset, **history**, export.  
-4. After generating, use **element split & replace** and related panels (see in-app copy).
+#### Open the app
 
-**Runtime:** no build step; `file://` or any static server works. If scripts are blocked locally, use e.g. VS Code Live Server.
+- **Local:** open [`设计风格迁移-改进版.html`](设计风格迁移-改进版.html) in a browser.  
+- **Online:** go to the [Pages home](https://hanhanoooo523.github.io/hanyukun/), under **Quick links** click **「改进版应用」** (Improved app) — same file as in the repo root.
+
+**Recommended setup:** a recent desktop browser (**Chrome / Edge / Firefox**, etc.). Use common **raster** images (e.g. JPG, PNG). Very large resolutions take longer to process; downscale first if needed.
+
+#### Suggested order (whole image → local polish)
+
+1. **Upload → pick a style → tune sliders → first Generate**  
+   The right-hand result only updates after you run generation; moving sliders alone does not refresh the output.  
+2. **Use Compare / Split to judge**  
+   Check composition and detail before pushing style intensity or color harder.  
+3. **Add to history for variants**  
+   Keeps multiple attempts easy to compare without relying on the back button alone.  
+4. **Open Element split**  
+   Apply different styles or restores to sky, walls, subject, etc., for a mixed look in one frame.
+
+#### Basic workflow (three columns)
+
+1. **Left — Source**  
+   - **Drag** an image onto the upload zone or **click** to pick a file. After an image is loaded, use **Replace image** if needed.  
+   - A **thumbnail strip** under the zone shows sources in the current session.
+
+2. **Center — Styles & controls**  
+   - Choose one **style card** (8 presets: oil, watercolor, vintage, cyberpunk, pop art, ink, sketch, neon).  
+   - Adjust sliders: **style intensity, saturation, contrast, brightness, blur**; optionally pick a **tint** swatch (or leave “none”) to layer a global color cast on top of the stylized look.  
+   - **View modes:** **Result** focuses on the final look; **Compare** helps quick A/B judgment (exact layout follows the UI); **Split** lets you **drag a divider** to wipe between original and result—good for demos and screenshots.  
+   - Click **Generate style transfer**. A **progress** indicator runs; the **Result** panel on the right shows the output. Strong styles / large images may take a bit longer.
+
+3. **Right — Result & export**  
+   - After generation, use **Download** on the result card or **Add to history** to save a thumbnail into **History**.  
+   - The header **Export** button also downloads the current result (same use case).
+
+#### Header & history
+
+- **Language (top-right float):** toggle **English / 中文**; preference is stored in the browser.  
+- **Undo:** steps back the **last** change to the result canvas (e.g. after local remix or region restore). Repeat **Undo** for multi-step local edits until you reach a good state.  
+- **Reset:** clears the session back to the start. It does **not** automatically clear entries already saved in **History**.  
+- **History:** opens a modal grid of thumbnails you **added to history**; use it alongside **Undo** for comparing variants.
+
+#### Element split & local edits (after a first result)
+
+- The **Element split & replace** block appears below the result once you have an output.  
+- **Color-region granularity** (coarse / medium / fine) controls how many dominant regions exist: **coarse** = fewer, faster broad edits; **fine** = more regions for detail work. Click **Analyze / refresh elements** after changing this setting.  
+- **Picking from the list** selects that color **everywhere** it appears; **clicking the result canvas** selects a **connected region** at the pointer (overlay and hints are in the UI). Combine both to target “the whole sky” vs “one sleeve,” for example.  
+- Optionally set **style for this region** different from the global style; use **Sync from center panel** to copy the middle sliders, then **Remix this region only** or **Restore this region to original** (paste back from the source for faces, text, products, etc.).  
+- **Extract dominant color** enables **fill region with picked color** or **apply tint emphasis** for brand colors or poster-like flats.
+
+**Local workflow tip:** a common pattern is **one global pass**, then **different styles or restores on separate regions**, iterating with **Remix this region only** and **Undo**.
+
+For a longer bilingual guide: [`StyleShift-功能介绍.html`](StyleShift-功能介绍.html) · [feature guide on Pages](https://hanhanoooo523.github.io/hanyukun/StyleShift-%E5%8A%9F%E8%83%BD%E4%BB%8B%E7%BB%8D.html).
+
+**Runtime:** no build step; `file://` or any static server works. If `file://` is blocked by browser policies, use **VS Code Live Server** or e.g. `npx serve` and open the same HTML over `http://localhost`.
 
 ---
