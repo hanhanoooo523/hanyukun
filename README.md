@@ -97,7 +97,6 @@ StyleShift 是一个直接在界面上完成图片风格转换与局部编辑的
 
 **Project demo video（项目演示视频）：** [https://youtu.be/ExiegfsCOZk?si=AL3fVtOVhBubnkFS](https://youtu.be/ExiegfsCOZk?si=AL3fVtOVhBubnkFS)（YouTube）
 
-建议视频内容：上传图片 → 选择风格 → 生成结果；改进版（元素拆解、区域再迁移等）；设计演示 [`StyleShift-设计演示.html`](StyleShift-设计演示.html) 若干页概览。
 
 ---
 
