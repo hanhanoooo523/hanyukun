@@ -130,21 +130,4 @@ StyleShift 是一个直接在界面上完成图片风格转换与局部编辑的
 
 ---
 
-## Presentation（演讲 / 设计演示）
 
-| 说明 | 文件 |
-|------|------|
-| **大类同页 · 点击小点展开详情（约 6 屏，推荐汇报）** | [`StyleShift-deck-expand.html`](StyleShift-deck-expand.html) |
-| **逐页 15 张（原版翻页）** | [`StyleShift-设计演示.html`](StyleShift-设计演示.html) |
-| **逐页 15 张 · 本地副本文档（安全拷贝）** | [`StyleShift-deck-15slides-copy.html`](StyleShift-deck-15slides-copy.html) |
-| **从逐页母版生成展开版** | `powershell -NoProfile -ExecutionPolicy Bypass -File .\tools\build-accordion-deck.ps1 -OutFile 'StyleShift-deck-expand.html'`（母版默认 [`StyleShift-设计演示-多页原版备份.html`](StyleShift-设计演示-多页原版备份.html)） |
-| **线上同路径** | 见上文 [设计演示 GitHub Pages 链接](https://hanhanoooo523.github.io/hanyukun/StyleShift-%E8%AE%BE%E8%AE%A1%E6%BC%94%E7%A4%BA.html)（部署后若需展开版，请将 `StyleShift-deck-expand.html` 一并推送） |
-| 配图目录 | [`demo-screenshots/`](demo-screenshots/) |
-| PowerPoint 数据 | [`styleshift-slides.json`](styleshift-slides.json) |
-| 生成 PPT（需本机 PowerPoint） | [`build-styleshift-pptx.ps1`](build-styleshift-pptx.ps1) |
-
-**分享说明：** `StyleShift-设计演示.html` 内的配图已 **内嵌为 base64**，只发这一个文件给同学/老师也能正常显示图片（体积约几 MB）。若你更新了 [`demo-screenshots/`](demo-screenshots/)，请在本机运行 `.\tools\embed-demo-images.ps1` 重新内嵌后再分发或推送。
-
-**操作（展开版）：** **← →** / **空格** 切换大类页；**鼠标点击** 每条小点标题展开/收起详细介绍；同一大类内 **手风琴互斥**（同时只展开一条）。**操作（逐页版）：** **← →** 逐张翻页。均支持 **中文 / English**；**打印 → 另存为 PDF** 可导出。
-
-**其他页面：** [`StyleShift-设计过程与概念.html`](StyleShift-设计过程与概念.html)、[`StyleShift-Presentation.html`](StyleShift-Presentation.html)、[`StyleShift-Design-Presentation.html`](StyleShift-Design-Presentation.html)、[`StyleShift-功能介绍.html`](StyleShift-功能介绍.html)
