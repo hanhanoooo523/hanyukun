@@ -87,24 +87,7 @@ StyleShift 是一个直接在界面上完成图片风格转换与局部编辑的
 
 首次部署：**Settings → Pages → Build and deployment → Source: GitHub Actions**，工作流见 [`.github/workflows/pages.yml`](.github/workflows/pages.yml)；向 **`main`** 推送后会自动发布。
 
-### 若 `*.github.io/hanyukun/` 整站显示 404（仓库里的代码却能打开）
 
-说明 **Pages 尚未发布成功**，与某个 HTML 是否上传无关。请按顺序检查：
-
-1. **仓库 → Settings → Pages**：**Build and deployment** 里 **Source** 必须选 **GitHub Actions**（不要选 Deploy from a branch 却留空）。
-2. **仓库 → Actions**：打开 **Deploy GitHub Pages**，最近一条应为绿色 **success**。失败请点击该次运行查看日志。
-3. **Settings → Environments → `github-pages`**：若配置了 **Required reviewers**，首次部署会在 Actions 里 **等待审批**，需手动 **Approve** 后站点才会上线。
-4. **访问地址**必须是项目页格式：`https://hanhanoooo523.github.io/hanyukun/`（含仓库名 `hanyukun`）；文件名区分大小写，例如 [`StyleShift-Presentation.html`](https://hanhanoooo523.github.io/hanyukun/StyleShift-Presentation.html)。
-5. **临时查看文件（不依赖 Pages）**：在仓库中打开：[`StyleShift-Presentation.html`（`main`）](https://github.com/hanhanoooo523/hanyukun/blob/main/StyleShift-Presentation.html)，或 [Raw](https://github.com/hanhanoooo523/hanyukun/raw/main/StyleShift-Presentation.html)（浏览器可能提示下载，属正常）。
-
-### 不依赖 GitHub Pages、任何人用浏览器就能看的几种方式
-
-| 方式 | 说明 |
-|------|------|
-| **入口页 + 在线预览** | 代码在 `main` 上公开后，把下面整段链接发给对方即可（小页内有按钮进入完整演示；大图稿首次可能加载十余秒）：`https://htmlpreview.github.io/?https://raw.githubusercontent.com/hanhanoooo523/hanyukun/main/StyleShift-online-view.html` |
-| **直接预览某一稿** | Presentation：`https://htmlpreview.github.io/?https://raw.githubusercontent.com/hanhanoooo523/hanyukun/main/StyleShift-Presentation.html` · 逐页 15 张：`https://htmlpreview.github.io/?https://raw.githubusercontent.com/hanhanoooo523/hanyukun/main/StyleShift-%E8%AE%BE%E8%AE%A1%E6%BC%94%E7%A4%BA.html` |
-| **单文件（最稳）** | 下载仓库内 [`StyleShift-设计演示.html`](StyleShift-设计演示.html) 或 [`StyleShift-Presentation.html`](StyleShift-Presentation.html)，通过微信 / 网盘发送，对方**双击用浏览器打开**即可（配图已内嵌，无需服务器）。 |
-| **免费小站** | 将上述任一 HTML 拖到 [Netlify Drop](https://app.netlify.com/drop)，可获得 `*.netlify.app` 长期外链。 |
 
 本地入口文件：[`StyleShift-online-view.html`](StyleShift-online-view.html)（体积小，也可下载后本地双击使用上面的链接）。
 
