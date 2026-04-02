@@ -71,7 +71,7 @@ li { margin: 0.4em 0; }
 .links-grid a {
   display: inline-block;
   padding: 8px 14px;
-  border/radius: 10px;
+  border-radius: 10px;
   background: rgba(124, 92, 252, 0.12);
   border: 1px solid rgba(124, 92, 252, 0.35);
   color: var(--text);
@@ -88,83 +88,241 @@ li { margin: 0.4em 0; }
 .team p { color: var(--text); margin-bottom: 0.35em; }
 .team .id { color: var(--text2); font-size: 0.92rem; }
 footer { margin-top: 2rem; font-size: 0.85rem; color: var(--text2); }
+.lang-bar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px 14px;
+  margin-bottom: 1rem;
+}
+.lang-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 14px;
+  border-radius: 10px;
+  border: 1px solid rgba(124, 92, 252, 0.45);
+  background: rgba(124, 92, 252, 0.14);
+  color: var(--text);
+  font-size: 0.88rem;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: inherit;
+  -webkit-tap-highlight-color: transparent;
+  transition: background 0.2s, border-color 0.2s;
+}
+.lang-btn:hover {
+  background: rgba(124, 92, 252, 0.24);
+  border-color: var(--accent2);
+}
+.lang-btn:focus-visible {
+  outline: 2px solid var(--accent2);
+  outline-offset: 2px;
+}
 </style>
 </head>
 <body>
 <div class="wrap">
-  <nav class="nav" aria-label="站内导航">
-    <a href="index.html">首页</a>
-    <a href="StyleShift-Presentation.html">Presentation</a>
-    <a href="StyleShift-功能介绍.html">功能介绍</a>
-  </nav>
-  <h1>设计过程 · 项目设计概念</h1>
-  <p class="sub">StyleShift 课程设计陈述 — 概念、目的、核心功能与相关链接</p>
+  <div class="lang-bar">
+    <button type="button" class="lang-btn" id="conceptLangBtn" aria-live="polite" title="Switch language / 切换语言">
+      <span aria-hidden="true">🌐</span>
+      <span class="lang-btn-label">English</span>
+    </button>
+    <nav class="nav" aria-label="站内导航" style="margin-bottom:0;flex:1">
+      <a href="index.html" data-i18n="nav.home">首页</a>
+      <a href="StyleShift-Presentation.html" data-i18n="nav.deck">Presentation</a>
+      <a href="StyleShift-功能介绍.html" data-i18n="nav.features">功能介绍</a>
+    </nav>
+  </div>
+  <h1 data-i18n="page.h1">设计过程 · 项目设计概念</h1>
+  <p class="sub" data-i18n="page.sub">StyleShift 课程设计陈述 — 概念、目的、核心功能与相关链接</p>
 
   <section>
-    <h2>设计过程</h2>
-    <p>本项目从「整体风格迁移」出发，结合设计工作坊中的真实反馈，迭代界面结构、交互模型与局部编辑能力，形成当前以三栏工作流、色块选区与历史撤销为核心的设计类工具。</p>
+    <h2 data-i18n="sec.process.h2">设计过程</h2>
+    <p data-i18n="sec.process.p">本项目从「整体风格迁移」出发，结合设计工作坊中的真实反馈，迭代界面结构、交互模型与局部编辑能力，形成当前以三栏工作流、色块选区与历史撤销为核心的设计类工具。</p>
   </section>
 
   <section>
-    <h2>项目设计概念</h2>
-    <p><strong style="color:var(--text)">StyleShift</strong> 是一个<strong>直接在界面上完成图片风格转换与局部编辑</strong>的设计类工具。</p>
-    <p>它将风格迁移从「整体套用」升级为<strong>可拆解、可融合、可局部打磨</strong>的创作方式，让设计师能够像调色一样自由控制画面风格。</p>
+    <h2 data-i18n="sec.concept.h2">项目设计概念</h2>
+    <p data-i18n-html="sec.concept.p1"><strong style="color:var(--text)">StyleShift</strong> 是一个<strong>直接在界面上完成图片风格转换与局部编辑</strong>的设计类工具。</p>
+    <p data-i18n-html="sec.concept.p2">它将风格迁移从「整体套用」升级为<strong>可拆解、可融合、可局部打磨</strong>的创作方式，让设计师能够像调色一样自由控制画面风格。</p>
   </section>
 
   <section>
-    <h2>设计目的</h2>
-    <p style="margin-bottom:0.5em;color:var(--text)">帮助设计师在设计过程中：</p>
+    <h2 data-i18n="sec.purpose.h2">设计目的</h2>
+    <p style="margin-bottom:0.5em;color:var(--text)" data-i18n="sec.purpose.intro">帮助设计师在设计过程中：</p>
     <ul>
-      <li>快速将作品转换成多种设计风格，节省时间，增加设计灵感；</li>
-      <li>对相同元素尝试不同风格，直观对比，辅助决策；</li>
-      <li>提取画面中的色块元素，将多种风格融合在同一画面中，形成新的设计语言。</li>
+      <li data-i18n="sec.purpose.li1">快速将作品转换成多种设计风格，节省时间，增加设计灵感；</li>
+      <li data-i18n="sec.purpose.li2">对相同元素尝试不同风格，直观对比，辅助决策；</li>
+      <li data-i18n="sec.purpose.li3">提取画面中的色块元素，将多种风格融合在同一画面中，形成新的设计语言。</li>
     </ul>
   </section>
 
   <section>
-    <h2>核心设计功能</h2>
+    <h2 data-i18n="sec.features.h2">核心设计功能</h2>
     <ol style="padding-left:1.25rem;color:var(--text2)">
-      <li style="margin:0.65em 0"><strong style="color:var(--text)">从整图迁移到局部编辑。</strong> 初始版本仅支持整张图片的风格转换。发现设计师经常只需要改变局部（如主体、背景）后，我们迭代出「色块智能选区 + 局部风格迁移」，让修改范围更精准。</li>
-      <li style="margin:0.65em 0"><strong style="color:var(--text)">元素拆解 + 点击选区。</strong> 利用图像分析自动提取主色块，用户点击色块列表或直接点击画面，即可选中相连的同色区域。降低选区学习成本，让操作直观高效。</li>
-      <li style="margin:0.65em 0"><strong style="color:var(--text)">三栏布局 + 对比视图。</strong> 「原始｜风格｜结果」从左到右符合输入→处理→输出的心理模型。对比模式支持拖动分界线，比传统前后切换更直观，适合方案汇报。</li>
-      <li style="margin:0.65em 0"><strong style="color:var(--text)">历史记录与撤销。</strong> 鼓励大胆尝试，随时回退，提升试错友好度。</li>
-      <li style="margin:0.65em 0"><strong style="color:var(--text)">中英文切换并记忆。</strong> 面向全球用户，减少重复设置，关注细节体验。</li>
+      <li style="margin:0.65em 0" data-i18n-html="sec.f1"><strong style="color:var(--text)">从整图迁移到局部编辑。</strong> 初始版本仅支持整张图片的风格转换。发现设计师经常只需要改变局部（如主体、背景）后，我们迭代出「色块智能选区 + 局部风格迁移」，让修改范围更精准。</li>
+      <li style="margin:0.65em 0" data-i18n-html="sec.f2"><strong style="color:var(--text)">元素拆解 + 点击选区。</strong> 利用图像分析自动提取主色块，用户点击色块列表或直接点击画面，即可选中相连的同色区域。降低选区学习成本，让操作直观高效。</li>
+      <li style="margin:0.65em 0" data-i18n-html="sec.f3"><strong style="color:var(--text)">三栏布局 + 对比视图。</strong> 「原始｜风格｜结果」从左到右符合输入→处理→输出的心理模型。对比模式支持拖动分界线，比传统前后切换更直观，适合方案汇报。</li>
+      <li style="margin:0.65em 0" data-i18n-html="sec.f4"><strong style="color:var(--text)">历史记录与撤销。</strong> 鼓励大胆尝试，随时回退，提升试错友好度。</li>
+      <li style="margin:0.65em 0" data-i18n-html="sec.f5"><strong style="color:var(--text)">中英文切换并记忆。</strong> 面向全球用户，减少重复设置，关注细节体验。</li>
     </ol>
   </section>
 
   <section>
-    <h2>链接</h2>
+    <h2 data-i18n="sec.links.h2">链接</h2>
     <div class="links-grid">
-      <div><strong style="color:var(--text)">视频演示：</strong>
-        <a href="https://github.com/hanhanoooo523/hanyukun/blob/main/README.md#video-presentation" target="_blank" rel="noopener noreferrer">README · Video presentation（上传后替换为正式视频地址）</a>
+      <div><strong style="color:var(--text)" data-i18n="link.video.lbl">视频演示：</strong>
+        <a href="https://youtu.be/ExiegfsCOZk?si=AL3fVtOVhBubnkFS" target="_blank" rel="noopener noreferrer" data-i18n="link.video.txt">YouTube · 项目演示视频</a>
       </div>
-      <div><strong style="color:var(--text)">应用界面：</strong>
-        <a href="设计风格迁移-改进版.html">本地 · 设计风格迁移-改进版</a>
-        ·
-        <a href="https://github.com/hanhanoooo523/hanyukun/blob/main/%E8%AE%BE%E8%AE%A1%E9%A3%8E%E6%A0%BC%E8%BF%81%E7%A7%BB-%E6%94%B9%E8%BF%9B%E7%89%88.html" target="_blank" rel="noopener noreferrer">GitHub 仓库内文件</a>
+      <div><strong style="color:var(--text)" data-i18n="link.app.lbl">应用界面：</strong>
+        <a href="设计风格迁移-改进版.html" data-i18n="link.app.local">本地 · 设计风格迁移-改进版</a>
+        <span data-i18n="link.sep"> · </span>
+        <a href="https://github.com/hanhanoooo523/hanyukun/blob/main/%E8%AE%BE%E8%AE%A1%E9%A3%8E%E6%A0%BC%E8%BF%81%E7%A7%BB-%E6%94%B9%E8%BF%9B%E7%89%88.html" target="_blank" rel="noopener noreferrer" data-i18n="link.app.gh">GitHub 仓库内文件</a>
       </div>
-      <div><strong style="color:var(--text)">演示界面：</strong>
-        <a href="StyleShift-Presentation.html">本地 · StyleShift-Presentation</a>
-        ·
-        <a href="StyleShift-设计演示.html">本地 · StyleShift-设计演示</a>
-        ·
-        <a href="https://htmlpreview.github.io/?https://raw.githubusercontent.com/hanhanoooo523/hanyukun/main/StyleShift-Presentation.html" target="_blank" rel="noopener noreferrer">在线预览（HTML Preview）</a>
+      <div><strong style="color:var(--text)" data-i18n="link.demo.lbl">演示界面：</strong>
+        <a href="StyleShift-Presentation.html" data-i18n="link.demo.p1">本地 · StyleShift-Presentation</a>
+        <span data-i18n="link.sep"> · </span>
+        <a href="StyleShift-设计演示.html" data-i18n="link.demo.p2">本地 · StyleShift-设计演示</a>
+        <span data-i18n="link.sep"> · </span>
+        <a href="https://htmlpreview.github.io/?https://raw.githubusercontent.com/hanhanoooo523/hanyukun/main/StyleShift-Presentation.html" target="_blank" rel="noopener noreferrer" data-i18n="link.demo.prev">在线预览（HTML Preview）</a>
       </div>
-      <div><strong style="color:var(--text)">GitHub：</strong>
+      <div><strong style="color:var(--text)" data-i18n="link.gh.lbl">GitHub：</strong>
         <a href="https://github.com/hanhanoooo523/hanyukun" target="_blank" rel="noopener noreferrer">hanhanoooo523/hanyukun</a>
       </div>
     </div>
   </section>
 
   <section class="team">
-    <h2>组员</h2>
-    <p><strong>姓名：</strong>韩雨坤 HAN YUKUN　杜佳洺 DU JIAMING</p>
-    <p class="id"><strong>学号：</strong>MC56909　MC569281</p>
+    <h2 data-i18n="sec.team.h2">组员</h2>
+    <p data-i18n-html="sec.team.names"><strong>姓名：</strong>韩雨坤 HAN YUKUN　杜佳洺 DU JIAMING</p>
+    <p class="id" data-i18n-html="sec.team.ids"><strong>学号：</strong>MC56909　MC569281</p>
   </section>
 
   <footer>
-    <p>StyleShift · 设计过程与概念 · 与 <a href="index.html">项目首页</a>、<a href="StyleShift-功能介绍.html">功能介绍</a> 配套使用</p>
+    <p data-i18n-html="footer.p">StyleShift · 设计过程与概念 · 与 <a href="index.html">项目首页</a>、<a href="StyleShift-功能介绍.html">功能介绍</a> 配套使用</p>
   </footer>
 </div>
+<script>
+(function () {
+  var LS_KEY = 'styleshift-concept-lang';
+  var I18N = {
+    zh: {
+      'nav.home': '首页',
+      'nav.deck': 'Presentation',
+      'nav.features': '功能介绍',
+      'page.h1': '设计过程 · 项目设计概念',
+      'page.sub': 'StyleShift 课程设计陈述 — 概念、目的、核心功能与相关链接',
+      'sec.process.h2': '设计过程',
+      'sec.process.p': '本项目从「整体风格迁移」出发，结合设计工作坊中的真实反馈，迭代界面结构、交互模型与局部编辑能力，形成当前以三栏工作流、色块选区与历史撤销为核心的设计类工具。',
+      'sec.concept.h2': '项目设计概念',
+      'sec.concept.p1': '<strong style="color:var(--text)">StyleShift</strong> 是一个<strong>直接在界面上完成图片风格转换与局部编辑</strong>的设计类工具。',
+      'sec.concept.p2': '它将风格迁移从「整体套用」升级为<strong>可拆解、可融合、可局部打磨</strong>的创作方式，让设计师能够像调色一样自由控制画面风格。',
+      'sec.purpose.h2': '设计目的',
+      'sec.purpose.intro': '帮助设计师在设计过程中：',
+      'sec.purpose.li1': '快速将作品转换成多种设计风格，节省时间，增加设计灵感；',
+      'sec.purpose.li2': '对相同元素尝试不同风格，直观对比，辅助决策；',
+      'sec.purpose.li3': '提取画面中的色块元素，将多种风格融合在同一画面中，形成新的设计语言。',
+      'sec.features.h2': '核心设计功能',
+      'sec.f1': '<strong style="color:var(--text)">从整图迁移到局部编辑。</strong> 初始版本仅支持整张图片的风格转换。发现设计师经常只需要改变局部（如主体、背景）后，我们迭代出「色块智能选区 + 局部风格迁移」，让修改范围更精准。',
+      'sec.f2': '<strong style="color:var(--text)">元素拆解 + 点击选区。</strong> 利用图像分析自动提取主色块，用户点击色块列表或直接点击画面，即可选中相连的同色区域。降低选区学习成本，让操作直观高效。',
+      'sec.f3': '<strong style="color:var(--text)">三栏布局 + 对比视图。</strong> 「原始｜风格｜结果」从左到右符合输入→处理→输出的心理模型。对比模式支持拖动分界线，比传统前后切换更直观，适合方案汇报。',
+      'sec.f4': '<strong style="color:var(--text)">历史记录与撤销。</strong> 鼓励大胆尝试，随时回退，提升试错友好度。',
+      'sec.f5': '<strong style="color:var(--text)">中英文切换并记忆。</strong> 面向全球用户，减少重复设置，关注细节体验。',
+      'sec.links.h2': '链接',
+      'link.video.lbl': '视频演示：',
+      'link.video.txt': 'YouTube · 项目演示视频',
+      'link.app.lbl': '应用界面：',
+      'link.app.local': '本地 · 设计风格迁移-改进版',
+      'link.app.gh': 'GitHub 仓库内文件',
+      'link.demo.lbl': '演示界面：',
+      'link.demo.p1': '本地 · StyleShift-Presentation',
+      'link.demo.p2': '本地 · StyleShift-设计演示',
+      'link.demo.prev': '在线预览（HTML Preview）',
+      'link.gh.lbl': 'GitHub：',
+      'link.sep': ' · ',
+      'sec.team.h2': '组员',
+      'sec.team.names': '<strong>姓名：</strong>韩雨坤 HAN YUKUN　杜佳洺 DU JIAMING',
+      'sec.team.ids': '<strong>学号：</strong>MC56909　MC569281',
+      'footer.p': 'StyleShift · 设计过程与概念 · 与 <a href="index.html">项目首页</a>、<a href="StyleShift-功能介绍.html">功能介绍</a> 配套使用'
+    },
+    en: {
+      'nav.home': 'Home',
+      'nav.deck': 'Presentation',
+      'nav.features': 'Features',
+      'page.h1': 'Design process · Project concept',
+      'page.sub': 'StyleShift course narrative — concept, goals, core features, and links',
+      'sec.process.h2': 'Design process',
+      'sec.process.p': 'Starting from whole-image style transfer, we iterated the UI and interactions with workshop feedback—adding region picking, local re-transfer, a three-column workflow, and history/undo—forming the current tool.',
+      'sec.concept.h2': 'Project concept',
+      'sec.concept.p1': '<strong style="color:var(--text)">StyleShift</strong> is a <strong>design utility for in-browser style transfer and local editing</strong>.',
+      'sec.concept.p2': 'It upgrades migration from a single “apply-all” pass to a workflow that is <strong>decomposable, blendable, and locally refinable</strong>—like color grading for visual style.',
+      'sec.purpose.h2': 'Goals',
+      'sec.purpose.intro': 'To help designers:',
+      'sec.purpose.li1': 'Quickly explore multiple design styles to save time and spark ideas;',
+      'sec.purpose.li2': 'Compare styles on the same elements to support decisions;',
+      'sec.purpose.li3': 'Extract color regions and blend styles in one canvas for a new visual language.',
+      'sec.features.h2': 'Core features',
+      'sec.f1': '<strong style="color:var(--text)">Whole image → local editing.</strong> Early versions only supported full-image transfer. We added “smart region picking + local style transfer” when designers only needed subjects or backgrounds changed.',
+      'sec.f2': '<strong style="color:var(--text)">Element split + click to select.</strong> Main color regions are detected; users pick from a list or click the canvas to select connected areas—fast and intuitive.',
+      'sec.f3': '<strong style="color:var(--text)">Three columns + compare view.</strong> “Original | Style | Result” matches input → process → output. Compare mode uses a draggable divider—clearer than flip-only previews for reviews.',
+      'sec.f4': '<strong style="color:var(--text)">History and undo.</strong> Encourages experimentation with easy rollback.',
+      'sec.f5': '<strong style="color:var(--text)">English/中文 with persistence.</strong> For a global audience, fewer repeated settings, finer UX.',
+      'sec.links.h2': 'Links',
+      'link.video.lbl': 'Video:',
+      'link.video.txt': 'YouTube · project demo',
+      'link.app.lbl': 'App:',
+      'link.app.local': 'Local · Style transfer (improved)',
+      'link.app.gh': 'File on GitHub',
+      'link.demo.lbl': 'Deck:',
+      'link.demo.p1': 'Local · StyleShift-Presentation',
+      'link.demo.p2': 'Local · StyleShift deck (15 slides)',
+      'link.demo.prev': 'Online preview (HTML Preview)',
+      'link.gh.lbl': 'GitHub:',
+      'link.sep': ' · ',
+      'sec.team.h2': 'Team',
+      'sec.team.names': '<strong>Names:</strong> HAN YUKUN · DU JIAMING',
+      'sec.team.ids': '<strong>IDs:</strong> MC56909 · MC569281',
+      'footer.p': 'StyleShift · concept page · with <a href="index.html">project home</a> and <a href="StyleShift-功能介绍.html">features</a>'
+    }
+  };
+
+  var lang = localStorage.getItem(LS_KEY) || 'zh';
+  if (lang !== 'zh' && lang !== 'en') lang = 'zh';
+
+  function t(key) {
+    var d = I18N[lang] || I18N.zh;
+    return d[key] != null ? d[key] : (I18N.zh[key] != null ? I18N.zh[key] : key);
+  }
+
+  function apply() {
+    document.documentElement.lang = lang === 'zh' ? 'zh-CN' : 'en';
+    document.querySelectorAll('[data-i18n]').forEach(function (el) {
+      var k = el.getAttribute('data-i18n');
+      if (!k) return;
+      if (el.tagName === 'A' && el.querySelector('*')) return;
+      el.textContent = t(k);
+    });
+    document.querySelectorAll('[data-i18n-html]').forEach(function (el) {
+      var k = el.getAttribute('data-i18n-html');
+      if (k) el.innerHTML = t(k);
+    });
+    var btn = document.getElementById('conceptLangBtn');
+    var lab = btn && btn.querySelector('.lang-btn-label');
+    if (lab) {
+      lab.textContent = lang === 'zh' ? 'English' : '中文';
+      btn.setAttribute('aria-label', lang === 'zh' ? 'Switch to English' : '切换到中文');
+    }
+  }
+
+  document.getElementById('conceptLangBtn').addEventListener('click', function () {
+    lang = lang === 'zh' ? 'en' : 'zh';
+    localStorage.setItem(LS_KEY, lang);
+    apply();
+  });
+
+  apply();
+})();
+</script>
 </body>
 </html>
