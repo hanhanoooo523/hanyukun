@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" id="pageMetaDesc" content="StyleShift 改进版图文操作说明：三栏布局、上传、风格参数、导出、元素拆解与语言切换。">
 <title>StyleShift 使用指南 — 设计风格迁移工具</title>
 <style>
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -66,6 +67,23 @@ a:hover { text-decoration: underline; }
   color: var(--text2);
 }
 .site-nav a:hover { color: var(--text); }
+.lang-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 14px;
+  border-radius: 10px;
+  border: 1px solid rgba(124, 92, 252, 0.45);
+  background: rgba(124, 92, 252, 0.14);
+  color: var(--text);
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: inherit;
+  -webkit-tap-highlight-color: transparent;
+}
+.lang-btn:hover { background: rgba(124, 92, 252, 0.24); border-color: var(--accent2); }
+.lang-btn:focus-visible { outline: 2px solid var(--accent2); outline-offset: 2px; }
 .btn-open {
   display: inline-flex;
   align-items: center;
@@ -294,63 +312,69 @@ footer.site-foot {
       <path d="M8 16c0-4.4 3.6-8 8-8s8 3.6 8 8" stroke="#fff" stroke-width="2.5" stroke-linecap="round"/>
       <defs><linearGradient id="lg0" x1="0" y1="0" x2="32" y2="32"><stop stop-color="#7c5cfc"/><stop offset="1" stop-color="#c084fc"/></linearGradient></defs>
     </svg>
-    StyleShift 使用指南
+    <span data-i18n="head.brand">StyleShift 使用指南</span>
   </div>
-  <nav class="site-nav" aria-label="本页导航">
-    <a href="#layout">界面布局</a>
-    <a href="#step-upload">上传</a>
-    <a href="#step-style">风格参数</a>
-    <a href="#step-result">结果与导出</a>
-    <a href="#step-element">元素拆解</a>
-    <a href="#step-extra">其它功能</a>
+  <nav class="site-nav" id="featuresNav" aria-label="本页导航">
+    <a href="#layout" data-i18n="nav.layout">界面布局</a>
+    <a href="#step-upload" data-i18n="nav.upload">上传</a>
+    <a href="#step-style" data-i18n="nav.style">风格参数</a>
+    <a href="#step-result" data-i18n="nav.result">结果与导出</a>
+    <a href="#step-element" data-i18n="nav.element">元素拆解</a>
+    <a href="#step-extra" data-i18n="nav.extra">其它功能</a>
   </nav>
-  <a class="btn-open" href="设计风格迁移-改进版.html">打开工具（改进版）</a>
+  <div style="display:flex;flex-wrap:wrap;align-items:center;gap:10px">
+    <button type="button" class="lang-btn" id="featuresLangBtn" data-i18n-title="ui.langBtnTitle" title="切换语言">
+      <span aria-hidden="true">🌐</span>
+      <span class="lang-btn-label">English</span>
+    </button>
+    <a class="btn-open" href="设计风格迁移-改进版.html" data-i18n="head.openApp">打开工具（改进版）</a>
+  </div>
 </header>
 
 <section class="hero">
-  <h1>设计风格迁移工具<br>图文操作说明</h1>
-  <p class="hero-lead">本页根据 <strong>StyleShift 改进版</strong> 的真实界面结构编写，帮助你快速完成：上传图片 → 选择风格 → 生成结果 →（可选）按区域再编辑。下方配有<strong>界面结构示意图</strong>；你在实际工具中截图后，也可自行替换为真机效果图。</p>
+  <h1 data-i18n-html="hero.h1">设计风格迁移工具<br>图文操作说明</h1>
+  <p class="hero-lead" data-i18n-html="hero.lead">本页根据 <strong>StyleShift 改进版</strong> 的真实界面结构编写，帮助你快速完成：上传图片 → 选择风格 → 生成结果 →（可选）按区域再编辑。下方配有<strong>界面结构示意图</strong>；你在实际工具中截图后，也可自行替换为真机效果图。</p>
 </section>
 
 <div class="wrap">
   <section class="section" id="layout">
-    <h2><span class="step-num">0</span> 界面总览：三栏在做什么？</h2>
-    <p class="sub">工具采用「左图 · 中控 · 右结果」布局，与下表一致。</p>
+    <h2><span class="step-num">0</span> <span data-i18n="s0.h2">界面总览：三栏在做什么？</span></h2>
+    <p class="sub" data-i18n="s0.sub">工具采用「左图 · 中控 · 右结果」布局，与下表一致。</p>
 
     <div class="figure">
-      <div class="figure-label">示意图 · 三栏布局</div>
+      <div class="figure-label" data-i18n="s0.figLbl">示意图 · 三栏布局</div>
       <div class="mock-3col" aria-label="三栏布局示意">
         <div class="mock-col">
-          <div class="mock-title"><span class="mock-dot" style="background:var(--accent)"></span> 原始作品</div>
+          <div class="mock-title"><span class="mock-dot" style="background:var(--accent)"></span> <span data-i18n="s0.col1t">原始作品</span></div>
           <div class="mock-box"></div>
-          <span>上传 / 拖拽图片，下方可保留历史缩略图。</span>
+          <span data-i18n="s0.col1d">上传 / 拖拽图片，下方可保留历史缩略图。</span>
         </div>
         <div class="mock-col mid">
-          <div class="mock-title"><span class="mock-dot" style="background:var(--accent2)"></span> 风格选择</div>
+          <div class="mock-title"><span class="mock-dot" style="background:var(--accent2)"></span> <span data-i18n="s0.col2t">风格选择</span></div>
           <div class="mock-grid-2">
             <div class="mock-pill on"></div><div class="mock-pill"></div>
             <div class="mock-pill"></div><div class="mock-pill"></div>
           </div>
           <div class="mock-pill" style="margin-top:4px;height:8px;opacity:0.6"></div>
           <div class="mock-pill" style="height:8px;opacity:0.5"></div>
-          <span>八种风格卡片 + 滑块 + 色调 + 视图切换 + 生成按钮。</span>
+          <span data-i18n="s0.col2d">八种风格卡片 + 滑块 + 色调 + 视图切换 + 生成按钮。</span>
         </div>
         <div class="mock-col">
-          <div class="mock-title"><span class="mock-dot" style="background:var(--success)"></span> 迁移结果</div>
+          <div class="mock-title"><span class="mock-dot" style="background:var(--success)"></span> <span data-i18n="s0.col3t">迁移结果</span></div>
           <div class="mock-box" style="min-height:56px;border-color:rgba(52,211,153,0.4)"></div>
           <div class="mock-box" style="min-height:40px;opacity:0.85"></div>
-          <span>大图预览；生成后出现「元素拆解」面板（可拖拽分隔条调高度）。</span>
+          <span data-i18n="s0.col3d">大图预览；生成后出现「元素拆解」面板（可拖拽分隔条调高度）。</span>
         </div>
       </div>
-      <p class="figure-caption">左栏只管原图与历史；中间集中完成「选风格 + 调参 + 生成」；右栏看图、对比、下载，并对局部做拆解编辑。</p>
+      <p class="figure-caption" data-i18n="s0.cap">左栏只管原图与历史；中间集中完成「选风格 + 调参 + 生成」；右栏看图、对比、下载，并对局部做拆解编辑。</p>
     </div>
   </section>
 
   <section class="section" id="step-upload">
-    <h2><span class="step-num">1</span> 上传原始作品</h2>
-    <p class="sub">在左侧「原始作品」虚线框内点击，或把图片拖进去。支持常见网页图片格式，单张大小上限以工具内提示为准。</p>
+    <h2><span class="step-num">1</span> <span data-i18n="s1.h2">上传原始作品</span></h2>
+    <p class="sub" data-i18n="s1.sub">在左侧「原始作品」虚线框内点击，或把图片拖进去。支持常见网页图片格式，单张大小上限以工具内提示为准。</p>
     <div class="figure">
-      <div class="figure-label">图示 · 上传区</div>
+      <div class="figure-label" data-i18n="s1.figLbl">图示 · 上传区</div>
       <svg viewBox="0 0 360 200" width="100%" height="200" role="img" aria-label="上传区域示意">
         <defs>
           <linearGradient id="g1" x1="0" y1="0" x2="360" y2="200"><stop offset="0" stop-color="#1e1e3a"/><stop offset="1" stop-color="#16162a"/></linearGradient>
@@ -359,112 +383,260 @@ footer.site-foot {
         <path d="M140 75h80v50h-80zM160 60c0-8 8-14 18-14s18 6 18 14" fill="none" stroke="#6b6988" stroke-width="2"/>
         <circle cx="172" cy="70" r="3" fill="#6b6988"/>
         <path d="M228 115l-22-20-38 42h100z" fill="none" stroke="#6b6988" stroke-width="1.5"/>
-        <text x="180" y="165" text-anchor="middle" fill="#9896b0" font-size="13" font-family="system-ui,sans-serif">点击选择或拖拽图片到此处</text>
+        <text data-svg-i18n="svg.uploadHint" x="180" y="165" text-anchor="middle" fill="#9896b0" font-size="13" font-family="system-ui,sans-serif">点击选择或拖拽图片到此处</text>
       </svg>
-      <p class="figure-caption">已有图片时，悬停上传区可出现「更换图片」。左下角历史条可保存多版缩略对比（视你的操作而定）。</p>
+      <p class="figure-caption" data-i18n="s1.cap">已有图片时，悬停上传区可出现「更换图片」。左下角历史条可保存多版缩略对比（视你的操作而定）。</p>
     </div>
     <ul class="steps-list">
-      <li><strong>建议：</strong>主体清晰、光线正常的照片更容易看出风格差异。</li>
+      <li data-i18n-html="s1.tip"><strong>建议：</strong>主体清晰、光线正常的照片更容易看出风格差异。</li>
     </ul>
   </section>
 
   <section class="section" id="step-style">
-    <h2><span class="step-num">2</span> 选择风格并调节参数</h2>
-    <p class="sub">中间栏先点选一种风格（油画、水彩、赛博朋克等），再按需拖动「风格强度、饱和度、对比度、亮度、模糊」。「色调叠加」用色块给整图统一色偏（可选）。</p>
+    <h2><span class="step-num">2</span> <span data-i18n="s2.h2">选择风格并调节参数</span></h2>
+    <p class="sub" data-i18n="s2.sub">中间栏先点选一种风格（油画、水彩、赛博朋克等），再按需拖动「风格强度、饱和度、对比度、亮度、模糊」。「色调叠加」用色块给整图统一色偏（可选）。</p>
     <div class="figure">
-      <div class="figure-label">图示 · 风格卡片与滑块</div>
+      <div class="figure-label" data-i18n="s2.figLbl">图示 · 风格卡片与滑块</div>
       <svg viewBox="0 0 400 220" width="100%" height="220" role="img" aria-label="风格与参数示意">
         <rect width="400" height="220" rx="12" fill="#16162a" stroke="#2a2a4a"/>
         <g transform="translate(16,16)">
           <rect x="0" y="0" width="80" height="54" rx="8" fill="rgba(124,92,252,0.2)" stroke="#7c5cfc" stroke-width="2"/>
-          <text x="40" y="32" text-anchor="middle" fill="#e8e6f0" font-size="11">风格 A ✓</text>
+          <text data-svg-i18n="svg.styleA" x="40" y="32" text-anchor="middle" fill="#e8e6f0" font-size="11">风格 A ✓</text>
           <rect x="88" y="0" width="80" height="54" rx="8" fill="#1e1e3a" stroke="#2a2a4a"/>
-          <text x="128" y="32" text-anchor="middle" fill="#9896b0" font-size="11">风格 B</text>
+          <text data-svg-i18n="svg.styleB" x="128" y="32" text-anchor="middle" fill="#9896b0" font-size="11">风格 B</text>
           <rect x="176" y="0" width="80" height="54" rx="8" fill="#1e1e3a" stroke="#2a2a4a"/>
           <rect x="264" y="0" width="80" height="54" rx="8" fill="#1e1e3a" stroke="#2a2a4a"/>
         </g>
-        <text x="24" y="105" fill="#9896b0" font-size="11">风格强度</text>
-        <text x="330" y="105" fill="#c084fc" font-size="11">90%</text>
+        <text data-svg-i18n="svg.strength" x="24" y="105" fill="#9896b0" font-size="11">风格强度</text>
+        <text data-svg-i18n="svg.pct" x="330" y="105" fill="#c084fc" font-size="11">90%</text>
         <rect x="24" y="112" width="352" height="6" rx="3" fill="#2a2a4a"/>
         <circle cx="310" cy="115" r="8" fill="url(#gradThumb)"/>
         <defs><linearGradient id="gradThumb"><stop stop-color="#7c5cfc"/><stop offset="1" stop-color="#c084fc"/></linearGradient></defs>
         <rect x="24" y="138" width="352" height="28" rx="8" fill="#1e1e3a" stroke="#2a2a4a"/>
-        <text x="180" y="156" text-anchor="middle" fill="#9896b0" font-size="10">效果图 · 对比 · 分屏</text>
+        <text data-svg-i18n="svg.viewModes" x="180" y="156" text-anchor="middle" fill="#9896b0" font-size="10">效果图 · 对比 · 分屏</text>
         <rect x="24" y="176" width="352" height="36" rx="10" fill="url(#gradBtn)"/>
-        <text x="200" y="199" text-anchor="middle" fill="#fff" font-size="13" font-weight="600">生成风格迁移</text>
+        <text data-svg-i18n="svg.genBtn" x="200" y="199" text-anchor="middle" fill="#fff" font-size="13" font-weight="600">生成风格迁移</text>
         <defs><linearGradient id="gradBtn" x1="0" y1="0" x2="352" y2="36"><stop stop-color="#7c5cfc"/><stop offset="1" stop-color="#c084fc"/></linearGradient></defs>
       </svg>
-      <p class="figure-caption">需先上传图片后，「生成」按钮才会可用。视图模式「效果图 / 对比 / 分屏」在生成后用于查看整图差异（对比条可拖动，分屏为左右对照）。</p>
+      <p class="figure-caption" data-i18n="s2.cap">需先上传图片后，「生成」按钮才会可用。视图模式「效果图 / 对比 / 分屏」在生成后用于查看整图差异（对比条可拖动，分屏为左右对照）。</p>
     </div>
   </section>
 
   <section class="section" id="step-result">
-    <h2><span class="step-num">3</span> 查看结果、缩放与导出</h2>
-    <p class="sub">生成完成后，右侧大图区会显示结果。鼠标移入可出现左下角缩放、右下角下载/保存。</p>
+    <h2><span class="step-num">3</span> <span data-i18n="s3.h2">查看结果、缩放与导出</span></h2>
+    <p class="sub" data-i18n="s3.sub">生成完成后，右侧大图区会显示结果。鼠标移入可出现左下角缩放、右下角下载/保存。</p>
     <div class="figure">
-      <div class="figure-label">图示 · 对比模式（拖动中线）</div>
+      <div class="figure-label" data-i18n="s3.figLbl1">图示 · 对比模式（拖动中线）</div>
       <div class="mock-compare" aria-label="对比模式示意">
-        <div class="half a">原图一侧</div>
-        <div class="half b">结果一侧</div>
+        <div class="half a" data-i18n="s3.compareL">原图一侧</div>
+        <div class="half b" data-i18n="s3.compareR">结果一侧</div>
         <div class="split-line"></div>
       </div>
-      <p class="figure-caption" style="margin-top:14px">对比模式：同一张图上以竖线分割，左一般为原图、右为结果，拖动白线查看过渡。</p>
-      <div class="figure-label" style="margin-top:20px">图示 · 分屏模式</div>
+      <p class="figure-caption" style="margin-top:14px" data-i18n="s3.cap1">对比模式：同一张图上以竖线分割，左一般为原图、右为结果，拖动白线查看过渡。</p>
+      <div class="figure-label" style="margin-top:20px" data-i18n="s3.figLbl2">图示 · 分屏模式</div>
       <div class="mock-split">
-        <div class="l">左：原图</div>
-        <div class="r">右：结果</div>
+        <div class="l" data-i18n="s3.splitL">左：原图</div>
+        <div class="r" data-i18n="s3.splitR">右：结果</div>
       </div>
-      <p class="figure-caption">分屏模式：左右两栏各自完整显示，便于整体对照。</p>
+      <p class="figure-caption" data-i18n="s3.cap2">分屏模式：左右两栏各自完整显示，便于整体对照。</p>
     </div>
     <ul class="steps-list">
-      <li><strong>导出：</strong>顶栏「导出」可保存当前结果图；结果区内的「下载」「保存」也可使用。</li>
-      <li><strong>重置：</strong>顶栏「重置」清空当前会话回到初始状态。</li>
+      <li data-i18n-html="s3.li1"><strong>导出：</strong>顶栏「导出」可保存当前结果图；结果区内的「下载」「保存」也可使用。</li>
+      <li data-i18n-html="s3.li2"><strong>重置：</strong>顶栏「重置」清空当前会话回到初始状态。</li>
     </ul>
   </section>
 
   <section class="section" id="step-element">
-    <h2><span class="step-num">4</span> 元素拆解与局部再迁移（进阶）</h2>
-    <p class="sub">在已生成结果的前提下，右下方面板可进行「按颜色分块」选区，并对选中区域单独换风格或还原等。</p>
+    <h2><span class="step-num">4</span> <span data-i18n="s4.h2">元素拆解与局部再迁移（进阶）</span></h2>
+    <p class="sub" data-i18n="s4.sub">在已生成结果的前提下，右下方面板可进行「按颜色分块」选区，并对选中区域单独换风格或还原等。</p>
     <div class="figure">
-      <div class="figure-label">图示 · 色块列表与选区</div>
+      <div class="figure-label" data-i18n="s4.figLbl">图示 · 色块列表与选区</div>
       <div style="background:#1e1e3a;border-radius:10px;padding:14px;border:1px solid var(--border)">
-        <div style="font-size:11px;color:var(--warn);margin-bottom:8px;font-weight:600">● 元素拆解与替换</div>
+        <div style="font-size:11px;color:var(--warn);margin-bottom:8px;font-weight:600" data-i18n="s4.panelTitle">● 元素拆解与替换</div>
         <div class="mock-pill" style="height:6px;width:60%;opacity:0.5;margin-bottom:10px"></div>
         <div class="mock-chips">
-          <div class="mock-chip active"><span class="mock-swatch" style="background:#c77dff"></span> 色桶 1</div>
-          <div class="mock-chip"><span class="mock-swatch" style="background:#69db7c"></span> 色桶 2</div>
-          <div class="mock-chip"><span class="mock-swatch" style="background:#4dabf7"></span> 色桶 3</div>
+          <div class="mock-chip active"><span class="mock-swatch" style="background:#c77dff"></span> <span data-i18n="s4.chip1">色桶 1</span></div>
+          <div class="mock-chip"><span class="mock-swatch" style="background:#69db7c"></span> <span data-i18n="s4.chip2">色桶 2</span></div>
+          <div class="mock-chip"><span class="mock-swatch" style="background:#4dabf7"></span> <span data-i18n="s4.chip3">色桶 3</span></div>
         </div>
-        <p style="margin-top:12px;font-size:12px;color:var(--text2)">画布上用紫色标出当前选区；列表点选与图上单击规则以工具内说明为准。</p>
+        <p style="margin-top:12px;font-size:12px;color:var(--text2)" data-i18n="s4.panelNote">画布上用紫色标出当前选区；列表点选与图上单击规则以工具内说明为准。</p>
       </div>
-      <p class="figure-caption">典型流程：<strong>分析 / 刷新元素</strong> → 在列表或画面上选中区域 → 在面板中为该区域选风格并调「区域参数」→ 点击 <strong>仅此区域再迁移</strong>。可用 <strong>与中间栏同步</strong> 快速把全局滑块数值抄到区域参数。</p>
+      <p class="figure-caption" data-i18n-html="s4.cap">典型流程：<strong>分析 / 刷新元素</strong> → 在列表或画面上选中区域 → 在面板中为该区域选风格并调「区域参数」→ 点击 <strong>仅此区域再迁移</strong>。可用 <strong>与中间栏同步</strong> 快速把全局滑块数值抄到区域参数。</p>
     </div>
-    <div class="note">
+    <div class="note" data-i18n-html="s4.note">
       <strong>提示：</strong>右栏预览图与工具面板之间的<strong>灰色横条可上下拖动</strong>，自定义预览区与面板区高度；高度会记在浏览器本地，下次打开仍保留。
     </div>
     <ul class="steps-list">
-      <li><strong>只选不拖：</strong>勾选后便于在图上精确点击选区，但无法再拖动画布平移（视工具说明）。</li>
-      <li><strong>撤销：</strong>顶栏「撤销」可退回对结果图的上一步操作（含区域编辑等）。</li>
+      <li data-i18n-html="s4.li1"><strong>只选不拖：</strong>勾选后便于在图上精确点击选区，但无法再拖动画布平移（视工具说明）。</li>
+      <li data-i18n-html="s4.li2"><strong>撤销：</strong>顶栏「撤销」可退回对结果图的上一步操作（含区域编辑等）。</li>
     </ul>
   </section>
 
   <section class="section" id="step-extra">
-    <h2><span class="step-num">5</span> 语言与其它</h2>
-    <p class="sub">顶栏可切换 <strong>中文 / English</strong>，界面文案会整体切换（偏好保存在本机浏览器）。</p>
+    <h2><span class="step-num">5</span> <span data-i18n="s5.h2">语言与其它</span></h2>
+    <p class="sub" data-i18n-html="s5.sub">顶栏可切换 <strong>中文 / English</strong>，界面文案会整体切换（偏好保存在本机浏览器）。</p>
     <div class="figure">
-      <div class="figure-label">真机截图位（可选）</div>
-      <div style="min-height:140px;border:2px dashed var(--border);border-radius:10px;display:flex;align-items:center;justify-content:center;color:var(--text2);font-size:14px;padding:20px;text-align:center">
+      <div class="figure-label" data-i18n="s5.figLbl">真机截图位（可选）</div>
+      <div style="min-height:140px;border:2px dashed var(--border);border-radius:10px;display:flex;align-items:center;justify-content:center;color:var(--text2);font-size:14px;padding:20px;text-align:center" data-i18n-html="s5.placeholder">
         可将「导出」后的效果图，或对工具界面截屏保存为 <code style="color:var(--accent2)">guide-screenshots/</code> 下图片，在此用 <code style="color:var(--accent2)">&lt;img src="..."&gt;</code> 引用。
       </div>
-      <p class="figure-caption">教学站点推荐：每一步配一张 1280px 左右宽度的截图，读者会更直观。</p>
+      <p class="figure-caption" data-i18n="s5.cap">教学站点推荐：每一步配一张 1280px 左右宽度的截图，读者会更直观。</p>
     </div>
   </section>
 </div>
 
 <footer class="site-foot">
-  <p>文档对应工具文件：<a href="设计风格迁移-改进版.html">设计风格迁移-改进版.html</a></p>
-  <p style="margin-top:8px">StyleShift · 设计风格迁移（改进版）功能介绍页 · 纯静态 HTML，可随项目一并部署</p>
+  <p data-i18n-html="foot.l1">文档对应工具文件：<a href="设计风格迁移-改进版.html">设计风格迁移-改进版.html</a></p>
+  <p style="margin-top:8px" data-i18n="foot.l2">StyleShift · 设计风格迁移（改进版）功能介绍页 · 纯静态 HTML，可随项目一并部署</p>
 </footer>
 
+<script>
+(function () {
+  var LS_KEY = 'styleshift-site-lang';
+  var I18N = {
+    zh: {
+      'page.title': 'StyleShift 使用指南 — 设计风格迁移工具',
+      'page.metaDesc': 'StyleShift 改进版图文操作说明：三栏布局、上传、风格参数、导出、元素拆解与语言切换。',
+      'nav.aria': '本页导航',
+      'ui.langBtnTitle': '切换为 English / Switch to English',
+      'head.brand': 'StyleShift 使用指南',
+      'nav.layout': '界面布局', 'nav.upload': '上传', 'nav.style': '风格参数', 'nav.result': '结果与导出',
+      'nav.element': '元素拆解', 'nav.extra': '其它功能', 'head.openApp': '打开工具（改进版）',
+      'hero.h1': '设计风格迁移工具<br>图文操作说明',
+      'hero.lead': '本页根据 <strong>StyleShift 改进版</strong> 的真实界面结构编写，帮助你快速完成：上传图片 → 选择风格 → 生成结果 →（可选）按区域再编辑。下方配有<strong>界面结构示意图</strong>；你在实际工具中截图后，也可自行替换为真机效果图。',
+      's0.h2': '界面总览：三栏在做什么？', 's0.sub': '工具采用「左图 · 中控 · 右结果」布局，与下表一致。',
+      's0.figLbl': '示意图 · 三栏布局', 's0.col1t': '原始作品', 's0.col1d': '上传 / 拖拽图片，下方可保留历史缩略图。',
+      's0.col2t': '风格选择', 's0.col2d': '八种风格卡片 + 滑块 + 色调 + 视图切换 + 生成按钮。',
+      's0.col3t': '迁移结果', 's0.col3d': '大图预览；生成后出现「元素拆解」面板（可拖拽分隔条调高度）。',
+      's0.cap': '左栏只管原图与历史；中间集中完成「选风格 + 调参 + 生成」；右栏看图、对比、下载，并对局部做拆解编辑。',
+      's1.h2': '上传原始作品', 's1.sub': '在左侧「原始作品」虚线框内点击，或把图片拖进去。支持常见网页图片格式，单张大小上限以工具内提示为准。',
+      's1.figLbl': '图示 · 上传区', 's1.cap': '已有图片时，悬停上传区可出现「更换图片」。左下角历史条可保存多版缩略对比（视你的操作而定）。',
+      's1.tip': '<strong>建议：</strong>主体清晰、光线正常的照片更容易看出风格差异。',
+      's2.h2': '选择风格并调节参数',
+      's2.sub': '中间栏先点选一种风格（油画、水彩、赛博朋克等），再按需拖动「风格强度、饱和度、对比度、亮度、模糊」。「色调叠加」用色块给整图统一色偏（可选）。',
+      's2.figLbl': '图示 · 风格卡片与滑块',
+      's2.cap': '需先上传图片后，「生成」按钮才会可用。视图模式「效果图 / 对比 / 分屏」在生成后用于查看整图差异（对比条可拖动，分屏为左右对照）。',
+      's3.h2': '查看结果、缩放与导出', 's3.sub': '生成完成后，右侧大图区会显示结果。鼠标移入可出现左下角缩放、右下角下载/保存。',
+      's3.figLbl1': '图示 · 对比模式（拖动中线）', 's3.compareL': '原图一侧', 's3.compareR': '结果一侧',
+      's3.cap1': '对比模式：同一张图上以竖线分割，左一般为原图、右为结果，拖动白线查看过渡。',
+      's3.figLbl2': '图示 · 分屏模式', 's3.splitL': '左：原图', 's3.splitR': '右：结果',
+      's3.cap2': '分屏模式：左右两栏各自完整显示，便于整体对照。',
+      's3.li1': '<strong>导出：</strong>顶栏「导出」可保存当前结果图；结果区内的「下载」「保存」也可使用。',
+      's3.li2': '<strong>重置：</strong>顶栏「重置」清空当前会话回到初始状态。',
+      's4.h2': '元素拆解与局部再迁移（进阶）', 's4.sub': '在已生成结果的前提下，右下方面板可进行「按颜色分块」选区，并对选中区域单独换风格或还原等。',
+      's4.figLbl': '图示 · 色块列表与选区', 's4.panelTitle': '● 元素拆解与替换', 's4.chip1': '色桶 1', 's4.chip2': '色桶 2', 's4.chip3': '色桶 3',
+      's4.panelNote': '画布上用紫色标出当前选区；列表点选与图上单击规则以工具内说明为准。',
+      's4.cap': '典型流程：<strong>分析 / 刷新元素</strong> → 在列表或画面上选中区域 → 在面板中为该区域选风格并调「区域参数」→ 点击 <strong>仅此区域再迁移</strong>。可用 <strong>与中间栏同步</strong> 快速把全局滑块数值抄到区域参数。',
+      's4.note': '<strong>提示：</strong>右栏预览图与工具面板之间的<strong>灰色横条可上下拖动</strong>，自定义预览区与面板区高度；高度会记在浏览器本地，下次打开仍保留。',
+      's4.li1': '<strong>只选不拖：</strong>勾选后便于在图上精确点击选区，但无法再拖动画布平移（视工具说明）。',
+      's4.li2': '<strong>撤销：</strong>顶栏「撤销」可退回对结果图的上一步操作（含区域编辑等）。',
+      's5.h2': '语言与其它', 's5.sub': '顶栏可切换 <strong>中文 / English</strong>，界面文案会整体切换（偏好保存在本机浏览器）。',
+      's5.figLbl': '真机截图位（可选）',
+      's5.placeholder': '可将「导出」后的效果图，或对工具界面截屏保存为 <code style="color:var(--accent2)">guide-screenshots/</code> 下图片，在此用 <code style="color:var(--accent2)">&lt;img src=&quot;...&quot;&gt;</code> 引用。',
+      's5.cap': '教学站点推荐：每一步配一张 1280px 左右宽度的截图，读者会更直观。',
+      'foot.l1': '文档对应工具文件：<a href="设计风格迁移-改进版.html">设计风格迁移-改进版.html</a>',
+      'foot.l2': 'StyleShift · 设计风格迁移（改进版）功能介绍页 · 纯静态 HTML，可随项目一并部署',
+      'svg.uploadHint': '点击选择或拖拽图片到此处', 'svg.styleA': '风格 A ✓', 'svg.styleB': '风格 B',
+      'svg.strength': '风格强度', 'svg.pct': '90%', 'svg.viewModes': '效果图 · 对比 · 分屏', 'svg.genBtn': '生成风格迁移'
+    },
+    en: {
+      'page.title': 'StyleShift — User guide (style transfer)',
+      'page.metaDesc': 'Guide for the improved StyleShift app: layout, upload, styles, export, regional edit, language.',
+      'nav.aria': 'On-page navigation',
+      'ui.langBtnTitle': 'Switch to 中文 / 切换到中文',
+      'head.brand': 'StyleShift user guide',
+      'nav.layout': 'Layout', 'nav.upload': 'Upload', 'nav.style': 'Styles', 'nav.result': 'Result & export',
+      'nav.element': 'Regions', 'nav.extra': 'More', 'head.openApp': 'Open app (improved)',
+      'hero.h1': 'Style transfer tool<br>Visual how-to',
+      'hero.lead': 'Based on the <strong>improved StyleShift</strong> UI: upload → pick a style → generate → (optional) edit by region. <strong>Wireframe diagrams</strong> below; swap in real screenshots anytime.',
+      's0.h2': 'Overview: what do the three columns do?',
+      's0.sub': 'Layout is left image · center controls · right result.',
+      's0.figLbl': 'Diagram · three columns', 's0.col1t': 'Original', 's0.col1d': 'Upload / drag image; thumbnails may appear below.',
+      's0.col2t': 'Style', 's0.col2d': 'Style cards, sliders, tint, view mode, generate.',
+      's0.col3t': 'Result', 's0.col3d': 'Large preview; after generate, “element split” panel (drag divider for height).',
+      's0.cap': 'Left: source & history. Center: pick style, tune, generate. Right: preview, compare, export, regional tools.',
+      's1.h2': 'Upload your image', 's1.sub': 'Click the dashed area on the left or drag a file in. Formats and size limits follow in-app hints.',
+      's1.figLbl': 'Figure · upload zone', 's1.cap': 'With an image loaded, hover may show “replace image”. History strip can keep thumbnails.',
+      's1.tip': '<strong>Tip:</strong> Clear subject and lighting make style differences easier to see.',
+      's2.h2': 'Choose style and parameters',
+      's2.sub': 'Select a style (oil, watercolor, cyberpunk, etc.), then adjust strength, saturation, contrast, brightness, blur. Optional global tint.',
+      's2.figLbl': 'Figure · style cards & sliders',
+      's2.cap': 'Generate stays disabled until an image is uploaded. Result / compare / split views help inspect output (draggable divider in compare).',
+      's3.h2': 'Result, zoom, export', 's3.sub': 'After generation the right panel shows output; hover for zoom and download/save.',
+      's3.figLbl1': 'Figure · compare (drag center line)', 's3.compareL': 'Original side', 's3.compareR': 'Result side',
+      's3.cap1': 'Compare: one canvas split vertically—drag the white line.',
+      's3.figLbl2': 'Figure · split view', 's3.splitL': 'Left: original', 's3.splitR': 'Right: result',
+      's3.cap2': 'Split: two full panels side by side.',
+      's3.li1': '<strong>Export:</strong> use top “export” or inline download/save.',
+      's3.li2': '<strong>Reset:</strong> top “reset” clears the current session.',
+      's4.h2': 'Element split & local re-transfer (advanced)', 's4.sub': 'After a result exists, split by color regions and restyle only the selection.',
+      's4.figLbl': 'Figure · color chips', 's4.panelTitle': '● Split & replace', 's4.chip1': 'Swatch 1', 's4.chip2': 'Swatch 2', 's4.chip3': 'Swatch 3',
+      's4.panelNote': 'Purple overlay marks selection; exact click rules follow the app.',
+      's4.cap': 'Typical flow: <strong>analyze / refresh</strong> → pick region → choose local style & <strong>region sliders</strong> → <strong>transfer this region only</strong>. Use <strong>sync from center</strong> to copy global sliders.',
+      's4.note': '<strong>Note:</strong> drag the <strong>gray bar</strong> between preview and panel to resize; height is stored locally.',
+      's4.li1': '<strong>Select-only:</strong> when checked, easier precise clicks; canvas pan may be limited (see app).',
+      's4.li2': '<strong>Undo:</strong> top bar undo reverses the last change including regional edits.',
+      's5.h2': 'Language & extras', 's5.sub': 'The app toolbar toggles <strong>中文 / English</strong>; preference is saved in your browser (this page uses the same storage key).',
+      's5.figLbl': 'Screenshot placeholder',
+      's5.placeholder': 'Drop exports or UI captures under <code style="color:var(--accent2)">guide-screenshots/</code> and reference with <code style="color:var(--accent2)">&lt;img src=&quot;...&quot;&gt;</code>.',
+      's5.cap': 'For teaching: one ~1280px wide screenshot per step reads best.',
+      'foot.l1': 'App file: <a href="设计风格迁移-改进版.html">设计风格迁移-改进版.html</a>',
+      'foot.l2': 'StyleShift · feature guide · static HTML, deploy with the project',
+      'svg.uploadHint': 'Click or drag image here', 'svg.styleA': 'Style A ✓', 'svg.styleB': 'Style B',
+      'svg.strength': 'Strength', 'svg.pct': '90%', 'svg.viewModes': 'Preview · compare · split',
+      'svg.genBtn': 'Run style transfer'
+    }
+  };
+
+  var lang = localStorage.getItem(LS_KEY) || 'zh';
+  if (lang !== 'zh' && lang !== 'en') lang = 'zh';
+
+  function t(key) {
+    var d = I18N[lang] || I18N.zh;
+    return d[key] != null ? d[key] : (I18N.zh[key] != null ? I18N.zh[key] : key);
+  }
+
+  function apply() {
+    document.documentElement.lang = lang === 'zh' ? 'zh-CN' : 'en';
+    document.title = t('page.title');
+    var meta = document.getElementById('pageMetaDesc');
+    if (meta) meta.setAttribute('content', t('page.metaDesc'));
+    var navEl = document.getElementById('featuresNav');
+    if (navEl) navEl.setAttribute('aria-label', t('nav.aria'));
+    document.querySelectorAll('[data-i18n-title]').forEach(function (el) {
+      var k = el.getAttribute('data-i18n-title');
+      if (k) el.setAttribute('title', t(k));
+    });
+    document.querySelectorAll('[data-i18n]').forEach(function (el) {
+      var k = el.getAttribute('data-i18n');
+      if (!k) return;
+      if (el.tagName === 'A' && el.querySelector('*')) return;
+      el.textContent = t(k);
+    });
+    document.querySelectorAll('[data-i18n-html]').forEach(function (el) {
+      var k = el.getAttribute('data-i18n-html');
+      if (k) el.innerHTML = t(k);
+    });
+    document.querySelectorAll('[data-svg-i18n]').forEach(function (el) {
+      var k = el.getAttribute('data-svg-i18n');
+      if (k) el.textContent = t(k);
+    });
+    var btn = document.getElementById('featuresLangBtn');
+    var lab = btn && btn.querySelector('.lang-btn-label');
+    if (lab) {
+      lab.textContent = lang === 'zh' ? 'English' : '中文';
+      btn.setAttribute('aria-label', lang === 'zh' ? 'Switch interface to English' : '将界面切换为中文');
+    }
+  }
+
+  document.getElementById('featuresLangBtn').addEventListener('click', function () {
+    lang = lang === 'zh' ? 'en' : 'zh';
+    localStorage.setItem(LS_KEY, lang);
+    apply();
+  });
+
+  apply();
+})();
+</script>
 </body>
 </html>

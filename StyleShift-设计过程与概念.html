@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" id="pageMetaDesc" content="StyleShift 课程设计陈述：设计过程、项目概念、设计目的、核心功能与相关链接。">
 <title>StyleShift · 设计过程与项目概念</title>
 <style>
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -124,11 +125,11 @@ footer { margin-top: 2rem; font-size: 0.85rem; color: var(--text2); }
 <body>
 <div class="wrap">
   <div class="lang-bar">
-    <button type="button" class="lang-btn" id="conceptLangBtn" aria-live="polite" title="Switch language / 切换语言">
+    <button type="button" class="lang-btn" id="conceptLangBtn" aria-live="polite" data-i18n-title="ui.langBtnTitle">
       <span aria-hidden="true">🌐</span>
       <span class="lang-btn-label">English</span>
     </button>
-    <nav class="nav" aria-label="站内导航" style="margin-bottom:0;flex:1">
+    <nav class="nav" id="conceptNav" aria-label="站内导航" style="margin-bottom:0;flex:1">
       <a href="index.html" data-i18n="nav.home">首页</a>
       <a href="StyleShift-Presentation.html" data-i18n="nav.deck">Presentation</a>
       <a href="StyleShift-功能介绍.html" data-i18n="nav.features">功能介绍</a>
@@ -188,7 +189,7 @@ footer { margin-top: 2rem; font-size: 0.85rem; color: var(--text2); }
         <a href="https://htmlpreview.github.io/?https://raw.githubusercontent.com/hanhanoooo523/hanyukun/main/StyleShift-Presentation.html" target="_blank" rel="noopener noreferrer" data-i18n="link.demo.prev">在线预览（HTML Preview）</a>
       </div>
       <div><strong style="color:var(--text)" data-i18n="link.gh.lbl">GitHub：</strong>
-        <a href="https://github.com/hanhanoooo523/hanyukun" target="_blank" rel="noopener noreferrer">hanhanoooo523/hanyukun</a>
+        <a href="https://github.com/hanhanoooo523/hanyukun" target="_blank" rel="noopener noreferrer" data-i18n="link.gh.txt">hanhanoooo523/hanyukun（仓库）</a>
       </div>
     </div>
   </section>
@@ -205,9 +206,13 @@ footer { margin-top: 2rem; font-size: 0.85rem; color: var(--text2); }
 </div>
 <script>
 (function () {
-  var LS_KEY = 'styleshift-concept-lang';
+  var LS_KEY = 'styleshift-site-lang';
   var I18N = {
     zh: {
+      'page.title': 'StyleShift · 设计过程与项目概念',
+      'page.metaDesc': 'StyleShift 课程设计陈述：设计过程、项目概念、设计目的、核心功能与相关链接。',
+      'nav.aria': '站内导航',
+      'ui.langBtnTitle': '切换为 English / Switch to English',
       'nav.home': '首页',
       'nav.deck': 'Presentation',
       'nav.features': '功能介绍',
@@ -240,6 +245,7 @@ footer { margin-top: 2rem; font-size: 0.85rem; color: var(--text2); }
       'link.demo.p2': '本地 · StyleShift-设计演示',
       'link.demo.prev': '在线预览（HTML Preview）',
       'link.gh.lbl': 'GitHub：',
+      'link.gh.txt': 'hanhanoooo523/hanyukun（仓库）',
       'link.sep': ' · ',
       'sec.team.h2': '组员',
       'sec.team.names': '<strong>姓名：</strong>韩雨坤 HAN YUKUN　杜佳洺 DU JIAMING',
@@ -247,6 +253,10 @@ footer { margin-top: 2rem; font-size: 0.85rem; color: var(--text2); }
       'footer.p': 'StyleShift · 设计过程与概念 · 与 <a href="index.html">项目首页</a>、<a href="StyleShift-功能介绍.html">功能介绍</a> 配套使用'
     },
     en: {
+      'page.title': 'StyleShift · Design process & project concept',
+      'page.metaDesc': 'StyleShift course narrative: design process, project concept, goals, core features, and links.',
+      'nav.aria': 'Site navigation',
+      'ui.langBtnTitle': 'Switch to 中文 / 切换到中文',
       'nav.home': 'Home',
       'nav.deck': 'Presentation',
       'nav.features': 'Features',
@@ -267,7 +277,7 @@ footer { margin-top: 2rem; font-size: 0.85rem; color: var(--text2); }
       'sec.f2': '<strong style="color:var(--text)">Element split + click to select.</strong> Main color regions are detected; users pick from a list or click the canvas to select connected areas—fast and intuitive.',
       'sec.f3': '<strong style="color:var(--text)">Three columns + compare view.</strong> “Original | Style | Result” matches input → process → output. Compare mode uses a draggable divider—clearer than flip-only previews for reviews.',
       'sec.f4': '<strong style="color:var(--text)">History and undo.</strong> Encourages experimentation with easy rollback.',
-      'sec.f5': '<strong style="color:var(--text)">English/中文 with persistence.</strong> For a global audience, fewer repeated settings, finer UX.',
+      'sec.f5': '<strong style="color:var(--text)">Bilingual UI (中文/English) with persistence.</strong> Fewer repeated settings for a global audience and finer UX details.',
       'sec.links.h2': 'Links',
       'link.video.lbl': 'Video:',
       'link.video.txt': 'YouTube · project demo',
@@ -279,6 +289,7 @@ footer { margin-top: 2rem; font-size: 0.85rem; color: var(--text2); }
       'link.demo.p2': 'Local · StyleShift deck (15 slides)',
       'link.demo.prev': 'Online preview (HTML Preview)',
       'link.gh.lbl': 'GitHub:',
+      'link.gh.txt': 'hanhanoooo523/hanyukun (repository)',
       'link.sep': ' · ',
       'sec.team.h2': 'Team',
       'sec.team.names': '<strong>Names:</strong> HAN YUKUN · DU JIAMING',
@@ -287,7 +298,7 @@ footer { margin-top: 2rem; font-size: 0.85rem; color: var(--text2); }
     }
   };
 
-  var lang = localStorage.getItem(LS_KEY) || 'zh';
+  var lang = localStorage.getItem(LS_KEY) || localStorage.getItem('styleshift-concept-lang') || 'zh';
   if (lang !== 'zh' && lang !== 'en') lang = 'zh';
 
   function t(key) {
@@ -297,6 +308,15 @@ footer { margin-top: 2rem; font-size: 0.85rem; color: var(--text2); }
 
   function apply() {
     document.documentElement.lang = lang === 'zh' ? 'zh-CN' : 'en';
+    document.title = t('page.title');
+    var metaD = document.getElementById('pageMetaDesc');
+    if (metaD) metaD.setAttribute('content', t('page.metaDesc'));
+    var navEl = document.getElementById('conceptNav');
+    if (navEl) navEl.setAttribute('aria-label', t('nav.aria'));
+    document.querySelectorAll('[data-i18n-title]').forEach(function (el) {
+      var k = el.getAttribute('data-i18n-title');
+      if (k) el.setAttribute('title', t(k));
+    });
     document.querySelectorAll('[data-i18n]').forEach(function (el) {
       var k = el.getAttribute('data-i18n');
       if (!k) return;
@@ -311,7 +331,7 @@ footer { margin-top: 2rem; font-size: 0.85rem; color: var(--text2); }
     var lab = btn && btn.querySelector('.lang-btn-label');
     if (lab) {
       lab.textContent = lang === 'zh' ? 'English' : '中文';
-      btn.setAttribute('aria-label', lang === 'zh' ? 'Switch to English' : '切换到中文');
+      btn.setAttribute('aria-label', lang === 'zh' ? 'Switch interface to English' : '将界面切换为中文');
     }
   }
 

@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" id="pageMetaDesc" content="StyleShift 首页：改进版应用、设计演示、在线预览与 README 入口。">
 <title>StyleShift · Project site</title>
 <style>
 :root{--bg:#0c0c14;--surface:#16162a;--accent:#7c5cfc;--accent2:#c084fc;--text:#e8e6f0;--text2:#9896b0;--border:#2a2a4a;--r:14px}
@@ -21,47 +22,161 @@ a.btn:hover{opacity:.92}
 .team strong{color:var(--text)}
 footer{margin-top:2rem;font-size:.85rem;color:var(--text2)}
 footer a{color:var(--accent2)}
+.lang-bar{display:flex;flex-wrap:wrap;align-items:center;gap:10px 14px;margin-bottom:1rem}
+.lang-btn{display:inline-flex;align-items:center;gap:6px;padding:8px 14px;border-radius:10px;border:1px solid rgba(124,92,252,.45);background:rgba(124,92,252,.14);color:var(--text);font-size:.88rem;font-weight:600;cursor:pointer;font-family:inherit;-webkit-tap-highlight-color:transparent;transition:background .2s,border-color .2s}
+.lang-btn:hover{background:rgba(124,92,252,.24);border-color:var(--accent2)}
+.lang-btn:focus-visible{outline:2px solid var(--accent2);outline-offset:2px}
 </style>
 </head>
 <body>
 <div class="wrap">
-  <h1>StyleShift</h1>
-  <p class="sub">设计风格迁移 · 网页工具与演示 · GitHub Pages 入口页</p>
+  <div class="lang-bar">
+    <button type="button" class="lang-btn" id="indexLangBtn" aria-live="polite" data-i18n-title="ui.langBtnTitle">
+      <span aria-hidden="true">🌐</span>
+      <span class="lang-btn-label">English</span>
+    </button>
+  </div>
+  <h1 data-i18n="page.h1">StyleShift</h1>
+  <p class="sub" data-i18n="page.sub">设计风格迁移 · 网页工具与演示 · GitHub Pages 入口页</p>
 
   <section>
-    <h2>快速入口</h2>
+    <h2 data-i18n="sec.quick.h2">快速入口</h2>
     <div>
-      <a class="btn" href="设计风格迁移-改进版.html">改进版应用</a>
-      <a class="btn" href="StyleShift-deck-expand.html">设计演示 · 大类同页 · 点击小点展开</a>
-      <a class="btn secondary" href="设计风格迁移.html">经典版</a>
-      <a class="btn secondary" href="StyleShift-设计演示.html">设计演示 · 逐页15张</a>
-      <a class="btn secondary" href="StyleShift-deck-15slides-copy.html">逐页15张 · 副本文档</a>
-      <a class="btn secondary" href="StyleShift-Presentation.html">StyleShift-Presentation</a>
-      <a class="btn secondary" href="StyleShift-设计过程与概念.html">设计过程与概念</a>
-      <a class="btn secondary" href="StyleShift-online-view.html" title="不依赖 GitHub Pages 的在线预览说明与链接">在线预览入口（免 Pages）</a>
+      <a class="btn" href="设计风格迁移-改进版.html" data-i18n="btn.app">改进版应用</a>
+      <a class="btn" href="StyleShift-deck-expand.html" data-i18n="btn.deckExpand">设计演示 · 大类同页 · 点击小点展开</a>
+      <a class="btn secondary" href="设计风格迁移.html" data-i18n="btn.classic">经典版</a>
+      <a class="btn secondary" href="StyleShift-设计演示.html" data-i18n="btn.slides15">设计演示 · 逐页15张</a>
+      <a class="btn secondary" href="StyleShift-deck-15slides-copy.html" data-i18n="btn.slidesCopy">逐页15张 · 副本文档</a>
+      <a class="btn secondary" href="StyleShift-Presentation.html" data-i18n="btn.presentation">StyleShift-Presentation</a>
+      <a class="btn secondary" href="StyleShift-设计过程与概念.html" data-i18n="btn.concept">设计过程与概念</a>
+      <a class="btn secondary" href="StyleShift-online-view.html" data-i18n-title="btn.onlineTitle" title="不依赖 GitHub Pages 的在线预览说明与链接" data-i18n="btn.online">在线预览入口（免 Pages）</a>
     </div>
-    <p style="margin-top:14px;font-size:.9rem;color:var(--text2)">展开版共约 6 大类屏，← → 换屏；每屏内点击一条「小点」标题查看详细介绍（同类内手风琴互斥）。另有完整逐页备份副本。若本站 <code>github.io</code> 显示 404，请到仓库 <strong>Settings → Pages</strong> 将发布源设为 <strong>GitHub Actions</strong>，并在 <strong>Actions</strong> 中确认部署已成功（或批准 <code>github-pages</code> 环境）。</p>
+    <p style="margin-top:14px;font-size:.9rem;color:var(--text2)" data-i18n="sec.quick.note">展开版共约 6 大类屏，← → 换屏；每屏内点击一条「小点」标题查看详细介绍（同类内手风琴互斥）。另有完整逐页备份副本。若本站 github.io 显示 404，请到仓库 Settings → Pages 将发布源设为 GitHub Actions，并在 Actions 中确认部署已成功（或批准 github-pages 环境）。</p>
   </section>
 
   <section>
-    <h2>小组信息</h2>
+    <h2 data-i18n="sec.team.h2">小组信息</h2>
     <ul class="team">
-      <li><strong>韩雨坤</strong> — MC56909</li>
-      <li><strong>杜佳洺</strong> — MC569281</li>
+      <li data-i18n-html="team.m1"><strong>韩雨坤</strong> — MC56909</li>
+      <li data-i18n-html="team.m2"><strong>杜佳洺</strong> — MC569281</li>
     </ul>
   </section>
 
   <section>
-    <h2>仓库与 README</h2>
+    <h2 data-i18n="sec.repo.h2">仓库与 README</h2>
     <ul>
-      <li><strong>最终代码（<code>main</code>）：</strong><a href="https://github.com/hanhanoooo523/hanyukun/tree/main" target="_blank" rel="noopener">github.com/hanhanoooo523/hanyukun</a></li>
-      <li><strong>使用说明 · 演示链接 · 组员：</strong><a href="https://github.com/hanhanoooo523/hanyukun/blob/main/README.md" target="_blank" rel="noopener">README.md</a></li>
-      <li><strong>项目演示视频：</strong><a href="https://github.com/hanhanoooo523/hanyukun/blob/main/README.md#video-presentation" target="_blank" rel="noopener">README → Video presentation</a>（上传后替换占位链接）</li>
-      <li><strong>本站（GitHub Pages）：</strong><a href="https://hanhanoooo523.github.io/hanyukun/" target="_blank" rel="noopener">hanhanoooo523.github.io/hanyukun/</a></li>
+      <li data-i18n-html="repo.l1"><strong>最终代码（main）：</strong><a href="https://github.com/hanhanoooo523/hanyukun/tree/main" target="_blank" rel="noopener">github.com/hanhanoooo523/hanyukun</a></li>
+      <li data-i18n-html="repo.l2"><strong>使用说明 · 演示链接 · 组员：</strong><a href="https://github.com/hanhanoooo523/hanyukun/blob/main/README.md" target="_blank" rel="noopener">README.md</a></li>
+      <li data-i18n-html="repo.l3"><strong>项目演示视频：</strong><a href="https://youtu.be/ExiegfsCOZk?si=AL3fVtOVhBubnkFS" target="_blank" rel="noopener">YouTube · 项目演示</a></li>
+      <li data-i18n-html="repo.l4"><strong>本站（GitHub Pages）：</strong><a href="https://hanhanoooo523.github.io/hanyukun/" target="_blank" rel="noopener">hanhanoooo523.github.io/hanyukun/</a></li>
     </ul>
   </section>
 
-  <footer>StyleShift — <a href="https://github.com/hanhanoooo523/hanyukun" target="_blank" rel="noopener">hanyukun</a></footer>
+  <footer data-i18n-html="footer.line">StyleShift — <a href="https://github.com/hanhanoooo523/hanyukun" target="_blank" rel="noopener">hanyukun</a></footer>
 </div>
+<script>
+(function () {
+  var LS_KEY = 'styleshift-site-lang';
+  var I18N = {
+    zh: {
+      'page.title': 'StyleShift · Project site',
+      'page.metaDesc': 'StyleShift 首页：改进版应用、设计演示、在线预览与 README 入口。',
+      'ui.langBtnTitle': '切换为 English / Switch to English',
+      'page.h1': 'StyleShift',
+      'page.sub': '设计风格迁移 · 网页工具与演示 · GitHub Pages 入口页',
+      'sec.quick.h2': '快速入口',
+      'btn.app': '改进版应用',
+      'btn.deckExpand': '设计演示 · 大类同页 · 点击小点展开',
+      'btn.classic': '经典版',
+      'btn.slides15': '设计演示 · 逐页15张',
+      'btn.slidesCopy': '逐页15张 · 副本文档',
+      'btn.presentation': 'StyleShift-Presentation',
+      'btn.concept': '设计过程与概念',
+      'btn.online': '在线预览入口（免 Pages）',
+      'btn.onlineTitle': '不依赖 GitHub Pages 的在线预览说明与链接',
+      'sec.quick.note': '展开版共约 6 大类屏，← → 换屏；每屏内点击一条「小点」标题查看详细介绍（同类内手风琴互斥）。另有完整逐页备份副本。若本站 <code>github.io</code> 显示 404，请到仓库 <strong>Settings → Pages</strong> 将发布源设为 <strong>GitHub Actions</strong>，并在 <strong>Actions</strong> 中确认部署已成功（或批准 <code>github-pages</code> 环境）。',
+      'sec.team.h2': '小组信息',
+      'team.m1': '<strong>韩雨坤</strong> — MC56909',
+      'team.m2': '<strong>杜佳洺</strong> — MC569281',
+      'sec.repo.h2': '仓库与 README',
+      'repo.l1': '<strong>最终代码（main）：</strong><a href="https://github.com/hanhanoooo523/hanyukun/tree/main" target="_blank" rel="noopener">github.com/hanhanoooo523/hanyukun</a>',
+      'repo.l2': '<strong>使用说明 · 演示链接 · 组员：</strong><a href="https://github.com/hanhanoooo523/hanyukun/blob/main/README.md" target="_blank" rel="noopener">README.md</a>',
+      'repo.l3': '<strong>项目演示视频：</strong><a href="https://youtu.be/ExiegfsCOZk?si=AL3fVtOVhBubnkFS" target="_blank" rel="noopener">YouTube · 项目演示</a>',
+      'repo.l4': '<strong>本站（GitHub Pages）：</strong><a href="https://hanhanoooo523.github.io/hanyukun/" target="_blank" rel="noopener">hanhanoooo523.github.io/hanyukun/</a>',
+      'footer.line': 'StyleShift — <a href="https://github.com/hanhanoooo523/hanyukun" target="_blank" rel="noopener">hanyukun</a>'
+    },
+    en: {
+      'page.title': 'StyleShift · Landing',
+      'page.metaDesc': 'StyleShift landing: improved app, decks, online preview, and README links.',
+      'ui.langBtnTitle': 'Switch to 中文 / 切换到中文',
+      'page.h1': 'StyleShift',
+      'page.sub': 'Style transfer · web tools & demos · GitHub Pages entry',
+      'sec.quick.h2': 'Quick links',
+      'btn.app': 'Improved app',
+      'btn.deckExpand': 'Deck · sections + expandable details',
+      'btn.classic': 'Classic app',
+      'btn.slides15': 'Slides · 15 pages',
+      'btn.slidesCopy': 'Slides · 15-page backup copy',
+      'btn.presentation': 'StyleShift-Presentation',
+      'btn.concept': 'Design process & concept',
+      'btn.online': 'Online preview (no Pages required)',
+      'btn.onlineTitle': 'HTML preview links that do not rely on GitHub Pages',
+      'sec.quick.note': 'Expanded deck: about 6 section screens, ← → to move; click a bullet title to expand (accordion). Full slide backup included. If github.io shows 404, set Settings → Pages source to GitHub Actions and confirm the workflow in Actions (approve github-pages environment if required).',
+      'sec.team.h2': 'Team',
+      'team.m1': '<strong>Han Yukun</strong> — MC56909',
+      'team.m2': '<strong>Du Jiaming</strong> — MC569281',
+      'sec.repo.h2': 'Repository & README',
+      'repo.l1': '<strong>Final code (main):</strong> <a href="https://github.com/hanhanoooo523/hanyukun/tree/main" target="_blank" rel="noopener">github.com/hanhanoooo523/hanyukun</a>',
+      'repo.l2': '<strong>Docs · demo links · team:</strong> <a href="https://github.com/hanhanoooo523/hanyukun/blob/main/README.md" target="_blank" rel="noopener">README.md</a>',
+      'repo.l3': '<strong>Demo video:</strong> <a href="https://youtu.be/ExiegfsCOZk?si=AL3fVtOVhBubnkFS" target="_blank" rel="noopener">YouTube · project demo</a>',
+      'repo.l4': '<strong>Site (GitHub Pages):</strong> <a href="https://hanhanoooo523.github.io/hanyukun/" target="_blank" rel="noopener">hanhanoooo523.github.io/hanyukun/</a>',
+      'footer.line': 'StyleShift — <a href="https://github.com/hanhanoooo523/hanyukun" target="_blank" rel="noopener">hanyukun</a>'
+    }
+  };
+
+  var lang = localStorage.getItem(LS_KEY) || localStorage.getItem('styleshift-concept-lang') || 'zh';
+  if (lang !== 'zh' && lang !== 'en') lang = 'zh';
+
+  function t(key) {
+    var d = I18N[lang] || I18N.zh;
+    return d[key] != null ? d[key] : (I18N.zh[key] != null ? I18N.zh[key] : key);
+  }
+
+  function apply() {
+    document.documentElement.lang = lang === 'zh' ? 'zh-CN' : 'en';
+    document.title = t('page.title');
+    var metaD = document.getElementById('pageMetaDesc');
+    if (metaD) metaD.setAttribute('content', t('page.metaDesc'));
+    document.querySelectorAll('[data-i18n-title]').forEach(function (el) {
+      var k = el.getAttribute('data-i18n-title');
+      if (k) el.setAttribute('title', t(k));
+    });
+    document.querySelectorAll('[data-i18n]').forEach(function (el) {
+      var k = el.getAttribute('data-i18n');
+      if (!k) return;
+      if (el.tagName === 'A' && el.querySelector('*')) return;
+      el.textContent = t(k);
+    });
+    document.querySelectorAll('[data-i18n-html]').forEach(function (el) {
+      var k = el.getAttribute('data-i18n-html');
+      if (k) el.innerHTML = t(k);
+    });
+    var btn = document.getElementById('indexLangBtn');
+    var lab = btn && btn.querySelector('.lang-btn-label');
+    if (lab) {
+      lab.textContent = lang === 'zh' ? 'English' : '中文';
+      btn.setAttribute('aria-label', lang === 'zh' ? 'Switch interface to English' : '将界面切换为中文');
+    }
+  }
+
+  document.getElementById('indexLangBtn').addEventListener('click', function () {
+    lang = lang === 'zh' ? 'en' : 'zh';
+    localStorage.setItem(LS_KEY, lang);
+    apply();
+  });
+
+  apply();
+})();
+</script>
 </body>
 </html>
