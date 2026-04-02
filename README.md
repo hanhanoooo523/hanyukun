@@ -17,7 +17,6 @@
 
 ## 设计过程与项目概念
 
-与 **[`StyleShift-设计过程与概念.html`](StyleShift-设计过程与概念.html)** 对照阅读；**线上**见 [GitHub Pages](#github-pages) 表中「设计过程与概念」一行。
 
 ### 设计过程
 
@@ -94,8 +93,7 @@ StyleShift 是一个直接在界面上完成图片风格转换与局部编辑的
 
 ## Video presentation
 
-**Project demo video（项目演示视频）：** 播放地址见上文 [「链接」表](#链接) 中「视频演示」一行。
-
+**Project demo video（项目演示视频）：https://youtu.be/ExiegfsCOZk?si=AL3fVtOVhBubnkFS
 
 ---
 
@@ -117,34 +115,6 @@ StyleShift 是一个直接在界面上完成图片风格转换与局部编辑的
 3. 顶栏：**English / 中文**、撤销、重置、**历史**（已保存缩略图）、导出。
 4. 生成后可使用右侧「元素拆解与替换」等区域能力（详见页面内说明）。
 
-**经典版：** [`设计风格迁移.html`](设计风格迁移.html)
-
 **运行说明：** 无需构建；`file://` 或任意静态服务均可。若本地脚本受限，可用 VS Code Live Server。
 
 ---
-
-## Presentation（演讲 / 设计演示）
-
-| 说明 | 文件 |
-|------|------|
-| 大类同页 · 小点展开（约 6 屏） | [`StyleShift-deck-expand.html`](StyleShift-deck-expand.html) |
-| 逐页 15 张 | [`StyleShift-设计演示.html`](StyleShift-设计演示.html) |
-| 汇报用 Presentation | [`StyleShift-Presentation.html`](StyleShift-Presentation.html) |
-| 功能介绍 | [`StyleShift-功能介绍.html`](StyleShift-功能介绍.html) |
-
----
-
-## 生成 PPT（可选）
-
-```powershell
-.\build-styleshift-pptx.ps1
-```
-
-正文数据：[`styleshift-slides.json`](styleshift-slides.json)
-
----
-
-## 许可与说明
-
-课程/演示用途整理；引用或分发前请自行确认素材与第三方协议。
-
