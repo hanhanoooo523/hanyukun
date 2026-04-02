@@ -365,9 +365,6 @@ body {
   border-color: var(--accent);
   background: rgba(124, 92, 252, 0.15);
 }
-.deck-action-btn--placeholder {
-  opacity: 0.88;
-}
 
 /* 汇报导出：浏览器「打印」→ 另存为 PDF（每页一帧幻灯片） */
 @media print {
@@ -424,7 +421,7 @@ body {
 
 <nav class="deck-action-bar" aria-label="快速操作">
   <a class="deck-action-btn" href="设计风格迁移-改进版.html" id="deckEnterApp" data-i18n="deck.enterApp">进入应用</a>
-  <a class="deck-action-btn deck-action-btn--placeholder" href="#" id="deckVideoLink" data-i18n="deck.video">视频讲解</a>
+  <a class="deck-action-btn" href="https://youtu.be/ExiegfsCOZk?si=AL3fVtOVhBubnkFS" id="deckVideoLink" target="_blank" rel="noopener noreferrer" data-i18n="deck.video">视频讲解</a>
   <a class="deck-action-btn" href="https://github.com/hanhanoooo523/hanyukun/blob/main/README.md" id="deckReadmeLink" target="_blank" rel="noopener noreferrer" data-i18n="deck.readme">README</a>
 </nav>
 
@@ -844,8 +841,8 @@ body {
     }
     var videoL = document.getElementById('deckVideoLink');
     if (videoL) {
-      videoL.title = deckLang === 'zh' ? '视频链接待补充' : 'Video link TBD';
-      videoL.setAttribute('aria-label', tDeck('deck.video') + (deckLang === 'zh' ? '（链接待补充）' : ' (link TBD)'));
+      videoL.title = deckLang === 'zh' ? '在 YouTube 打开项目演示视频' : 'Open project demo video on YouTube';
+      videoL.setAttribute('aria-label', deckLang === 'zh' ? '视频讲解（新窗口打开 YouTube）' : 'Video (opens YouTube in a new tab)');
     }
     var readmeL = document.getElementById('deckReadmeLink');
     if (readmeL) {
@@ -862,14 +859,6 @@ body {
   }
 
   document.getElementById('deckLangBtn').addEventListener('click', toggleDeckLang);
-
-  var deckVideoLink = document.getElementById('deckVideoLink');
-  if (deckVideoLink) {
-    deckVideoLink.addEventListener('click', function (e) {
-      var h = (deckVideoLink.getAttribute('href') || '').trim();
-      if (!h || h === '#' || h === '#!') e.preventDefault();
-    });
-  }
 
   const slides = Array.from(document.querySelectorAll('.slide'));
   const n = slides.length;
