@@ -423,9 +423,9 @@ body {
 <p class="ui-hint" data-i18n="ui.hint">← → / 空格翻页 · 亦可左右滑动</p>
 
 <nav class="deck-action-bar" aria-label="快速操作">
-  <a class="deck-action-btn" href="设计风格迁移.html" data-i18n="deck.enterApp">进入应用</a>
+  <a class="deck-action-btn" href="设计风格迁移-改进版.html" id="deckEnterApp" data-i18n="deck.enterApp">进入应用</a>
   <a class="deck-action-btn deck-action-btn--placeholder" href="#" id="deckVideoLink" data-i18n="deck.video">视频讲解</a>
-  <a class="deck-action-btn" href="https://github.com/hanhanoooo523/hanyukun" target="_blank" rel="noopener noreferrer" data-i18n="deck.github">GitHub</a>
+  <a class="deck-action-btn" href="https://github.com/hanhanoooo523/hanyukun/blob/main/README.md" id="deckReadmeLink" target="_blank" rel="noopener noreferrer" data-i18n="deck.readme">README</a>
 </nav>
 
 <div class="deck" id="deck" role="region" aria-label="幻灯片">
@@ -623,7 +623,7 @@ body {
       'deck.langSwitch': 'English',
       'deck.enterApp': '进入应用',
       'deck.video': '视频讲解',
-      'deck.github': 'GitHub',
+      'deck.readme': 'README',
       'd0.tag': '视觉风格探索 · 设计陈述',
       'd0.h1': 'StyleShift：为设计师打造的直观风格转换工具',
       'd0.members': '韩雨坤MC56909 · 杜佳洺MC569281',
@@ -704,7 +704,7 @@ body {
       'deck.langSwitch': '中文',
       'deck.enterApp': 'Open app',
       'deck.video': 'Video',
-      'deck.github': 'GitHub',
+      'deck.readme': 'README',
       'd0.tag': 'Visual exploration · Design story',
       'd0.h1': 'StyleShift: Intuitive style transfer built for designers',
       'd0.members': 'Han Yukun MC56909 · Du Jiaming MC569281',
@@ -784,6 +784,35 @@ body {
     return DECK_STR.zh[k] !== undefined ? DECK_STR.zh[k] : k;
   }
 
+  function initDeckEnterAppLink() {
+    var el = document.getElementById('deckEnterApp');
+    if (!el) return;
+    var rel = '设计风格迁移-改进版.html';
+    var blob = 'https://github.com/hanhanoooo523/hanyukun/blob/main/%E8%AE%BE%E8%AE%A1%E9%A3%8E%E6%A0%BC%E8%BF%81%E7%A7%BB-%E6%94%B9%E8%BF%9B%E7%89%88.html';
+    var host = '';
+    var proto = '';
+    var path = '';
+    try {
+      host = location.hostname || '';
+      proto = location.protocol || '';
+      path = location.pathname || '';
+    } catch (err) {}
+    var onFile = proto === 'file:';
+    var onProjectPages = /hanhanoooo523\.github\.io$/i.test(host) && /hanyukun/i.test(path);
+    var localHost = /^localhost$/i.test(host) || /^127\.0\.0\.1$/.test(host);
+    if (onFile || onProjectPages || localHost) {
+      el.setAttribute('href', rel);
+      el.removeAttribute('rel');
+      el.setAttribute('target', '_self');
+      el.title = deckLang === 'zh' ? '打开同目录下的「设计风格迁移-改进版」' : 'Open improved app (same folder)';
+    } else {
+      el.setAttribute('href', blob);
+      el.setAttribute('target', '_blank');
+      el.setAttribute('rel', 'noopener noreferrer');
+      el.title = deckLang === 'zh' ? '在 GitHub 打开改进版（可下载后双击运行，或在页面中点击「Raw」）' : 'Open improved app on GitHub (download or use Raw)';
+    }
+  }
+
   function applyDeckI18n() {
     document.documentElement.lang = deckLang === 'zh' ? 'zh-CN' : 'en';
     document.querySelectorAll('[data-i18n]').forEach(function (el) {
@@ -818,6 +847,12 @@ body {
       videoL.title = deckLang === 'zh' ? '视频链接待补充' : 'Video link TBD';
       videoL.setAttribute('aria-label', tDeck('deck.video') + (deckLang === 'zh' ? '（链接待补充）' : ' (link TBD)'));
     }
+    var readmeL = document.getElementById('deckReadmeLink');
+    if (readmeL) {
+      readmeL.title = deckLang === 'zh' ? '在 GitHub 上打开 README.md' : 'Open README.md on GitHub';
+      readmeL.setAttribute('aria-label', deckLang === 'zh' ? '打开仓库说明 README' : 'Open repository README');
+    }
+    initDeckEnterAppLink();
   }
 
   function toggleDeckLang() {
