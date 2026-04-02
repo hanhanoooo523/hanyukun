@@ -2,6 +2,8 @@
 
 纯前端的「设计风格迁移」工具与课程汇报材料。
 
+**语言 Languages：** 下文为中文说明 · Full **English** text is in the [**English**](#english) section at the bottom of this file.
+
 ---
 
 ## Course submission（课程要求对照）
@@ -67,6 +69,7 @@ StyleShift 是一个直接在界面上完成图片风格转换与局部编辑的
 | 应用界面 | 改进版 · GitHub Pages | [设计风格迁移-改进版（线上）](https://hanhanoooo523.github.io/hanyukun/%E8%AE%BE%E8%AE%A1%E9%A3%8E%E6%A0%BC%E8%BF%81%E7%A7%BB-%E6%94%B9%E8%BF%9B%E7%89%88.html) |
 | 演示界面 | StyleShift-Presentation | [StyleShift-Presentation（线上）](https://hanhanoooo523.github.io/hanyukun/StyleShift-Presentation.html) |
 | GitHub | 源码仓库 | [hanhanoooo523/hanyukun](https://github.com/hanhanoooo523/hanyukun) |
+| 更多入口 | 功能介绍 · GitHub Pages | [StyleShift-功能介绍（线上）](https://hanhanoooo523.github.io/hanyukun/StyleShift-%E5%8A%9F%E8%83%BD%E4%BB%8B%E7%BB%8D.html) |
 
 ---
 
@@ -92,7 +95,7 @@ StyleShift 是一个直接在界面上完成图片风格转换与局部编辑的
 
 ## Video presentation
 
-**Project demo video（项目演示视频）：https://youtu.be/ExiegfsCOZk?si=AL3fVtOVhBubnkFS
+**Project demo video（项目演示视频）：** [YouTube](https://youtu.be/ExiegfsCOZk?si=AL3fVtOVhBubnkFS)
 
 ---
 
@@ -115,5 +118,92 @@ StyleShift 是一个直接在界面上完成图片风格转换与局部编辑的
 4. 生成后可使用右侧「元素拆解与替换」等区域能力（详见页面内说明）。
 
 **运行说明：** 无需构建；`file://` 或任意静态服务均可。若本地脚本受限，可用 VS Code Live Server。
+
+---
+
+## English
+
+Static, front-end **design style transfer** tools and course submission materials (same repository as above).
+
+### Course submission
+
+| Requirement | Where |
+|-------------|--------|
+| **Final code on GitHub (`main`)** | **[hanhanoooo523/hanyukun](https://github.com/hanhanoooo523/hanyukun)** on **`main`**. Clone: `git clone https://github.com/hanhanoooo523/hanyukun.git` |
+| **README (app, presentation, team)** | **[README.md](https://github.com/hanhanoooo523/hanyukun/blob/main/README.md)** on `main` |
+| **Video presentation** | **[YouTube demo](https://youtu.be/ExiegfsCOZk?si=AL3fVtOVhBubnkFS)** |
+| **GitHub Pages** | **[GitHub Pages](#github-pages)** — URLs and file mapping are in the table below |
+
+### Design process & project concept
+
+#### Design process
+
+We started from whole-image style transfer, then iterated the UI and interactions from feedback—adding color-region picking, local re-transfer, a three-column workflow, and history/undo.
+
+#### Project concept
+
+**StyleShift** is a design-oriented tool for **in-browser image style transfer and local editing**.
+
+It moves from a single “apply to everything” model to a workflow that is **decomposable, blendable, and locally refinable**, similar to grading a picture’s look.
+
+#### Goals
+
+- Quickly explore multiple design styles to save time and spark ideas;  
+- Compare styles on the same elements to support decisions;  
+- Extract color regions and blend several styles in one frame for a new visual language.
+
+#### Core features
+
+1. **Whole image → local editing** — Early builds only supported full-image transfer; we added smart regions + local transfer for subjects/backgrounds.  
+2. **Element split + click to select** — Main color regions are detected; pick from a list or click the canvas.  
+3. **Three columns + compare** — “Original | Style | Result”; compare mode uses a draggable divider.  
+4. **History & undo** — Encourages trying ideas with easy rollback.  
+5. **English / 中文 with persistence** — Preference is stored in the browser.
+
+#### Links
+
+| Type | Description | Link |
+| --- | --- | --- |
+| Video | Project demo (YouTube) | [youtu.be/ExiegfsCOZk](https://youtu.be/ExiegfsCOZk?si=AL3fVtOVhBubnkFS) |
+| App | Improved build · GitHub Pages | [Open on Pages](https://hanhanoooo523.github.io/hanyukun/%E8%AE%BE%E8%AE%A1%E9%A3%8E%E6%A0%BC%E8%BF%81%E7%A7%BB-%E6%94%B9%E8%BF%9B%E7%89%88.html) |
+| Deck | StyleShift-Presentation | [Open on Pages](https://hanhanoooo523.github.io/hanyukun/StyleShift-Presentation.html) |
+| User guide | Feature how-to (bilingual page) | [StyleShift feature guide](https://hanhanoooo523.github.io/hanyukun/StyleShift-%E5%8A%9F%E8%83%BD%E4%BB%8B%E7%BB%8D.html) |
+| GitHub | Source | [hanhanoooo523/hanyukun](https://github.com/hanhanoooo523/hanyukun) |
+
+### GitHub Pages
+
+**Live site (keep this URL in the README for grading):**  
+**https://hanhanoooo523.github.io/hanyukun/**
+
+| Page | GitHub Pages URL | File on `main` |
+|------|------------------|----------------|
+| **Landing** | [hanhanoooo523.github.io/hanyukun/](https://hanhanoooo523.github.io/hanyukun/) | [`index.html`](index.html) |
+| **Design process & concept** | […/StyleShift-设计过程与概念.html](https://hanhanoooo523.github.io/hanyukun/StyleShift-%E8%AE%BE%E8%AE%A1%E8%BF%87%E7%A8%8B%E4%B8%8E%E6%A6%82%E5%BF%B5.html) | [`StyleShift-设计过程与概念.html`](StyleShift-设计过程与概念.html) |
+| **Slide deck (15 pages)** | […/StyleShift-设计演示.html](https://hanhanoooo523.github.io/hanyukun/StyleShift-%E8%AE%BE%E8%AE%A1%E6%BC%94%E7%A4%BA.html) | [`StyleShift-设计演示.html`](StyleShift-设计演示.html) |
+| **Improved app** | […/设计风格迁移-改进版.html](https://hanhanoooo523.github.io/hanyukun/%E8%AE%BE%E8%AE%A1%E9%A3%8E%E6%A0%BC%E8%BF%81%E7%A7%BB-%E6%94%B9%E8%BF%9B%E7%89%88.html) | [`设计风格迁移-改进版.html`](设计风格迁移-改进版.html) |
+
+**First-time deploy:** **Settings → Pages → Build and deployment → Source: GitHub Actions**, workflow in [`.github/workflows/pages.yml`](.github/workflows/pages.yml); pushes to **`main`** publish the site.
+
+**Preview without Pages:** [`StyleShift-online-view.html`](StyleShift-online-view.html) · [htmlpreview entry](https://htmlpreview.github.io/?https://raw.githubusercontent.com/hanhanoooo523/hanyukun/main/StyleShift-online-view.html). You can also open [`StyleShift-Presentation.html`](StyleShift-Presentation.html) or [`StyleShift-设计演示.html`](StyleShift-设计演示.html) locally.
+
+### Video presentation
+
+**Demo video:** [YouTube](https://youtu.be/ExiegfsCOZk?si=AL3fVtOVhBubnkFS)
+
+### Group members
+
+| Name | Student ID |
+|------|------------|
+| Han Yukun 韩雨坤 | MC56909 |
+| Du Jiaming 杜佳洺 | MC569281 |
+
+### How to use the app
+
+1. **Local:** open [`设计风格迁移-改进版.html`](设计风格迁移-改进版.html). **Online:** open the [Pages home](https://hanhanoooo523.github.io/hanyukun/) and choose the improved app.  
+2. Upload on the left (drag or click), pick a style and parameters in the center, click generate, view on the right.  
+3. Top bar: **English / 中文**, undo, reset, **history**, export.  
+4. After generating, use **element split & replace** and related panels (see in-app copy).
+
+**Runtime:** no build step; `file://` or any static server works. If scripts are blocked locally, use e.g. VS Code Live Server.
 
 ---
