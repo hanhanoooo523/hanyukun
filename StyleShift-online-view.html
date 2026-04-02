@@ -28,16 +28,18 @@
     <p class="sub">当 <code>github.io</code> 无法访问时，可用下面方式让任何人用浏览器直接看演示稿（无需登录 GitHub）。配图已内嵌在演示 HTML 内，单文件即可展示。</p>
 
     <section>
-      <h2>方式一：一键在线预览（推荐先试）</h2>
-      <p>通过 HTML Preview 读取仓库里的原始文件，不依赖 GitHub Pages。</p>
+      <h2>方式一：一键在线预览（适合演示幻灯）</h2>
+      <p>通过 HTML Preview 读取仓库里的原始文件。幻灯类页面一般可用；<strong>改进版应用</strong>体积大，Preview 常超时失败，请改用下方「GitHub 打开改进版」。</p>
       <p style="margin-top:10px">
         <a class="btn" target="_blank" rel="noopener noreferrer" id="linkPresentation" href="#">打开 StyleShift-Presentation</a>
         <a class="btn" target="_blank" rel="noopener noreferrer" id="linkDeck15" href="#">打开 StyleShift-设计演示（逐页 15 张）</a>
       </p>
-      <p style="margin-top:10px">若按钮无效，请把下面整段链接复制到浏览器地址栏：</p>
+      <p style="margin-top:10px"><strong>改进版应用（稳定）：</strong><a class="btn" target="_blank" rel="noopener noreferrer" id="linkImproved" href="#">在 GitHub 打开「设计风格迁移-改进版」</a></p>
+      <p style="margin-top:6px;font-size:0.82rem">在仓库页可<strong>下载</strong>后在本地双击运行，或点右上角 <strong>Raw</strong> 在新标签用浏览器打开（视浏览器而定）。</p>
+      <p style="margin-top:10px">若 Preview 无效，请把下面整段链接复制到浏览器地址栏：</p>
       <p><a class="link" id="urlPresentation" href="#"></a></p>
       <p><a class="link" id="urlDeck15" href="#"></a></p>
-      <p style="margin-top:8px;font-size:0.82rem">说明：首次加载大图稿可能需等待十几秒；若页面空白可多刷新一次。</p>
+      <p style="margin-top:8px;font-size:0.82rem">说明：幻灯首次加载可能需等待十余秒；若空白可多刷新。</p>
     </section>
 
     <section>
@@ -61,8 +63,10 @@
   var preview = 'https://htmlpreview.github.io/?';
   var uPres = preview + rawBase + 'StyleShift-Presentation.html';
   var uDeck = preview + rawBase + 'StyleShift-%E8%AE%BE%E8%AE%A1%E6%BC%94%E7%A4%BA.html';
+  var uImprovedBlob = 'https://github.com/hanhanoooo523/hanyukun/blob/main/%E8%AE%BE%E8%AE%A1%E9%A3%8E%E6%A0%BC%E8%BF%81%E7%A7%BB-%E6%94%B9%E8%BF%9B%E7%89%88.html';
   document.getElementById('linkPresentation').href = uPres;
   document.getElementById('linkDeck15').href = uDeck;
+  document.getElementById('linkImproved').href = uImprovedBlob;
   document.getElementById('urlPresentation').href = uPres;
   document.getElementById('urlPresentation').textContent = uPres;
   document.getElementById('urlDeck15').href = uDeck;
