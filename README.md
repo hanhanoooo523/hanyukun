@@ -125,6 +125,8 @@ StyleShift 是一个直接在界面上完成图片风格转换与局部编辑的
 
 Static, front-end **design style transfer** tools and course submission materials (same repository as above).
 
+---
+
 ### Course submission
 
 | Requirement | Where |
@@ -133,6 +135,8 @@ Static, front-end **design style transfer** tools and course submission material
 | **README (app, presentation, team)** | **[README.md](https://github.com/hanhanoooo523/hanyukun/blob/main/README.md)** on `main` |
 | **Video presentation** | **[YouTube demo](https://youtu.be/ExiegfsCOZk?si=AL3fVtOVhBubnkFS)** |
 | **GitHub Pages** | **[GitHub Pages](#github-pages)** — URLs and file mapping are in the table below |
+
+---
 
 ### Design process & project concept
 
@@ -146,11 +150,15 @@ We started from whole-image style transfer, then iterated the UI and interaction
 
 It moves from a single “apply to everything” model to a workflow that is **decomposable, blendable, and locally refinable**, similar to grading a picture’s look.
 
+---
+
 #### Goals
 
 - Quickly explore multiple design styles to save time and spark ideas;  
 - Compare styles on the same elements to support decisions;  
 - Extract color regions and blend several styles in one frame for a new visual language.
+
+---
 
 #### Core features
 
@@ -159,6 +167,8 @@ It moves from a single “apply to everything” model to a workflow that is **d
 3. **Three columns + compare** — “Original | Style | Result”; compare mode uses a draggable divider.  
 4. **History & undo** — Encourages trying ideas with easy rollback.  
 5. **English / 中文 with persistence** — Preference is stored in the browser.
+
+---
 
 #### Links
 
@@ -169,6 +179,8 @@ It moves from a single “apply to everything” model to a workflow that is **d
 | Deck | StyleShift-Presentation | [Open on Pages](https://hanhanoooo523.github.io/hanyukun/StyleShift-Presentation.html) |
 | User guide | Feature how-to (bilingual page) | [StyleShift feature guide](https://hanhanoooo523.github.io/hanyukun/StyleShift-%E5%8A%9F%E8%83%BD%E4%BB%8B%E7%BB%8D.html) |
 | GitHub | Source | [hanhanoooo523/hanyukun](https://github.com/hanhanoooo523/hanyukun) |
+
+---
 
 ### GitHub Pages
 
@@ -186,9 +198,13 @@ It moves from a single “apply to everything” model to a workflow that is **d
 
 **Preview without Pages:** [`StyleShift-online-view.html`](StyleShift-online-view.html) · [htmlpreview entry](https://htmlpreview.github.io/?https://raw.githubusercontent.com/hanhanoooo523/hanyukun/main/StyleShift-online-view.html). You can also open [`StyleShift-Presentation.html`](StyleShift-Presentation.html) or [`StyleShift-设计演示.html`](StyleShift-设计演示.html) locally.
 
+---
+
 ### Video presentation
 
 **Demo video:** [YouTube](https://youtu.be/ExiegfsCOZk?si=AL3fVtOVhBubnkFS)
+
+---
 
 ### Group members
 
@@ -196,6 +212,8 @@ It moves from a single “apply to everything” model to a workflow that is **d
 |------|------------|
 | Han Yukun 韩雨坤 | MC56909 |
 | Du Jiaming 杜佳洺 | MC569281 |
+
+---
 
 ### How to use the app
 
