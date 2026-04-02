@@ -17,7 +17,6 @@
 
 ## 设计过程与项目概念
 
-课程陈述如下（与 **[`StyleShift-设计过程与概念.html`](StyleShift-设计过程与概念.html)** 一致；线上：[Pages](https://hanhanoooo523.github.io/hanyukun/StyleShift-%E8%AE%BE%E8%AE%A1%E8%BF%87%E7%A8%8B%E4%B8%8E%E6%A6%82%E5%BF%B5.html)）。
 
 ### 设计过程
 
@@ -167,19 +166,3 @@ StyleShift 是一个直接在界面上完成图片风格转换与局部编辑的
 **操作（展开版）：** **← →** / **空格** 切换大类页；**鼠标点击** 每条小点标题展开/收起详细介绍；同一大类内 **手风琴互斥**（同时只展开一条）。**操作（逐页版）：** **← →** 逐张翻页。均支持 **中文 / English**；**打印 → 另存为 PDF** 可导出。
 
 **其他页面：** [`StyleShift-设计过程与概念.html`](StyleShift-设计过程与概念.html)、[`StyleShift-Presentation.html`](StyleShift-Presentation.html)、[`StyleShift-Design-Presentation.html`](StyleShift-Design-Presentation.html)、[`StyleShift-功能介绍.html`](StyleShift-功能介绍.html)
-
----
-
-## 生成 PPT（可选）
-
-```powershell
-.\build-styleshift-pptx.ps1
-```
-
-正文以 [`styleshift-slides.json`](styleshift-slides.json) 为准，建议与 HTML 演示稿保持一致。
-
----
-
-## 许可与说明
-
-课程/演示用途整理；引用或分发前请自行确认素材与第三方协议。
