@@ -1,4 +1,4 @@
-# StyleShift · 设计风格迁移（Style Transfer）
+# StyleShift · 设计风格迁移
 
 纯前端的「设计风格迁移」工具与课程汇报材料。
 
@@ -16,7 +16,6 @@
 ---
 
 ## 设计过程与项目概念
-
 
 ### 设计过程
 
@@ -38,6 +37,7 @@ StyleShift 是一个直接在界面上完成图片风格转换与局部编辑的
 - 对相同元素尝试不同风格，直观对比，辅助决策；
 - 提取画面中的色块元素，将多种风格融合在同一画面中，形成新的设计语言。
 
+---
 
 ### 核心设计功能
 
@@ -67,7 +67,6 @@ StyleShift 是一个直接在界面上完成图片风格转换与局部编辑的
 **演示界面：** [`StyleShift-Presentation.html`](StyleShift-Presentation.html) · [`StyleShift-设计演示.html`](StyleShift-设计演示.html) · [HTML Preview · Presentation](https://htmlpreview.github.io/?https://raw.githubusercontent.com/hanhanoooo523/hanyukun/main/StyleShift-Presentation.html)
 
 **GitHub：** [hanhanoooo523/hanyukun](https://github.com/hanhanoooo523/hanyukun)
-
 
 ---
 
