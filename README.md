@@ -1,4 +1,4 @@
-# StyleShift · 设计风格迁移
+# StyleShift · 设计风格迁移（Style Transfer）
 
 纯前端的「设计风格迁移」工具与课程汇报材料。
 
@@ -10,12 +10,14 @@
 |-------------|--------|
 | **Final code on GitHub (`main`)** | Repository: **[hanhanoooo523/hanyukun](https://github.com/hanhanoooo523/hanyukun)** — the **`main`** branch is the final submission. Clone: `git clone https://github.com/hanhanoooo523/hanyukun.git` |
 | **README describing the app, presentation, team** | This file: **[README.md on `main`](https://github.com/hanhanoooo523/hanyukun/blob/main/README.md)** |
-| **Video presentation** | [Video presentation](#video-presentation) — [YouTube 演示](https://youtu.be/ExiegfsCOZk?si=AL3fVtOVhBubnkFS) |
+| **Video presentation** | [YouTube 演示](https://youtu.be/ExiegfsCOZk?si=AL3fVtOVhBubnkFS) |
 | **GitHub Pages (site + presentation)** | [GitHub Pages](#github-pages) — link and paths are below; the live site mirrors slides and entry points from the repo |
 
 ---
 
 ## 设计过程与项目概念
+
+与 **[`StyleShift-设计过程与概念.html`](StyleShift-设计过程与概念.html)** 对照阅读；**线上**见 [GitHub Pages](#github-pages) 表中「设计过程与概念」一行。
 
 ### 设计过程
 
@@ -60,13 +62,13 @@ StyleShift 是一个直接在界面上完成图片风格转换与局部编辑的
 
 ### 链接
 
-**视频演示：** [YouTube 项目演示](https://youtu.be/ExiegfsCOZk?si=AL3fVtOVhBubnkFS) · [README 视频小节](#video-presentation)
-
-**应用界面：** [本地改进版](设计风格迁移-改进版.html) · [仓库内浏览](https://github.com/hanhanoooo523/hanyukun/blob/main/%E8%AE%BE%E8%AE%A1%E9%A3%8E%E6%A0%BC%E8%BF%81%E7%A7%BB-%E6%94%B9%E8%BF%9B%E7%89%88.html) · [GitHub Pages](https://hanhanoooo523.github.io/hanyukun/%E8%AE%BE%E8%AE%A1%E9%A3%8E%E6%A0%BC%E8%BF%81%E7%A7%BB-%E6%94%B9%E8%BF%9B%E7%89%88.html)
-
-**演示界面：** [`StyleShift-Presentation.html`](StyleShift-Presentation.html) · [`StyleShift-设计演示.html`](StyleShift-设计演示.html) · [HTML Preview · Presentation](https://htmlpreview.github.io/?https://raw.githubusercontent.com/hanhanoooo523/hanyukun/main/StyleShift-Presentation.html)
-
-**GitHub：** [hanhanoooo523/hanyukun](https://github.com/hanhanoooo523/hanyukun)
+| 类型 | 说明 | 链接 |
+| --- | --- | --- |
+| 视频演示 | 项目演示（YouTube） | [youtu.be/ExiegfsCOZk](https://youtu.be/ExiegfsCOZk?si=AL3fVtOVhBubnkFS) |
+| 应用界面 | 改进版 · GitHub Pages | [设计风格迁移-改进版（线上）](https://hanhanoooo523.github.io/hanyukun/%E8%AE%BE%E8%AE%A1%E9%A3%8E%E6%A0%BC%E8%BF%81%E7%A7%BB-%E6%94%B9%E8%BF%9B%E7%89%88.html) |
+| 演示界面 | StyleShift-Presentation | [StyleShift-Presentation（线上）](https://hanhanoooo523.github.io/hanyukun/StyleShift-Presentation.html) |
+| GitHub | 源码仓库 | [hanhanoooo523/hanyukun](https://github.com/hanhanoooo523/hanyukun) |
+| 更多入口 | 首页、逐页演示、仓库路径 | [GitHub Pages 主表](#github-pages) · [Course submission](#course-submission课程要求对照) |
 
 ---
 
@@ -84,7 +86,7 @@ StyleShift 是一个直接在界面上完成图片风格转换与局部编辑的
 
 首次部署：**Settings → Pages → Build and deployment → Source: GitHub Actions**，工作流见 [`.github/workflows/pages.yml`](.github/workflows/pages.yml)；向 **`main`** 推送后会自动发布。
 
-
+**不依赖 Pages 的预览：** [`StyleShift-online-view.html`](StyleShift-online-view.html)（htmlpreview：[入口](https://htmlpreview.github.io/?https://raw.githubusercontent.com/hanhanoooo523/hanyukun/main/StyleShift-online-view.html)）；单文件亦可下载后本地双击打开 [`StyleShift-Presentation.html`](StyleShift-Presentation.html)、[`StyleShift-设计演示.html`](StyleShift-设计演示.html)。
 
 本地入口文件：[`StyleShift-online-view.html`](StyleShift-online-view.html)（体积小，也可下载后本地双击使用上面的链接）。
 
@@ -92,17 +94,17 @@ StyleShift 是一个直接在界面上完成图片风格转换与局部编辑的
 
 ## Video presentation
 
-**Project demo video（项目演示视频）：** [https://youtu.be/ExiegfsCOZk?si=AL3fVtOVhBubnkFS](https://youtu.be/ExiegfsCOZk?si=AL3fVtOVhBubnkFS)（YouTube）
+**Project demo video（项目演示视频）：** 播放地址见上文 [「链接」表](#链接) 中「视频演示」一行。
 
 
 ---
 
 ## Group members（小组成员）
 
-| Name | Student ID |
+| 姓名 | Student ID |
 |------|------------|
-| 韩雨坤 | MC56909 |
-| 杜佳洺 | MC569281 |
+| 韩雨坤 HAN YUKUN | MC56909 |
+| 杜佳洺 DU JIAMING | MC569281 |
 
 ---
 
@@ -115,5 +117,34 @@ StyleShift 是一个直接在界面上完成图片风格转换与局部编辑的
 3. 顶栏：**English / 中文**、撤销、重置、**历史**（已保存缩略图）、导出。
 4. 生成后可使用右侧「元素拆解与替换」等区域能力（详见页面内说明）。
 
+**经典版：** [`设计风格迁移.html`](设计风格迁移.html)
 
+**运行说明：** 无需构建；`file://` 或任意静态服务均可。若本地脚本受限，可用 VS Code Live Server。
+
+---
+
+## Presentation（演讲 / 设计演示）
+
+| 说明 | 文件 |
+|------|------|
+| 大类同页 · 小点展开（约 6 屏） | [`StyleShift-deck-expand.html`](StyleShift-deck-expand.html) |
+| 逐页 15 张 | [`StyleShift-设计演示.html`](StyleShift-设计演示.html) |
+| 汇报用 Presentation | [`StyleShift-Presentation.html`](StyleShift-Presentation.html) |
+| 功能介绍 | [`StyleShift-功能介绍.html`](StyleShift-功能介绍.html) |
+
+---
+
+## 生成 PPT（可选）
+
+```powershell
+.\build-styleshift-pptx.ps1
+```
+
+正文数据：[`styleshift-slides.json`](styleshift-slides.json)
+
+---
+
+## 许可与说明
+
+课程/演示用途整理；引用或分发前请自行确认素材与第三方协议。
 
