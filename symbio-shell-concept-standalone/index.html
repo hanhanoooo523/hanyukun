@@ -1,0 +1,1160 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Symbio-Shell（共生壳）：基于生理反馈与合成生物代谢逻辑的活性手机界面。四层层压解剖、呼吸散热与极微距气孔；皮质醇映射与感官干预、废热代谢、复苏仪式与生物葬礼叙事。">
+<title>共生壳 Symbio-Shell v1.0 — 概念页 · 独立网页</title>
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --bg: #0a0f0d;
+  --surface: #121c18;
+  --border: #2a3d34;
+  --accent: #2dd4a3;
+  --accent2: #5eead4;
+  --life: #be123c;
+  --life-dim: rgba(190,18,60,0.35);
+  --text: #e8f0eb;
+  --text2: #8fa89a;
+  --warn: #fcd34d;
+  --radius: 14px;
+}
+html { scroll-behavior: smooth; }
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+}
+body {
+  font-family: 'Segoe UI', system-ui, -apple-system, 'PingFang SC', 'Microsoft YaHei', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.7;
+  font-size: 16px;
+}
+a { color: var(--accent2); text-decoration: none; }
+a:hover { text-decoration: underline; }
+a:focus-visible {
+  outline: 2px solid var(--accent2);
+  outline-offset: 3px;
+}
+.skip-link {
+  position: absolute;
+  left: 14px;
+  top: -120px;
+  z-index: 200;
+  padding: 10px 16px;
+  border-radius: 10px;
+  background: var(--surface);
+  border: 1px solid var(--accent2);
+  color: var(--text);
+  font-size: 14px;
+  font-weight: 600;
+}
+.skip-link:focus {
+  top: 14px;
+  outline: none;
+}
+.site-head {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px 16px;
+  padding: 14px 24px;
+  background: rgba(18,28,24,0.94);
+  backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--border);
+}
+.site-logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-weight: 700;
+  font-size: 1.1rem;
+}
+.site-head > a.site-logo {
+  background: none;
+  -webkit-text-fill-color: unset;
+}
+.site-head > a.site-logo:hover { text-decoration: none; opacity: 0.92; }
+.site-head-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px 14px;
+  justify-content: flex-end;
+}
+.site-nav {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px 12px;
+  font-size: 13px;
+}
+@media (min-width: 900px) {
+  .site-nav { font-size: 14px; gap: 8px 16px; }
+}
+.site-nav a { color: var(--text2); white-space: nowrap; }
+.site-nav a:hover { color: var(--text); }
+.site-nav a.nav-home {
+  padding: 6px 12px;
+  border-radius: 999px;
+  background: rgba(45,212,163,0.1);
+  border: 1px solid rgba(94,234,212,0.28);
+  color: var(--accent2);
+  font-weight: 600;
+}
+.site-nav a.nav-home:hover { background: rgba(45,212,163,0.16); color: var(--text); text-decoration: none; }
+.lang-toggle {
+  flex-shrink: 0;
+  padding: 6px 12px;
+  border-radius: 999px;
+  border: 1px solid rgba(94, 234, 212, 0.4);
+  background: rgba(45, 212, 163, 0.12);
+  color: var(--accent2);
+  font-size: 13px;
+  font-weight: 600;
+  font-family: inherit;
+  cursor: pointer;
+  line-height: 1.2;
+}
+.lang-toggle:hover {
+  background: rgba(45, 212, 163, 0.2);
+  color: var(--text);
+}
+.lang-toggle:focus-visible {
+  outline: 2px solid var(--accent2);
+  outline-offset: 2px;
+}
+.site-nav .nav-sep {
+  width: 1px;
+  height: 14px;
+  background: var(--border);
+  margin: 0 2px;
+  flex-shrink: 0;
+}
+#motivation,
+#structure,
+#anatomy,
+#layers,
+#mechanism,
+#interaction,
+#vision {
+  scroll-margin-top: 88px;
+}
+.hero {
+  max-width: 920px;
+  margin: 0 auto;
+  padding: 48px 24px 36px;
+  text-align: center;
+}
+.hero .tagline {
+  display: inline-block;
+  margin-bottom: 14px;
+  padding: 6px 14px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--accent2);
+  background: rgba(45,212,163,0.12);
+  border: 1px solid rgba(94,234,212,0.35);
+}
+.hero h1 {
+  font-size: clamp(1.85rem, 4.2vw, 2.5rem);
+  font-weight: 700;
+  margin-bottom: 10px;
+  line-height: 1.2;
+}
+.hero .en-name {
+  font-size: 1.05rem;
+  font-weight: 500;
+  color: var(--text2);
+  margin-bottom: 18px;
+  letter-spacing: 0.04em;
+}
+.hero-lead {
+  color: var(--text2);
+  max-width: 680px;
+  margin: 0 auto;
+  font-size: 1.06rem;
+}
+.hero-deck {
+  max-width: 560px;
+  margin: 22px auto 0;
+  padding: 14px 18px;
+  text-align: left;
+  border-radius: var(--radius);
+  border: 1px solid rgba(94,234,212,0.22);
+  background: rgba(45,212,163,0.06);
+  font-size: 14px;
+  color: var(--text2);
+  line-height: 1.55;
+}
+.hero-deck p { margin: 0 0 6px; }
+.hero-deck p:last-child { margin-bottom: 0; }
+.hero-deck strong { color: var(--text); font-weight: 600; }
+.share-banner {
+  max-width: 560px;
+  margin: 18px auto 0;
+  padding: 12px 14px;
+  border-radius: 10px;
+  border: 1px dashed rgba(94, 234, 212, 0.35);
+  background: rgba(45, 212, 163, 0.06);
+  font-size: 12px;
+  color: var(--text2);
+  line-height: 1.55;
+  text-align: left;
+}
+.share-banner code { font-size: 11px; color: var(--accent2); }
+.to-top {
+  position: fixed;
+  right: 18px;
+  bottom: 22px;
+  z-index: 60;
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  display: grid;
+  place-items: center;
+  background: rgba(18,28,24,0.92);
+  border: 1px solid var(--border);
+  color: var(--accent2);
+  font-size: 18px;
+  line-height: 1;
+  box-shadow: 0 8px 28px rgba(0,0,0,0.35);
+}
+.to-top:hover { border-color: var(--accent2); color: var(--text); text-decoration: none; }
+.wrap { max-width: 1040px; margin: 0 auto; padding: 0 24px 72px; }
+.anatomy-title-block {
+  margin-bottom: 10px;
+}
+.anatomy-title-block h2 {
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--text);
+  line-height: 1.35;
+  margin: 0 0 6px;
+}
+.anatomy-title-block h3 {
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--text);
+  line-height: 1.35;
+  margin: 0 0 6px;
+}
+.structure-layers { margin-top: 8px; }
+.structure-subhead {
+  font-size: 1.15rem;
+  font-weight: 700;
+  margin: 0 0 12px;
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  line-height: 1.35;
+  color: var(--text);
+}
+.structure-subhead .num-sub {
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 28px;
+  height: 28px;
+  padding: 0 6px;
+  border-radius: 8px;
+  background: rgba(45, 212, 163, 0.12);
+  border: 1px solid rgba(94, 234, 212, 0.35);
+  color: var(--accent2);
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.02em;
+}
+.anatomy-title-block p {
+  font-size: 13px;
+  color: var(--text2);
+  margin: 0;
+}
+.anatomy-ai-wrap {
+  margin: 20px 0 24px;
+  padding: 18px;
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
+  background: linear-gradient(180deg, rgba(30,42,36,0.6) 0%, rgba(18,28,24,0.9) 100%);
+}
+.anatomy-ai-wrap .ai-label {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--warn);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  margin-bottom: 10px;
+}
+.anatomy-ai-wrap img {
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  height: auto;
+  border-radius: 10px;
+  border: 1px solid rgba(255,255,255,0.08);
+  box-shadow: 0 12px 40px rgba(0,0,0,0.35);
+}
+.anatomy-ai-wrap figcaption {
+  margin-top: 12px;
+  font-size: 12px;
+  color: var(--text2);
+  line-height: 1.5;
+}
+.anatomy-ai-figures {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 16px;
+}
+@media (min-width: 800px) {
+  .anatomy-ai-figures { grid-template-columns: 1fr 1fr; }
+}
+@media (min-width: 1100px) {
+  .anatomy-ai-figures.tri-col { grid-template-columns: 1fr 1fr 1fr; }
+}
+@media (min-width: 640px) {
+  .anatomy-ai-figures.two-by-two { grid-template-columns: 1fr 1fr; }
+}
+.anatomy-ai-subcap {
+  margin-top: 8px;
+  font-size: 11px;
+  color: var(--text2);
+  line-height: 1.45;
+}
+details.ai-prompt {
+  margin-top: 14px;
+  border-radius: 10px;
+  border: 1px dashed var(--border);
+  background: rgba(0,0,0,0.2);
+  padding: 0 14px;
+}
+details.ai-prompt summary {
+  cursor: pointer;
+  padding: 12px 0;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--accent2);
+  list-style: none;
+}
+details.ai-prompt summary::-webkit-details-marker { display: none; }
+details.ai-prompt pre {
+  margin: 0 0 14px;
+  padding: 12px 14px;
+  border-radius: 8px;
+  background: #0a0f0d;
+  border: 1px solid var(--border);
+  font-size: 12px;
+  line-height: 1.55;
+  color: var(--text2);
+  white-space: pre-wrap;
+  word-break: break-word;
+  font-family: ui-monospace, 'Cascadia Mono', Consolas, monospace;
+}
+details.ai-prompt .prompt-h {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text);
+  margin: 16px 0 8px;
+}
+details.ai-prompt .prompt-h:first-of-type { margin-top: 4px; }
+details.ai-prompt .prompt-note {
+  font-size: 12px;
+  color: var(--text2);
+  line-height: 1.55;
+  margin: -6px 0 10px;
+}
+.section { margin-bottom: 56px; }
+.section h2 {
+  font-size: 1.32rem;
+  margin-bottom: 10px;
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  line-height: 1.35;
+}
+.section h2 .num {
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 10px;
+  background: linear-gradient(145deg, var(--accent), #0d9488);
+  color: #042f2e;
+  font-size: 15px;
+  font-weight: 800;
+}
+.section .sub { color: var(--text2); font-size: 15px; margin-bottom: 18px; }
+.section p.body { color: var(--text2); margin-bottom: 14px; }
+.section p.body strong { color: var(--text); font-weight: 600; }
+ul.feature-list { margin: 16px 0 0; padding-left: 1.15em; color: var(--text2); }
+ul.feature-list li { margin-bottom: 12px; }
+ul.feature-list li strong { color: var(--text); }
+.figure {
+  margin: 22px 0;
+  padding: 22px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+.figure svg { display: block; max-width: 100%; height: auto; }
+.figure-label {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--warn);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin-bottom: 14px;
+}
+.storyboard-visual-wrap {
+  margin: 18px 0 20px;
+  padding: 18px;
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
+  background: linear-gradient(180deg, rgba(30,42,36,0.55) 0%, rgba(12,16,14,0.92) 100%);
+}
+.storyboard-visual-wrap img {
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  height: auto;
+  border-radius: 10px;
+  border: 1px solid rgba(255,255,255,0.08);
+  box-shadow: 0 16px 48px rgba(0,0,0,0.45);
+}
+.storyboard-visual-wrap svg {
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  height: auto;
+  border-radius: 10px;
+  border: 1px solid rgba(255,255,255,0.08);
+  box-shadow: 0 8px 28px rgba(0,0,0,0.35);
+}
+.layer-laminate {
+  display: grid;
+  gap: 16px;
+  margin-top: 18px;
+}
+.layer-card {
+  padding: 16px 18px;
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
+  background: rgba(18, 28, 24, 0.72);
+}
+.layer-card .layer-num {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  color: var(--warn);
+}
+.layer-card h4 {
+  font-size: 1.05rem;
+  font-weight: 700;
+  margin: 8px 0 10px;
+  color: var(--text);
+  line-height: 1.35;
+}
+.layer-visual {
+  font-size: 13px;
+  color: var(--text2);
+  line-height: 1.65;
+  margin: 0 0 10px;
+}
+.layer-visual strong { color: var(--text); font-weight: 600; }
+.layer-tag {
+  margin: 10px 0 12px;
+  padding: 10px 14px;
+  border-radius: 8px;
+  border-left: 3px solid var(--accent);
+  background: rgba(45, 212, 163, 0.1);
+  font-size: 13px;
+  color: var(--accent2);
+  line-height: 1.5;
+}
+.layer-tech {
+  font-size: 13px;
+  color: var(--text2);
+  line-height: 1.65;
+  margin: 0;
+}
+.layer-kw {
+  margin-top: 12px;
+  font-size: 12px;
+  color: var(--text2);
+  line-height: 1.55;
+  font-family: ui-monospace, 'Cascadia Mono', Consolas, monospace;
+}
+footer.site-foot {
+  border-top: 1px solid var(--border);
+  padding: 28px 24px 48px;
+  text-align: center;
+  color: var(--text2);
+  font-size: 14px;
+  line-height: 1.6;
+}
+.foot-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px 16px;
+  justify-content: center;
+  margin: 16px 0 12px;
+}
+.foot-links a {
+  padding: 8px 14px;
+  border-radius: 999px;
+  background: rgba(45,212,163,0.08);
+  border: 1px solid rgba(94,234,212,0.2);
+  color: var(--text);
+  font-size: 13px;
+  font-weight: 500;
+}
+.foot-links a:hover { background: rgba(45,212,163,0.14); text-decoration: none; }
+@keyframes pulseGlow { 0%, 100% { opacity: 0.55; } 50% { opacity: 1; } }
+.svg-pulse { animation: pulseGlow 2.8s ease-in-out infinite; }
+@media (max-width: 640px) {
+  .site-head { flex-direction: column; align-items: flex-start; }
+  .section h2 { flex-direction: column; gap: 8px; }
+  .structure-subhead { flex-direction: column; gap: 8px; }
+  .site-nav { max-width: 100%; }
+  .to-top { right: 12px; bottom: 14px; width: 40px; height: 40px; font-size: 16px; }
+}
+</style>
+</head>
+<body id="top">
+<a class="skip-link" href="#main" data-i18n="skip">跳到主内容</a>
+
+<header class="site-head">
+  <a href="#top" class="site-logo" style="-webkit-text-fill-color:initial;text-decoration:none;display:flex;align-items:center;gap:10px">
+    <svg width="28" height="28" viewBox="0 0 32 32" fill="none" aria-hidden="true">
+      <ellipse cx="16" cy="16" rx="14" ry="10" stroke="url(#symgV2)" stroke-width="2" fill="rgba(45,212,163,0.12)"/>
+      <circle class="svg-pulse" cx="16" cy="16" r="4" fill="#be123c" opacity="0.85"/>
+      <defs>
+        <linearGradient id="symgV2" x1="4" y1="8" x2="28" y2="24">
+          <stop stop-color="#2dd4a3"/><stop offset="1" stop-color="#5eead4"/>
+        </linearGradient>
+      </defs>
+    </svg>
+    <span data-i18n="logo" style="background:linear-gradient(135deg,var(--accent),var(--accent2));-webkit-background-clip:text;-webkit-text-fill-color:transparent">共生壳 · Symbio-Shell</span>
+  </a>
+  <div class="site-head-actions">
+  <button type="button" class="lang-toggle" id="lang-toggle" aria-label="Switch to English" aria-pressed="false">English</button>
+  <nav class="site-nav" data-i18n-aria-label="nav_aria" aria-label="本页导航">
+    <a href="#motivation" data-i18n="nav_motivation">动机</a>
+    <a href="#structure" data-i18n="nav_structure">结构</a>
+    <a href="#anatomy" data-i18n="nav_anatomy">解剖图</a>
+    <a href="#layers" data-i18n="nav_layers">四层</a>
+    <a href="#mechanism" data-i18n="nav_mechanism">机制</a>
+    <a href="#interaction" data-i18n="nav_interaction">交互</a>
+    <a href="#vision" data-i18n="nav_vision">愿景</a>
+  </nav>
+  </div>
+</header>
+
+<main id="main">
+<section class="hero">
+  <span class="tagline" data-i18n="tagline">思辨设计 · 概念提案 · 合成生物学 × 人机界面</span>
+  <h1 data-i18n-html="hero_h1">Symbio-Shell<br>共生壳</h1>
+  <p class="en-name" data-i18n="hero_sub">一款基于生理反馈与合成生物代谢逻辑的活性手机界面</p>
+  <p class="hero-lead" data-i18n-html="hero_lead">直面数字时代的<strong style="color:var(--text)">「感知麻木」</strong>：<strong>Symbio-Shell</strong> 以合成生物学介入，将手机壳从「工业死物」转化为具备代谢与情感反馈的<strong style="color:var(--text)">共生器官</strong>——让焦虑、废热与依赖，重新被身体直觉地感知。</p>
+  <div class="hero-deck">
+    <p data-i18n-html="hero_deck1"><strong>项目名称</strong> · Symbio-Shell（共生壳）</p>
+    <p data-i18n-html="hero_deck2"><strong>本页内容</strong> · 设计动机 → 生物结构（解剖 + 四层）→ 核心机制 → 交互（呼吸与极微距气孔）→ 愿景。</p>
+  </div>
+  <p class="share-banner" data-i18n-html="share_banner"><strong>如何给别人打开：</strong>请把本目录<strong>整夹</strong>（<code>index.html</code> + <code>assets</code>）打成 zip 分享，对方解压后双击 <code>index.html</code>；或上传到 GitHub Pages / Netlify 等静态托管，把 <strong>https 链接</strong>发对方即可在浏览器直接看。（仅发一个 html 文件<strong>无法显示配图</strong>。）</p>
+</section>
+
+<div class="wrap">
+  <section class="section" id="motivation">
+    <h2><span class="num">1</span> <span data-i18n="motivation_h2">设计动机：治愈数字时代的「感知麻木」</span></h2>
+    <p class="sub" data-i18n="motivation_sub">在数字消费主义的驱动下，智能手机已成为人类感官的延伸，但其冰冷的工业属性使我们对数字焦虑和环境成本缺乏直觉感知。</p>
+    <figure class="storyboard-visual-wrap" style="margin:18px 0 22px">
+      <div class="ai-label" data-i18n="motivation_ai_label">主视觉 · 从「工业死物」到可代谢的共生器官</div>
+      <div class="anatomy-ai-figures">
+        <div>
+          <img src="assets/symbio-layer1-integrated-kv.png?v=1" alt="Symbio-Shell：半透明活体外被覆于机身，表面湿润毛孔感，内见深红微流控网络，侧缘气孔排出蒸汽——与「让身体重新直觉地感知设备」这一动机对照。" loading="lazy" onerror="this.onerror=null;this.src='assets/symbio-layer1-integrated-kv-alt.png?v=1'" data-i18n-alt="alt_kv_main">
+          <p class="anatomy-ai-subcap" data-i18n-html="motivation_cap1"><strong>主参考</strong> · 背视 · 代谢与排湿可读</p>
+        </div>
+        <div>
+          <img src="assets/symbio-layer1-integrated-kv-alt.png?v=1" alt="Symbio-Shell：立姿整壳，肉质半透明表皮与充血状血管、内发光，强调有机依赖与情感化界面。" loading="lazy" onerror="this.onerror=null;this.src='assets/symbio-layer1-integrated-kv.png?v=1'" data-i18n-alt="alt_kv_alt">
+          <p class="anatomy-ai-subcap" data-i18n-html="motivation_cap2"><strong>变体机位</strong> · 立姿 · 同一叙事下的氛围补帧</p>
+        </div>
+      </div>
+      <figcaption style="margin-top:12px;font-size:12px;color:var(--text2);line-height:1.55" data-i18n-html="motivation_figcap">设备不再仅是配件，而成为可被皮肤与湿热感「读回」的共生层——下文按<strong>结构 → 机制 → 交互</strong>依次展开。</figcaption>
+    </figure>
+    <p class="body" data-i18n-html="motivation_body">我们频繁更换塑料配件，产生大量电子垃圾，却从未察觉自己与设备之间日益病态的依赖。<strong>Symbio-Shell</strong> 旨在通过合成生物学介入，将手机壳从「工业死物」转化为一个具备代谢功能和情感反馈的<strong>共生器官</strong>。</p>
+  </section>
+
+  <section class="section" id="structure">
+    <h2><span class="num">2</span> <span data-i18n="structure_h2">生物结构 · 解剖与层压</span></h2>
+    <p class="sub" data-i18n-html="structure_sub">本节<strong>自上而下</strong>：先读爆炸示意与出图参考，再向下展开 <a href="#layers">四层层压</a> 定稿；顶部导航中的「解剖图」「四层」与本页锚点一致。</p>
+
+  <div class="figure" id="anatomy">
+    <div class="anatomy-title-block">
+      <div class="figure-label" style="margin-bottom:8px" data-i18n="anatomy_label">Anatomical Diagram · v1.0</div>
+      <h3 data-i18n="anatomy_h3">Symbio-Shell v1.0 生物结构解剖图</h3>
+      <p data-i18n-html="anatomy_intro">以下为根据项目叙事<strong>重绘的理解稿</strong>：把壳体当作包裹算力的<strong>薄层器官</strong>—外缘交换物质、中层循环与传感、底层微弱的电化学补给、边缘在热负荷下「呼气」。字母与分层细节以下方 <a href="#layers">四层层压结构</a> 与各段说明为准。</p>
+    </div>
+
+    <figure class="anatomy-ai-wrap">
+      <div class="ai-label" data-i18n="anatomy_ai_label">AI reference · 16:9 · clinical / biological futurism（可替换为自跑图）</div>
+      <div class="anatomy-ai-figures">
+        <div>
+          <img src="assets/Symbio-Shell-anatomical-exploded-16x9.png?v=1" alt="Symbio-Shell：生物工程手机壳爆炸解剖示意。半透明有机表皮、红色微流控、边缘气孔、技术白板风格。" loading="lazy" onerror="this.onerror=null;this.src='assets/Symbio-Shell-anatomical-exploded-16x9-v2.png?v=2'" data-i18n-alt="alt_anatomy_main">
+          <p class="anatomy-ai-subcap" data-i18n-html="anatomy_cap1">主参考 · v1 较早主视觉 · 手机 + 活体壳栈（文件 <code style="color:var(--accent2)">…16x9.png?v=1</code>，失败时回退 v2）</p>
+        </div>
+        <div>
+          <img src="assets/Symbio-Shell-exploded-anatomical-user-prompt.png?v=1" alt="Symbio-Shell：仅壳体三层的爆炸解剖示意。合成皮肤、红色微流控、边缘气孔基底。" loading="lazy" data-i18n-alt="alt_anatomy_var">
+          <p class="anatomy-ai-subcap" data-i18n="anatomy_cap2">变体 · 提示词 ⑥ · 仅壳体三层（多数模型读成外→内；与整页「上手机、下表皮」栈序对照时请见 ⑥ 下方说明）</p>
+        </div>
+      </div>
+      <figcaption data-i18n-html="anatomy_figcap">左为主参考（默认较早 v1）；右为按提示词 <strong>⑥</strong> 生成的壳体专版图。整页<strong>爆炸栈序</strong>统一为<strong>上手机、中活性层（微流控 B）、下朝外表皮 A</strong>—与提示词 ①② 中 TOP/MIDDLE/BOTTOM 一致。若只要「手机在上」更强调的变体，可把主图 <code style="color:var(--accent2)">src</code> 改为 <code style="color:var(--accent2)">Symbio-Shell-anatomical-exploded-16x9-v2.png</code>。</figcaption>
+      <details class="ai-prompt">
+        <summary data-i18n="prompt_summary_main">复制出图提示词 · Midjourney / SD · 负面与流程</summary>
+        <p class="prompt-note" data-i18n="prompt_note_open">下列段落可整段复制；Midjourney 把参数放在末尾；Stable Diffusion 把负面词放进 Negative prompt。</p>
+
+        <p class="prompt-h" data-i18n="prompt_h1">① 原版（已加栈序，避免壳层画在最上）</p>
+        <pre>A highly detailed scientific anatomical diagram of a "Symbio-Shell" bio-engineered living phone case. Exploded vertical stack: TOP smartphone core, MIDDLE living hydrogel layer with glowing red microfluidic veins, BOTTOM semi-transparent organic skin; microscopic breathing pores on side edges; visible gaps between layers. Clinical white background, technical callouts, biological futurism, 8k, pencil sketch mixed with digital rendering, 3D cross-section. --ar 16:9</pre>
+        <p class="prompt-note" data-i18n="prompt_note_1a">原版若未写清上下顺序，模型常默认「外壳在上」；上句已用 TOP/MIDDLE/BOTTOM 约束。</p>
+
+        <p class="prompt-h" data-i18n="prompt_h2">② Midjourney 加长（更强的白板与图版感，可按需删词）</p>
+        <pre>Symbio-Shell scientific plate, bio-engineered living phone case, exploded vertical stack reading top-to-bottom as assembly order: TOP layer = smartphone body core SoC heat glow, MIDDLE layer = living hydrogel with crimson microfluidic veins, BOTTOM layer = outer semi-transparent organic epidermis facing palm and environment, microscopic stomata on side edges, gaps between layers, thin leader lines, labels A B C, pure clinical white background, museum lighting, pencil sketch plus digital 3D cross-section, highly detailed --ar 16:9 --style raw --stylize 120</pre>
+        <p class="prompt-note" data-i18n-html="prompt_note_2a">强调了「<strong>上手机、下外表皮</strong>」以免 AI 画成外壳压顶。若画面过「插画」，可调 <code style="color:var(--accent2)">--stylize</code> 或加 <code style="color:var(--accent2)">photoreal specular</code>。</p>
+
+        <p class="prompt-h" data-i18n-html="prompt_h3">③ 负面提示（SD/Civitai/ComfyUI 常用；MJ 可改用 <code style="color:var(--accent2)">--no</code> 后跟关键词）</p>
+        <pre>bloody, gore, horror, zombie, skin disease, text watermark, logo, messy arrows, lowres, blur, cartoon, childish, extra fingers, duplicate phone, cracked screen joke, dystopian ruins, military, cyberpunk neon city</pre>
+
+        <p class="prompt-h" data-i18n="prompt_h4">④ 简短 workflow（中文）</p>
+        <pre>0) 出图后核对栈序：上手机、中活性层、下朝外表皮（与 ①② TOP/MIDDLE/BOTTOM 一致）。1) 优先用 ②；若要坚持极简可用 ①。2) Variation / 局部重绘气孔与血管。3) SD 图生图或 MJ Upscale 拉分辨率。4) A–E 字标用 Figma 叠在无字版上，避免 AI 乱写字。</pre>
+
+        <p class="prompt-h" data-i18n="prompt_h5">⑤ 中文主提示（给通义 / 文心 / 可灵等）</p>
+        <pre>科学解剖展板，Symbio-Shell 生物活体手机壳，爆炸视图，竖向三层自上而下：最上是黑色手机本体带微微发热红光，中间是半透明青绿色水凝胶层与发亮的红色微流控血管网络，最下是肉色半透明合成皮肤表层带毛孔；侧缘有显微镜下气孔；层与层之间明显空隙；纯白展览背景，铅笔线稿混合数字渲染，生物未来主义，16:9 横图，不要杂乱水印文字。</pre>
+
+        <p class="prompt-h" data-i18n="prompt_h6">⑥ 壳体三层（仅外被，未写手机；由外→内常见读法）</p>
+        <pre>Exploded view of a bio-engineered living phone case, anatomical diagram style. Layers showing: 1. semi-transparent synthetic skin, 2. glowing red microfluidic veins, 3. a base layer with biological stomata (breathing pores) on edges. High-tech medical illustration, clean white background, technical callouts, scientific aesthetic, 8k, hyper-detailed.</pre>
+        <p class="prompt-note" data-i18n-html="prompt_note_6a">此条只描述<strong>活体壳</strong>三层：多数模型会画成<strong>上=①皮、中=②血管、下=③带气孔的基底</strong>（贴机侧）。要与本页「上手机、下表皮」整栈一致时，请在句末追加 <code style="color:var(--accent2)">fourth layer smartphone core on top OR assembly order phone above case</code> 或改用 ①② 中带 TOP smartphone 的版本。</p>
+      </details>
+    </figure>
+
+  </div>
+
+  <div id="layers" class="structure-layers">
+    <h3 class="structure-subhead"><span class="num-sub" aria-hidden="true">L</span> <span data-i18n="layers_h3">四层层压结构 · 由外向内</span></h3>
+    <p class="sub" data-i18n-html="layers_sub">下列为壳体功能分层的<strong>定稿描述</strong>，供展板、插画与 3D 分道使用。与解剖叙事中的字母习惯对照：<strong>Layer 1 ≈ A</strong> 感应表皮、<strong>Layer 2 ≈ B</strong> 微流控、<strong>Layer 3 ≈ C</strong> 形状记忆气孔（侧缘/表面散布）、<strong>Layer 4 ≈ D</strong> 生物电接口；文稿中的 <strong>E</strong> 仍指异常/凋亡示意区。</p>
+
+    <figure class="storyboard-visual-wrap" style="margin-bottom:24px">
+      <div class="ai-label" data-i18n="layers_ai_label">AI reference · 爆炸拆解竖栈 · Nature/高端解剖插图风 · 深石板灰底 · 16:9</div>
+      <div class="anatomy-ai-figures">
+        <div>
+          <img src="assets/Symbio-Shell-exploded-nature-slate-16x9.png?v=1" alt="生物工程手机壳爆炸拆解：深石板灰背景；四层垂直分离——半透明蝉翼状微孔角膜样表皮；解剖图式毛细血管网充深红液体；侧缘鱼鳃重叠瓣膜；贴机侧湿润蜂窝组织。无金属光泽，实验室无影灯式柔光，有机肉质半透明。" loading="lazy" onerror="this.onerror=null;this.src='assets/Symbio-Shell-four-layer-stack-16x9.png?v=1'" data-i18n-alt="alt_layers_main">
+          <p class="anatomy-ai-subcap" data-i18n-html="layers_cap1"><strong>主参考</strong> · 人造器官感 · 湿润 / 肉质 / 半透明（按你提供的视觉指令生成）</p>
+        </div>
+        <div>
+          <img src="assets/Symbio-Shell-four-layer-stack-16x9.png?v=1" alt="Symbio-Shell 四层层压备选参考：浅色临床底板、层间爆炸有隙。" loading="lazy" data-i18n-alt="alt_layers_alt">
+          <p class="anatomy-ai-subcap" data-i18n-html="layers_cap2"><strong>备选</strong> · 浅色临床白板风 · 可与主图择一或混用于展板</p>
+        </div>
+      </div>
+      <figcaption style="margin-top:12px;font-size:12px;color:var(--text2);line-height:1.55" data-i18n-html="layers_figcap">主图强调《自然》系科学插画与医学解剖气质：无金属高光、无塑料玩具感。字标与条目标注建议后期在 Figma 叠加以避免 AI 乱码；需求原文可放入折叠提示词区备份。</figcaption>
+    </figure>
+
+    <div class="layer-laminate">
+      <article class="layer-card">
+        <span class="layer-num">Layer 1</span>
+        <h4 data-i18n="layer1_h4">感应表皮层 · Sensory Epidermis</h4>
+        <p class="layer-visual" data-i18n-html="layer1_vis"><strong>视觉描述：</strong>看起来像带有极微小蜂窝孔的半透明皮肤。</p>
+        <div class="layer-tag" data-i18n="layer1_tag">标注 · 「多孔养分捕获界面」</div>
+        <p class="layer-tech" data-i18n-html="layer1_tech"><strong>技术点：</strong>利用半透膜原理，只允许汗液中的小分子（如皮质醇、盐分、尿素）渗透进入，同时作为物理屏障保护内部微生物免受外界杂菌污染。</p>
+        <p class="layer-kw" data-i18n="layer1_kw">画图关键词：Translucent · Micropores · Biomimetic skin</p>
+      </article>
+
+      <article class="layer-card">
+        <span class="layer-num">Layer 2</span>
+        <h4 data-i18n="layer2_h4">微流控「血管」层 · Microfluidic Vascular System</h4>
+        <p class="layer-visual" data-i18n-html="layer2_vis"><strong>视觉描述：</strong>像人体微血管或树根一样密布的精细管道。</p>
+        <div class="layer-tag" data-i18n="layer2_tag">标注 · 「代谢输送与压力映射中心」</div>
+        <p class="layer-tech" data-i18n-html="layer2_tech"><strong>技术点：</strong>这里流动的不是血，而是含有工程显色菌群的营养液。当第一层渗透进来的皮质醇与其接触，细菌会改变代谢路径，产生紫色/红色色素。</p>
+        <p class="layer-kw" data-i18n="layer2_kw">画图关键词：Branching veins · Red glow · Fluid motion</p>
+      </article>
+
+      <article class="layer-card">
+        <span class="layer-num">Layer 3</span>
+        <h4 data-i18n="layer3_h4">形状记忆气孔层 · Morphing Stomata Layer</h4>
+        <p class="layer-visual" data-i18n-html="layer3_vis"><strong>视觉描述：</strong>位于外壳侧边缘，有一排类似鱼鳃或植物叶片气孔的微型瓣膜。</p>
+        <div class="layer-tag" data-i18n="layer3_tag">标注 · 「热动能散热与气体交换单元」</div>
+        <p class="layer-tech" data-i18n-html="layer3_tech"><strong>技术点：</strong>采用感温形状记忆水凝胶。当检测到手机背板发热（废热）时，瓣膜自动物理张开，排出代谢产生的水蒸气，实现仿生散热。</p>
+        <p class="layer-kw" data-i18n="layer3_kw">画图关键词：Valves · Stomata · Exhaling effect</p>
+      </article>
+
+      <article class="layer-card">
+        <span class="layer-num">Layer 4</span>
+        <h4 data-i18n="layer4_h4">生物电接口层 · Bio-electrochemical Base</h4>
+        <p class="layer-visual" data-i18n-html="layer4_vis"><strong>视觉描述：</strong>最贴近手机的一层，呈现细密的六角形蜂窝格室。</p>
+        <div class="layer-tag" data-i18n="layer4_tag">标注 · 「微生物燃料电池 (MFC) 阵列」</div>
+        <p class="layer-tech" data-i18n-html="layer4_tech"><strong>技术点：</strong>这里的微生物利用汗液中的有机物产生微弱电流，维持整个外壳的「生命体征」（如维持渗透压和细菌活性）。</p>
+        <p class="layer-kw" data-i18n="layer4_kw">画图关键词：Honeycomb array · Interface · Micro-circuitry</p>
+      </article>
+    </div>
+  </div>
+
+  </section>
+
+  <section class="section" id="mechanism">
+    <h2><span class="num">3</span> <span data-i18n="mechanism_h2">核心机制：生理映射与多感官干预</span></h2>
+    <p class="sub" data-i18n-html="mechanism_sub"><strong>Symbio-Shell</strong> 采用活性水凝胶作为基质，内置工程微生物系统，与用户的生理信号深度耦合：</p>
+    <figure class="storyboard-visual-wrap" style="margin:18px 0 22px">
+      <div class="ai-label" data-i18n="mechanism_ai_label">机制配图 · 生理信号 → 视觉 / 代谢显影（AI 概念图）</div>
+      <div class="anatomy-ai-figures tri-col">
+        <div>
+          <img src="assets/symbio-mechanism-macro-corner-vessels.png?v=1" alt="Symbio-Shell 机角极微距：半透明合成表皮下水珠与粉紫分支状微流控网络贴附机身，浅景深突出「充血」与湿润表皮。" loading="lazy" onerror="this.onerror=null;this.src='assets/symbio-mechanism-lab-upright-integrated.png?v=1'" data-i18n-alt="alt_mech1">
+          <p class="anatomy-ai-subcap" data-i18n-html="mech_cap1"><strong>压力 / 映射</strong> · 角部微距 · 表皮 A + 微流控 B 可读</p>
+        </div>
+        <div>
+          <img src="assets/symbio-mechanism-honeycomb-mfc-macro.png?v=1" alt="Symbio-Shell 表面极微距：深色蜂窝状格室内含品红发光代谢区与细丝状毛细网络，示意 MFC 与营养输送。" loading="lazy" onerror="this.onerror=null;this.src='assets/symbio-mechanism-macro-corner-vessels.png?v=1'" data-i18n-alt="alt_mech2">
+          <p class="anatomy-ai-subcap" data-i18n-html="mech_cap2"><strong>废热 / 代谢</strong> · 蜂窝格室 · 贴近「电化学底层 D」气质</p>
+        </div>
+        <div>
+          <img src="assets/symbio-mechanism-lab-upright-integrated.png?v=1" alt="Symbio-Shell 实验台立式整体：透明外壳内品红有机团块、红色血管与金色丝状体包裹手机，暗环境反射面。" loading="lazy" onerror="this.onerror=null;this.src='assets/symbio-mechanism-macro-corner-vessels.png?v=1'" data-i18n-alt="alt_mech3">
+          <p class="anatomy-ai-subcap" data-i18n-html="mech_cap3"><strong>整壳耦合</strong> · 实验室气氛 · 多感官干预总览</p>
+        </div>
+      </div>
+      <figcaption style="margin-top:12px;font-size:12px;color:var(--text2);line-height:1.55" data-i18n-html="mech_figcap">与下列两条列表呼应：左图侧重<strong>皮质醇—充血—触觉变异</strong>；中图为<strong>微流控 / 电化学格室</strong>显微气质；右图为装置级<strong>有机—硬件共生</strong>总览。展板可择一作主视觉。</figcaption>
+    </figure>
+    <ul class="feature-list">
+      <li data-i18n-html="mech_li1"><strong>压力性充血与触觉变异：</strong>通过微流控系统监测汗液中的皮质醇（压力激素）。当用户因沉迷网络产生焦虑时，外壳会从透明转为浑浊病态的紫红色；同时，水凝胶表层会由于渗透压改变，从平滑转变为黏糊、粗糙的质感。这种视觉与触觉的双重生理不适，通过「感官勒索」强迫用户产生心理厌恶，从而放下手机。</li>
+      <li data-i18n-html="mech_li2"><strong>能量闭环与废热代谢：</strong>它彻底抛弃了外部电力，转而以手机运行散发的废热为代谢动力，并摄取用户手心的汗液盐分作为核心养分。这种设计将单一的设备散热转化为复杂的生物代谢流。</li>
+    </ul>
+  </section>
+
+  <section class="section" id="interaction">
+    <h2><span class="num">4</span> <span data-i18n="interaction_h2">交互特征：动态失活与「复苏仪式」</span></h2>
+    <p class="sub" data-i18n="interaction_sub">设计赋予了外壳极具冲击力的生命语言，用生物逻辑修正人类行为：</p>
+    <ul class="feature-list">
+      <li data-i18n-html="interaction_li1"><strong>生物性「呼吸」散热：</strong>在设备高负荷运作时，壳体<strong>侧缘蜂窝状可张合组织</strong>与微型生物气孔协同：结构舒张、隙缝透出代谢辉光，表面凝露参与蒸发，并排出温热水蒸气——类似肺部潮气量变化与「出汗」的叠合。这种可感的起伏与湿热，让用户直观读到设备正承受的生理压力。<strong>热敏气孔 · 极微距（简）</strong>：壳面<strong>多枚呼吸孔不规则散布</strong>（忌整齐矩阵）；浅景深、<strong>一孔为最清晰主核</strong>，其余孔焦外点缀；孔缘花瓣/鳃瓣状皱褶，下方可见紫红微血管与弱荧光；<strong>多缕</strong>淡白蒸汽略错峰呼出，皮表凝露。单帧宜 16:9，勿做成「独孔标本切片」。</li>
+    </ul>
+    <figure class="storyboard-visual-wrap" style="margin:14px 0 16px">
+      <div class="ai-label" data-i18n="interaction_ai_label1">交互配图 · 呼吸散热 · 侧缘代谢 / 凝露（AI 概念图）</div>
+      <div class="anatomy-ai-figures">
+        <div>
+          <img src="assets/symbio-breathing-heat-corner-cells.png?v=1" alt="Symbio-Shell 侧缘极微距：机身边角覆盖半透明蜂窝状细胞栅格，内部泛青绿色代谢辉光，表面有清晰凝露水滴，示意可张合组织与蒸发换热。" loading="lazy" onerror="this.onerror=null;this.src='assets/symbio-breathing-heat-droplets-slit.png?v=1'" data-i18n-alt="alt_breath1">
+          <p class="anatomy-ai-subcap" data-i18n-html="breath_cap1"><strong>侧缘「肺泡」栅格</strong> · 多孔互通 · 高负荷时舒张排热</p>
+        </div>
+        <div>
+          <img src="assets/symbio-breathing-heat-droplets-slit.png?v=1" alt="Symbio-Shell 极近特写：深色壳面布满凝结水珠，侧缝透出青绿生物光，如同鳃裂呼气与汗液蒸发并存的散热界面。" loading="lazy" onerror="this.onerror=null;this.src='assets/symbio-breathing-heat-corner-cells.png?v=1'" data-i18n-alt="alt_breath2">
+          <p class="anatomy-ai-subcap" data-i18n-html="breath_cap2"><strong>凝露 + 侧缝辉光</strong> · 「出汗」与缝隙换气同框</p>
+        </div>
+      </div>
+      <figcaption style="margin-top:12px;font-size:12px;color:var(--text2);line-height:1.55" data-i18n-html="breath_figcap">废热驱动气孔<strong>节律张合</strong>，凝露与蒸汽参与<strong>蒸发冷却</strong>，可读作<strong>湿润—辉光—张合</strong>三联征。</figcaption>
+    </figure>
+    <figure class="storyboard-visual-wrap" style="margin:0 0 12px">
+      <div class="ai-label" data-i18n="interaction_ai_label2">极微距成图参考 · 热敏气孔场（与上同一叙事）</div>
+      <div class="anatomy-ai-figures tri-col">
+        <div>
+          <img src="assets/Symbio-Shell-stomata-macro-v3-multi-pore.png?v=1" alt="分镜成图 v3：极微距表皮上多枚分散呼吸孔，景深主次分明，紫红微血管与生物荧光、鳃瓣、蒸汽与水珠。" loading="lazy" onerror="this.onerror=null;this.src='assets/Symbio-Shell-stomata-macro-v1.png?v=1'" data-i18n-alt="alt_stom3">
+          <p class="anatomy-ai-subcap" data-i18n-html="stom_cap3"><strong>v3</strong> · 多孔散布（定稿向）</p>
+        </div>
+        <div>
+          <img src="assets/Symbio-Shell-stomata-macro-v1.png?v=1" alt="分镜成图 v1：偏单孔主导构图的极微距参考。" loading="lazy" onerror="this.onerror=null;this.src='assets/Symbio-Shell-stomata-macro-v2.png?v=1'" data-i18n-alt="alt_stom1">
+          <p class="anatomy-ai-subcap" data-i18n-html="stom_cap1"><strong>v1</strong> · 单孔气氛</p>
+        </div>
+        <div>
+          <img src="assets/Symbio-Shell-stomata-macro-v2.png?v=1" alt="分镜成图 v2：标本侧光、鳃瓣与弱荧光。" loading="lazy" data-i18n-alt="alt_stom2">
+          <p class="anatomy-ai-subcap" data-i18n-html="stom_cap2"><strong>v2</strong> · 侧光层次</p>
+        </div>
+      </div>
+      <figcaption style="margin-top:12px;font-size:12px;color:var(--text2);line-height:1.55" data-i18n-html="stom_figcap">与列表中「极微距（简）」一句对照即可；<strong>v3</strong> 强调多孔场与景深主次，v1/v2 作光影备选。缺文件时按序回退。</figcaption>
+    </figure>
+    <details class="ai-prompt" style="margin:0 0 22px">
+      <summary data-i18n="stom_prompt_sum">复制提示 · 极微距气孔（简 · 中英文 / SD）</summary>
+      <p class="prompt-note" data-i18n="stom_prompt_note">以下可整段发给画师或贴入 SD；与「呼吸散热」同条叙事绑定，不再单独占一章。</p>
+      <p class="prompt-h" data-i18n="stom_prompt_h_zh">中文（Brief）</p>
+      <pre>极微距：活性手机壳水凝胶皮表，许多热敏呼吸孔不规则散布；浅景深、一主孔最清晰、其余孔焦外；孔缘花瓣/鳃瓣皱褶，孔下紫红微血管与弱生物荧光；多缕淡白蒸汽略错峰呼出，凝水珠；低调侧光，16:9。</pre>
+      <p class="prompt-h" data-i18n="stom_prompt_h_en">English + --ar</p>
+      <pre>Extreme macro, scattered biological stomata on bio-engineered phone-case skin, irregular spacing, shallow DOF one hero pore sharp plus soft bokeh peers, gill-like lips, magenta capillary bed, faint bioluminescence, staggered pale vapor wisps, water droplets, clinical raking light, dark background --ar 16:9</pre>
+    </details>
+    <ul class="feature-list">
+      <li data-i18n-html="interaction_li2"><strong>失活状态与共生复苏：</strong>外壳内置蓝藻等光合微生物，其活性高度依赖于用户的物理互动（养分）与自然光照（氧气）。若长期处于黑暗口袋或缺乏接触，外壳会进入「失活状态」——水凝胶<strong>脱水、灰白、龟裂成片</strong>，触感如干涸基质，隐喻「饥渴」而非光滑工业机身。这倒逼一场<strong>复苏仪式</strong>：户外日光浴使光合回路重启，孔隙中重新充盈含氧水体与代谢辉光，凝露回流，粗糙壳面逐步恢复湿润与透光。<strong>Symbio-Shell</strong> 借此把「离开屏幕、走进自然光」变成照料共生体的必要条件，亦是跨物种共同「呼吸」的切入点。</li>
+    </ul>
+    <figure class="storyboard-visual-wrap" style="margin:22px 0 0">
+      <div class="ai-label" data-i18n="interaction_ai_label3">交互配图 · 失活状态 ⇄ 共生复苏（AI 概念图 · 2×2）</div>
+      <div class="anatomy-ai-figures two-by-two">
+        <div>
+          <img src="assets/symbio-inactive-cracked-mud-corner.png?v=1" alt="Symbio-Shell 失活态：机角形如干涸龟裂土层，灰白与炭黑交错，充电口隐约可辨，背景干净高调。" loading="lazy" onerror="this.onerror=null;this.src='assets/symbio-inactive-charred-blocks-macro.png?v=1'" data-i18n-alt="alt_in1">
+          <p class="anatomy-ai-subcap" data-i18n-html="inactive_cap1"><strong>失活 I</strong> · 机角龟裂 · 干旱 / 凋亡</p>
+        </div>
+        <div>
+          <img src="assets/symbio-inactive-charred-blocks-macro.png?v=1" alt="Symbio-Shell 失活态：背壳呈焦灼块状隆起与深裂沟，灰黑如钙化死皮，相机开孔仍存。" loading="lazy" onerror="this.onerror=null;this.src='assets/symbio-inactive-cracked-mud-corner.png?v=1'" data-i18n-alt="alt_in2">
+          <p class="anatomy-ai-subcap" data-i18n-html="inactive_cap2"><strong>失活 II</strong> · 块状起皮 · 触感抗拒</p>
+        </div>
+        <div>
+          <img src="assets/symbio-recovery-turquoise-golden-web.png?v=1" alt="Symbio-Shell 复苏态：深色网状外骨骼裂开，内部青绿发光腔室与金色纹理可见，表面凝露示意再度含水与代谢重启。" loading="lazy" onerror="this.onerror=null;this.src='assets/symbio-recovery-teal-lattice-fluid.png?v=1'" data-i18n-alt="alt_rec1">
+          <p class="anatomy-ai-subcap" data-i18n-html="recovery_cap1"><strong>复苏 I</strong> · 孔隙透光 · 水体再充盈</p>
+        </div>
+        <div>
+          <img src="assets/symbio-recovery-teal-lattice-fluid.png?v=1" alt="Symbio-Shell 复苏微距：白色不规则格栅格室内充满青绿起泡体液，边缘见硬件倒角，象征代谢回路重启。" loading="lazy" onerror="this.onerror=null;this.src='assets/symbio-recovery-turquoise-golden-web.png?v=1'" data-i18n-alt="alt_rec2">
+          <p class="anatomy-ai-subcap" data-i18n-html="recovery_cap2"><strong>复苏 II</strong> · 格栅内流体 · 光合 / 供氧意象</p>
+        </div>
+      </div>
+      <figcaption style="margin-top:12px;font-size:12px;color:var(--text2);line-height:1.55" data-i18n-html="inactive_figcap">上排：<strong>长期缺光、少触碰</strong>后的视觉—触觉「惩戒」；下排：<strong>日光 + 水分 + 接触</strong>后，壳体由干枯格栅重回<strong>湿润、透光、内腔再流通</strong>的共生态。与第二条列表可直接对照阅读。</figcaption>
+    </figure>
+  </section>
+
+  <section class="section" id="vision">
+    <h2><span class="num">5</span> <span data-i18n="vision_h2">未来愿景：从「消耗」回归「轮回」</span></h2>
+    <p class="sub" data-i18n-html="vision_sub"><strong>Symbio-Shell</strong> 不仅展示了生物材料替代塑料的巨大潜力，更发起了一场关于后人类时代的伦理考问。</p>
+    <p class="body" data-i18n-html="vision_body">当手机壳拥有了「饥饿感」与「疲惫感」，它的终结不再是垃圾场的填埋，而是一场回归土壤的<strong>生物葬礼</strong>——在降解过程中滋养新的生命。它促使我们重新审视消费主义，学着去敬畏每一个与我们共生的数字生命。</p>
+  </section>
+</div>
+</main>
+
+<a href="#top" class="to-top" data-i18n-aria-label="totop_aria" aria-label="回到页顶">↑</a>
+
+<footer class="site-foot">
+  <p data-i18n-html="foot_line1"><strong>共生壳 Symbio-Shell</strong> · 概念页 v1.0 · 独立网页</p>
+  <p class="standalone-hint" data-i18n-html="standalone_hint" style="margin:10px 0 14px;font-size:12px;color:var(--text2);line-height:1.55">本页为<strong>单文件站点</strong>：与 <code style="color:var(--accent2)">assets</code> 文件夹置于同一目录即可离线或上传托管；无需项目站内其他 HTML。</p>
+  <p data-i18n-html="foot_disclaimer">本页为<strong>概念与思辨设计</strong>材料；当前阶段无实物样机承诺。叙事涉及生物隐喻与伦理讨论，非医疗或产品销售说明。</p>
+  <p style="margin-top:12px" data-i18n-html="foot_extra">拓展：<a href="https://drive.google.com/drive/folders/1GhrP4S1NUM2SGHXxvMnEyHykKwLuvWOm" rel="noopener noreferrer" target="_blank">Biodesign Challenge 2026 资料夹（BDC2026）</a> — 需有访问权限。</p>
+</footer>
+
+<script>
+(function () {
+  var STORAGE = 'symbio-shell-concept-standalone-lang';
+  var I18N = {
+    zh: {
+      _title: '共生壳 Symbio-Shell v1.0 — 概念页 · 独立网页',
+      _meta: 'Symbio-Shell（共生壳）：基于生理反馈与合成生物代谢逻辑的活性手机界面。四层层压解剖、呼吸散热与极微距气孔；皮质醇映射与感官干预、废热代谢、复苏仪式与生物葬礼叙事。',
+      nav_aria: '本页导航',
+      skip: '跳到主内容',
+      logo: '共生壳 · Symbio-Shell',
+      nav_home: '项目主页',
+      nav_motivation: '动机',
+      nav_structure: '结构',
+      nav_anatomy: '解剖图',
+      nav_layers: '四层',
+      nav_mechanism: '机制',
+      nav_interaction: '交互',
+      nav_vision: '愿景',
+      nav_plan: '规划',
+      nav_intro: '简介',
+      tagline: '思辨设计 · 概念提案 · 合成生物学 × 人机界面',
+      hero_h1: 'Symbio-Shell<br>共生壳',
+      hero_sub: '一款基于生理反馈与合成生物代谢逻辑的活性手机界面',
+      hero_lead: '直面数字时代的<strong style="color:var(--text)">「感知麻木」</strong>：<strong>Symbio-Shell</strong> 以合成生物学介入，将手机壳从「工业死物」转化为具备代谢与情感反馈的<strong style="color:var(--text)">共生器官</strong>——让焦虑、废热与依赖，重新被身体直觉地感知。',
+      hero_deck1: '<strong>项目名称</strong> · Symbio-Shell（共生壳）',
+      hero_deck2: '<strong>本页内容</strong> · 设计动机 → 生物结构（解剖 + 四层）→ 核心机制 → 交互（呼吸与极微距气孔）→ 愿景。',
+      share_banner: '<strong>如何给别人打开：</strong>请把本目录<strong>整夹</strong>（<code>index.html</code> + <code>assets</code>）打成 zip 分享，对方解压后双击 <code>index.html</code>；或上传到 GitHub Pages / Netlify 等静态托管，把 <strong>https 链接</strong>发对方即可在浏览器直接看。（仅发一个 html 文件<strong>无法显示配图</strong>。）',
+      motivation_h2: '设计动机：治愈数字时代的「感知麻木」',
+      motivation_sub: '在数字消费主义的驱动下，智能手机已成为人类感官的延伸，但其冰冷的工业属性使我们对数字焦虑和环境成本缺乏直觉感知。',
+      motivation_ai_label: '主视觉 · 从「工业死物」到可代谢的共生器官',
+      motivation_cap1: '<strong>主参考</strong> · 背视 · 代谢与排湿可读',
+      motivation_cap2: '<strong>变体机位</strong> · 立姿 · 同一叙事下的氛围补帧',
+      motivation_figcap: '设备不再仅是配件，而成为可被皮肤与湿热感「读回」的共生层——下文按<strong>结构 → 机制 → 交互</strong>依次展开。',
+      motivation_body: '我们频繁更换塑料配件，产生大量电子垃圾，却从未察觉自己与设备之间日益病态的依赖。<strong>Symbio-Shell</strong> 旨在通过合成生物学介入，将手机壳从「工业死物」转化为一个具备代谢功能和情感反馈的<strong>共生器官</strong>。',
+      alt_kv_main: 'Symbio-Shell：半透明活体外被覆于机身，表面湿润毛孔感，内见深红微流控网络，侧缘气孔排出蒸汽——与「让身体重新直觉地感知设备」这一动机对照。',
+      alt_kv_alt: 'Symbio-Shell：立姿整壳，肉质半透明表皮与充血状血管、内发光，强调有机依赖与情感化界面。',
+      structure_h2: '生物结构 · 解剖与层压',
+      structure_sub: '本节<strong>自上而下</strong>：先读爆炸示意与出图参考，再向下展开 <a href="#layers">四层层压</a> 定稿；顶部导航中的「解剖图」「四层」与本页锚点一致。',
+      anatomy_label: 'Anatomical Diagram · v1.0',
+      anatomy_h3: 'Symbio-Shell v1.0 生物结构解剖图',
+      anatomy_intro: '以下为根据项目叙事<strong>重绘的理解稿</strong>：把壳体当作包裹算力的<strong>薄层器官</strong>—外缘交换物质、中层循环与传感、底层微弱的电化学补给、边缘在热负荷下「呼气」。字母与分层细节以下方 <a href="#layers">四层层压结构</a> 与各段说明为准。',
+      anatomy_ai_label: 'AI reference · 16:9 · clinical / biological futurism（可替换为自跑图）',
+      anatomy_cap1: '主参考 · v1 较早主视觉 · 手机 + 活体壳栈（文件 <code style="color:var(--accent2)">…16x9.png?v=1</code>，失败时回退 v2）',
+      anatomy_cap2: '变体 · 提示词 ⑥ · 仅壳体三层（多数模型读成外→内；与整页「上手机、下表皮」栈序对照时请见 ⑥ 下方说明）',
+      anatomy_figcap: '左为主参考（默认较早 v1）；右为按提示词 <strong>⑥</strong> 生成的壳体专版图。整页<strong>爆炸栈序</strong>统一为<strong>上手机、中活性层（微流控 B）、下朝外表皮 A</strong>—与提示词 ①② 中 TOP/MIDDLE/BOTTOM 一致。若只要「手机在上」更强调的变体，可把主图 <code style="color:var(--accent2)">src</code> 改为 <code style="color:var(--accent2)">Symbio-Shell-anatomical-exploded-16x9-v2.png</code>。',
+      alt_anatomy_main: 'Symbio-Shell：生物工程手机壳爆炸解剖示意。半透明有机表皮、红色微流控、边缘气孔、技术白板风格。',
+      alt_anatomy_var: 'Symbio-Shell：仅壳体三层的爆炸解剖示意。合成皮肤、红色微流控、边缘气孔基底。',
+      prompt_summary_main: '复制出图提示词 · Midjourney / SD · 负面与流程',
+      prompt_note_open: '下列段落可整段复制；Midjourney 把参数放在末尾；Stable Diffusion 把负面词放进 Negative prompt。',
+      prompt_h1: '① 原版（已加栈序，避免壳层画在最上）',
+      prompt_note_1a: '原版若未写清上下顺序，模型常默认「外壳在上」；上句已用 TOP/MIDDLE/BOTTOM 约束。',
+      prompt_h2: '② Midjourney 加长（更强的白板与图版感，可按需删词）',
+      prompt_note_2a: '强调了「<strong>上手机、下外表皮</strong>」以免 AI 画成外壳压顶。若画面过「插画」，可调 <code style="color:var(--accent2)">--stylize</code> 或加 <code style="color:var(--accent2)">photoreal specular</code>。',
+      prompt_h3: '③ 负面提示（SD/Civitai/ComfyUI 常用；MJ 可改用 <code style="color:var(--accent2)">--no</code> 后跟关键词）',
+      prompt_h4: '④ 简短 workflow（中文）',
+      prompt_h5: '⑤ 中文主提示（给通义 / 文心 / 可灵等）',
+      prompt_h6: '⑥ 壳体三层（仅外被，未写手机；由外→内常见读法）',
+      prompt_note_6a: '此条只描述<strong>活体壳</strong>三层：多数模型会画成<strong>上=①皮、中=②血管、下=③带气孔的基底</strong>（贴机侧）。要与本页「上手机、下表皮」整栈一致时，请在句末追加 <code style="color:var(--accent2)">fourth layer smartphone core on top OR assembly order phone above case</code> 或改用 ①② 中带 TOP smartphone 的版本。',
+      layers_h3: '四层层压结构 · 由外向内',
+      layers_sub: '下列为壳体功能分层的<strong>定稿描述</strong>，供展板、插画与 3D 分道使用。与解剖叙事中的字母习惯对照：<strong>Layer 1 ≈ A</strong> 感应表皮、<strong>Layer 2 ≈ B</strong> 微流控、<strong>Layer 3 ≈ C</strong> 形状记忆气孔（侧缘/表面散布）、<strong>Layer 4 ≈ D</strong> 生物电接口；文稿中的 <strong>E</strong> 仍指异常/凋亡示意区。',
+      layers_ai_label: 'AI reference · 爆炸拆解竖栈 · Nature/高端解剖插图风 · 深石板灰底 · 16:9',
+      layers_cap1: '<strong>主参考</strong> · 人造器官感 · 湿润 / 肉质 / 半透明（按你提供的视觉指令生成）',
+      layers_cap2: '<strong>备选</strong> · 浅色临床白板风 · 可与主图择一或混用于展板',
+      layers_figcap: '主图强调《自然》系科学插画与医学解剖气质：无金属高光、无塑料玩具感。字标与条目标注建议后期在 Figma 叠加以避免 AI 乱码；需求原文可放入折叠提示词区备份。',
+      alt_layers_main: '生物工程手机壳爆炸拆解：深石板灰背景；四层垂直分离——半透明蝉翼状微孔角膜样表皮；解剖图式毛细血管网充深红液体；侧缘鱼鳃重叠瓣膜；贴机侧湿润蜂窝组织。无金属光泽，实验室无影灯式柔光，有机肉质半透明。',
+      alt_layers_alt: 'Symbio-Shell 四层层压备选参考：浅色临床底板、层间爆炸有隙。',
+      layer1_h4: '感应表皮层 · Sensory Epidermis',
+      layer1_vis: '<strong>视觉描述：</strong>看起来像带有极微小蜂窝孔的半透明皮肤。',
+      layer1_tag: '标注 · 「多孔养分捕获界面」',
+      layer1_tech: '<strong>技术点：</strong>利用半透膜原理，只允许汗液中的小分子（如皮质醇、盐分、尿素）渗透进入，同时作为物理屏障保护内部微生物免受外界杂菌污染。',
+      layer1_kw: '画图关键词：Translucent · Micropores · Biomimetic skin',
+      layer2_h4: '微流控「血管」层 · Microfluidic Vascular System',
+      layer2_vis: '<strong>视觉描述：</strong>像人体微血管或树根一样密布的精细管道。',
+      layer2_tag: '标注 · 「代谢输送与压力映射中心」',
+      layer2_tech: '<strong>技术点：</strong>这里流动的不是血，而是含有工程显色菌群的营养液。当第一层渗透进来的皮质醇与其接触，细菌会改变代谢路径，产生紫色/红色色素。',
+      layer2_kw: '画图关键词：Branching veins · Red glow · Fluid motion',
+      layer3_h4: '形状记忆气孔层 · Morphing Stomata Layer',
+      layer3_vis: '<strong>视觉描述：</strong>位于外壳侧边缘，有一排类似鱼鳃或植物叶片气孔的微型瓣膜。',
+      layer3_tag: '标注 · 「热动能散热与气体交换单元」',
+      layer3_tech: '<strong>技术点：</strong>采用感温形状记忆水凝胶。当检测到手机背板发热（废热）时，瓣膜自动物理张开，排出代谢产生的水蒸气，实现仿生散热。',
+      layer3_kw: '画图关键词：Valves · Stomata · Exhaling effect',
+      layer4_h4: '生物电接口层 · Bio-electrochemical Base',
+      layer4_vis: '<strong>视觉描述：</strong>最贴近手机的一层，呈现细密的六角形蜂窝格室。',
+      layer4_tag: '标注 · 「微生物燃料电池 (MFC) 阵列」',
+      layer4_tech: '<strong>技术点：</strong>这里的微生物利用汗液中的有机物产生微弱电流，维持整个外壳的「生命体征」（如维持渗透压和细菌活性）。',
+      layer4_kw: '画图关键词：Honeycomb array · Interface · Micro-circuitry',
+      mechanism_h2: '核心机制：生理映射与多感官干预',
+      mechanism_sub: '<strong>Symbio-Shell</strong> 采用活性水凝胶作为基质，内置工程微生物系统，与用户的生理信号深度耦合：',
+      mechanism_ai_label: '机制配图 · 生理信号 → 视觉 / 代谢显影（AI 概念图）',
+      mech_cap1: '<strong>压力 / 映射</strong> · 角部微距 · 表皮 A + 微流控 B 可读',
+      mech_cap2: '<strong>废热 / 代谢</strong> · 蜂窝格室 · 贴近「电化学底层 D」气质',
+      mech_cap3: '<strong>整壳耦合</strong> · 实验室气氛 · 多感官干预总览',
+      mech_figcap: '与下列两条列表呼应：左图侧重<strong>皮质醇—充血—触觉变异</strong>；中图为<strong>微流控 / 电化学格室</strong>显微气质；右图为装置级<strong>有机—硬件共生</strong>总览。展板可择一作主视觉。',
+      mech_li1: '<strong>压力性充血与触觉变异：</strong>通过微流控系统监测汗液中的皮质醇（压力激素）。当用户因沉迷网络产生焦虑时，外壳会从透明转为浑浊病态的紫红色；同时，水凝胶表层会由于渗透压改变，从平滑转变为黏糊、粗糙的质感。这种视觉与触觉的双重生理不适，通过「感官勒索」强迫用户产生心理厌恶，从而放下手机。',
+      mech_li2: '<strong>能量闭环与废热代谢：</strong>它彻底抛弃了外部电力，转而以手机运行散发的废热为代谢动力，并摄取用户手心的汗液盐分作为核心养分。这种设计将单一的设备散热转化为复杂的生物代谢流。',
+      alt_mech1: 'Symbio-Shell 机角极微距：半透明合成表皮下水珠与粉紫分支状微流控网络贴附机身，浅景深突出「充血」与湿润表皮。',
+      alt_mech2: 'Symbio-Shell 表面极微距：深色蜂窝状格室内含品红发光代谢区与细丝状毛细网络，示意 MFC 与营养输送。',
+      alt_mech3: 'Symbio-Shell 实验台立式整体：透明外壳内品红有机团块、红色血管与金色丝状体包裹手机，暗环境反射面。',
+      interaction_h2: '交互特征：动态失活与「复苏仪式」',
+      interaction_sub: '设计赋予了外壳极具冲击力的生命语言，用生物逻辑修正人类行为：',
+      interaction_li1: '<strong>生物性「呼吸」散热：</strong>在设备高负荷运作时，壳体<strong>侧缘蜂窝状可张合组织</strong>与微型生物气孔协同：结构舒张、隙缝透出代谢辉光，表面凝露参与蒸发，并排出温热水蒸气——类似肺部潮气量变化与「出汗」的叠合。这种可感的起伏与湿热，让用户直观读到设备正承受的生理压力。<strong>热敏气孔 · 极微距（简）</strong>：壳面<strong>多枚呼吸孔不规则散布</strong>（忌整齐矩阵）；浅景深、<strong>一孔为最清晰主核</strong>，其余孔焦外点缀；孔缘花瓣/鳃瓣状皱褶，下方可见紫红微血管与弱荧光；<strong>多缕</strong>淡白蒸汽略错峰呼出，皮表凝露。单帧宜 16:9，勿做成「独孔标本切片」。',
+      interaction_ai_label1: '交互配图 · 呼吸散热 · 侧缘代谢 / 凝露（AI 概念图）',
+      breath_cap1: '<strong>侧缘「肺泡」栅格</strong> · 多孔互通 · 高负荷时舒张排热',
+      breath_cap2: '<strong>凝露 + 侧缝辉光</strong> · 「出汗」与缝隙换气同框',
+      breath_figcap: '废热驱动气孔<strong>节律张合</strong>，凝露与蒸汽参与<strong>蒸发冷却</strong>，可读作<strong>湿润—辉光—张合</strong>三联征。',
+      alt_breath1: 'Symbio-Shell 侧缘极微距：机身边角覆盖半透明蜂窝状细胞栅格，内部泛青绿色代谢辉光，表面有清晰凝露水滴，示意可张合组织与蒸发换热。',
+      alt_breath2: 'Symbio-Shell 极近特写：深色壳面布满凝结水珠，侧缝透出青绿生物光，如同鳃裂呼气与汗液蒸发并存的散热界面。',
+      interaction_ai_label2: '极微距成图参考 · 热敏气孔场（与上同一叙事）',
+      stom_cap3: '<strong>v3</strong> · 多孔散布（定稿向）',
+      stom_cap1: '<strong>v1</strong> · 单孔气氛',
+      stom_cap2: '<strong>v2</strong> · 侧光层次',
+      stom_figcap: '与列表中「极微距（简）」一句对照即可；<strong>v3</strong> 强调多孔场与景深主次，v1/v2 作光影备选。缺文件时按序回退。',
+      alt_stom3: '分镜成图 v3：极微距表皮上多枚分散呼吸孔，景深主次分明，紫红微血管与生物荧光、鳃瓣、蒸汽与水珠。',
+      alt_stom1: '分镜成图 v1：偏单孔主导构图的极微距参考。',
+      alt_stom2: '分镜成图 v2：标本侧光、鳃瓣与弱荧光。',
+      stom_prompt_sum: '复制提示 · 极微距气孔（简 · 中英文 / SD）',
+      stom_prompt_note: '以下可整段发给画师或贴入 SD；与「呼吸散热」同条叙事绑定，不再单独占一章。',
+      stom_prompt_h_zh: '中文（Brief）',
+      stom_prompt_h_en: 'English + --ar',
+      interaction_li2: '<strong>失活状态与共生复苏：</strong>外壳内置蓝藻等光合微生物，其活性高度依赖于用户的物理互动（养分）与自然光照（氧气）。若长期处于黑暗口袋或缺乏接触，外壳会进入「失活状态」——水凝胶<strong>脱水、灰白、龟裂成片</strong>，触感如干涸基质，隐喻「饥渴」而非光滑工业机身。这倒逼一场<strong>复苏仪式</strong>：户外日光浴使光合回路重启，孔隙中重新充盈含氧水体与代谢辉光，凝露回流，粗糙壳面逐步恢复湿润与透光。<strong>Symbio-Shell</strong> 借此把「离开屏幕、走进自然光」变成照料共生体的必要条件，亦是跨物种共同「呼吸」的切入点。',
+      interaction_ai_label3: '交互配图 · 失活状态 ⇄ 共生复苏（AI 概念图 · 2×2）',
+      inactive_cap1: '<strong>失活 I</strong> · 机角龟裂 · 干旱 / 凋亡',
+      inactive_cap2: '<strong>失活 II</strong> · 块状起皮 · 触感抗拒',
+      recovery_cap1: '<strong>复苏 I</strong> · 孔隙透光 · 水体再充盈',
+      recovery_cap2: '<strong>复苏 II</strong> · 格栅内流体 · 光合 / 供氧意象',
+      inactive_figcap: '上排：<strong>长期缺光、少触碰</strong>后的视觉—触觉「惩戒」；下排：<strong>日光 + 水分 + 接触</strong>后，壳体由干枯格栅重回<strong>湿润、透光、内腔再流通</strong>的共生态。与第二条列表可直接对照阅读。',
+      alt_in1: 'Symbio-Shell 失活态：机角形如干涸龟裂土层，灰白与炭黑交错，充电口隐约可辨，背景干净高调。',
+      alt_in2: 'Symbio-Shell 失活态：背壳呈焦灼块状隆起与深裂沟，灰黑如钙化死皮，相机开孔仍存。',
+      alt_rec1: 'Symbio-Shell 复苏态：深色网状外骨骼裂开，内部青绿发光腔室与金色纹理可见，表面凝露示意再度含水与代谢重启。',
+      alt_rec2: 'Symbio-Shell 复苏微距：白色不规则格栅格室内充满青绿起泡体液，边缘见硬件倒角，象征代谢回路重启。',
+      vision_h2: '未来愿景：从「消耗」回归「轮回」',
+      vision_sub: '<strong>Symbio-Shell</strong> 不仅展示了生物材料替代塑料的巨大潜力，更发起了一场关于后人类时代的伦理考问。',
+      vision_body: '当手机壳拥有了「饥饿感」与「疲惫感」，它的终结不再是垃圾场的填埋，而是一场回归土壤的<strong>生物葬礼</strong>——在降解过程中滋养新的生命。它促使我们重新审视消费主义，学着去敬畏每一个与我们共生的数字生命。',
+      totop_aria: '回到页顶',
+      foot_line1: '<strong>共生壳 Symbio-Shell</strong> · 概念页 v1.0 · 独立网页',
+      standalone_hint: '本页为<strong>单文件站点</strong>：与 <code style="color:var(--accent2)">assets</code> 文件夹置于同一目录即可离线或上传托管；无需项目站内其他 HTML。',
+      foot_home: '项目主页',
+      foot_plan: '项目规划',
+      foot_intro: '精简简介',
+      foot_disclaimer: '本页为<strong>概念与思辨设计</strong>材料；当前阶段无实物样机承诺。叙事涉及生物隐喻与伦理讨论，非医疗或产品销售说明。',
+      foot_extra: '拓展：<a href="https://drive.google.com/drive/folders/1GhrP4S1NUM2SGHXxvMnEyHykKwLuvWOm" rel="noopener noreferrer" target="_blank">Biodesign Challenge 2026 资料夹（BDC2026）</a> — 需有访问权限。'
+    },
+    en: {
+      _title: 'Symbio-Shell — Standalone concept page v1.0 · Bio-structure anatomy',
+      _meta: 'Symbio-Shell: living phone interface grounded in physiological feedback and synthetic biology. Four-layer laminate, breathable heat dissipation, macro stomata; cortisol mapping, waste-heat metabolism, revival ritual, bio-funeral narrative.',
+      nav_aria: 'On this page',
+      skip: 'Skip to main content',
+      logo: 'Symbio-Shell · 共生壳',
+      nav_home: 'Home',
+      nav_motivation: 'Motivation',
+      nav_structure: 'Structure',
+      nav_anatomy: 'Anatomy',
+      nav_layers: 'Layers',
+      nav_mechanism: 'Mechanism',
+      nav_interaction: 'Interaction',
+      nav_vision: 'Vision',
+      nav_plan: 'Roadmap',
+      nav_intro: 'Brief',
+      tagline: 'Speculative design · concept · synthetic biology × HCI',
+      hero_h1: 'Symbio-Shell<br><span style="font-size:0.92em;opacity:0.92">Symbiotic Shell</span>',
+      hero_sub: 'A living phone interface driven by physiological feedback and engineered metabolism.',
+      hero_lead: 'Facing digital-era <strong style="color:var(--text)">“sensory numbness”</strong>: <strong>Symbio-Shell</strong> uses synthetic biology to turn the case from an <strong style="color:var(--text)">industrial dead object</strong> into a <strong style="color:var(--text)">symbiotic organ</strong> with metabolism and affect—so anxiety, waste heat, and dependency are felt again in the body.',
+      hero_deck1: '<strong>Project</strong> · Symbio-Shell',
+      hero_deck2: '<strong>This page</strong> · Motivation → structure (anatomy + 4 layers) → core mechanisms → interaction (breath + macro stomata) → vision.',
+      share_banner: '<strong>Sharing:</strong> Zip this <strong>whole folder</strong> (<code>index.html</code> + <code>assets</code>) and send it—recipients open <code>index.html</code> after extract. Or deploy to GitHub Pages / Netlify and share the <strong>https URL</strong>. (A <strong>single</strong> HTML file alone <strong>won’t load images</strong>.)',
+      motivation_h2: 'Motivation: healing “sensory numbness” in the digital age',
+      motivation_sub: 'Under digital consumerism the smartphone extends our senses—yet its cold industrial character dulls intuition about anxiety and environmental cost.',
+      motivation_ai_label: 'Key visual · From industrial dead matter to a metabolizing symbiont',
+      motivation_cap1: '<strong>Primary</strong> · back view · cleared metabolism &amp; venting',
+      motivation_cap2: '<strong>Variant</strong> · upright · atmospheric alternate',
+      motivation_figcap: 'The device is no longer only an accessory but a symbiotic layer the skin can “read back” through humidity and heat—below: <strong>structure → mechanism → interaction</strong>.',
+      motivation_body: 'We churn through plastic accessories and e‑waste yet rarely feel our pathological bond with devices. <strong>Symbio-Shell</strong> uses synthetic biology to turn the case into a <strong>symbiotic organ</strong> with metabolism and emotional feedback.',
+      alt_kv_main: 'Symbio-Shell: semi-living envelope on the phone, moist pores, crimson microfluidics, edge stomata venting steam—aligned with re-sensing the device through the body.',
+      alt_kv_alt: 'Symbio-Shell: upright full shell, flesh-like semi-transparent skin, engorged vessels, inner glow—organic dependency and affective interface.',
+      structure_h2: 'Biostructure · Anatomy &amp; laminate',
+      structure_sub: 'Read <strong>top to bottom</strong>: exploded diagram &amp; image prompts, then the finalized <a href="#layers">four-layer laminate</a>. The header links “Anatomy” / “Layers” match in-page anchors.',
+      anatomy_label: 'Anatomical diagram · v1.0',
+      anatomy_h3: 'Symbio-Shell v1.0 · anatomical plate',
+      anatomy_intro: 'An interpretive redraw from the project narrative: the shell as a <strong>thin organ</strong> around compute—periphery exchanges matter, mid-layer circulates and senses, base has weak electrochemistry, edges “exhale” under heat. Lettering aligns with <a href="#layers">the four-layer laminate</a> below.',
+      anatomy_ai_label: 'AI reference · 16:9 · clinical / biological futurism (replace with your renders)',
+      anatomy_cap1: 'Primary · early v1 · phone + living stack (file <code style="color:var(--accent2)">…16x9.png?v=1</code>, fallback v2 on error)',
+      anatomy_cap2: 'Variant · prompt ⑥ · case-only triple stack (models often read outer→inner; see note ⑥ vs “phone up, skin down” stack)',
+      anatomy_figcap: 'Left: primary (default v1). Right: case-only plate from prompt <strong>⑥</strong>. Page-wide <strong>stack order</strong>: <strong>phone top, living mid (microfluidics B), outer skin A bottom</strong>—matches TOP/MIDDLE/BOTTOM in ①②. For a stronger “phone on top” look, set main <code style="color:var(--accent2)">src</code> to <code style="color:var(--accent2)">Symbio-Shell-anatomical-exploded-16x9-v2.png</code>.',
+      alt_anatomy_main: 'Symbio-Shell: exploded bio-engineered living case. Semi-transparent skin, red microfluidics, edge stomata, clinical plate.',
+      alt_anatomy_var: 'Symbio-Shell: three-layer case-only explode. Synthetic skin, red channels, stomata base.',
+      prompt_summary_main: 'Copy prompts · Midjourney / SD · negatives &amp; workflow',
+      prompt_note_open: 'Copy whole blocks; MJ: params at end; SD: negatives in Negative prompt.',
+      prompt_h1: '① Base prompt (stack order locked)',
+      prompt_note_1a: 'Without clear top/bottom, models put the shell on top; TOP/MIDDLE/BOTTOM fixes that.',
+      prompt_h2: '② Midjourney extended (museum plate)',
+      prompt_note_2a: 'Stressing <strong>phone up, skin down</strong>. If too “illustration”, tune <code style="color:var(--accent2)">--stylize</code> or add <code style="color:var(--accent2)">photoreal specular</code>.',
+      prompt_h3: '③ Negative prompt (SD/Civitai/Comfy; MJ: <code style="color:var(--accent2)">--no</code>)',
+      prompt_h4: '④ Short workflow (ZH)',
+      prompt_h5: '⑤ Chinese master prompt (CN vendors)',
+      prompt_h6: '⑥ Case-only triple (outer→inner)',
+      prompt_note_6a: 'Describes only the <strong>living shell</strong>; models often draw <strong>top=skin, mid=vessels, bottom=stomata base</strong> (phone side). For full stack with phone on top, append <code style="color:var(--accent2)">fourth layer smartphone core on top…</code> or use ①②.',
+      layers_h3: 'Four-layer laminate · outside in',
+      layers_sub: 'Finalized <strong>functional layers</strong> for boards, illustration, 3D. Lettering map: <strong>L1 ≈ A</strong> sensory epidermis, <strong>L2 ≈ B</strong> microfluidics, <strong>L3 ≈ C</strong> morphing stomata (edges/surface), <strong>L4 ≈ D</strong> bio-electrochemical interface; <strong>E</strong> remains the stress/death zone.',
+      layers_ai_label: 'AI reference · vertical explode · Nature-style plate · slate gray · 16:9',
+      layers_cap1: '<strong>Primary</strong> · organ-like · wet / fleshy / translucent',
+      layers_cap2: '<strong>Alternate</strong> · light clinical board · pick one or mix for prints',
+      layers_figcap: 'Primary aims for <em>Nature</em>-grade illustration: no metal toys, no plastic gloss. Label in Figma to avoid AI glyphs; stash briefs in collapsed prompts.',
+      alt_layers_main: 'Exploded bio case on slate: four separated layers—cornea-like skin, crimson capillary net, gill stomata, honeycomb base. Soft lab light, organic translucency.',
+      alt_layers_alt: 'Symbio-Shell alternate explode: light clinical ground, visible inter-layer gaps.',
+      layer1_h4: 'Layer 1 · Sensory epidermis',
+      layer1_vis: '<strong>Look:</strong> semi-transparent skin with honeycomb micropores.',
+      layer1_tag: 'Caption · “Permselective nutrient capture”',
+      layer1_tech: '<strong>Tech:</strong> semipermeable film lets small sweat molecules (cortisol, salts, urea) in while blocking contaminants.',
+      layer1_kw: 'Keywords: Translucent · Micropores · Biomimetic skin',
+      layer2_h4: 'Layer 2 · Microfluidic “vasculature”',
+      layer2_vis: '<strong>Look:</strong> fine branching channels like capillaries or roots.',
+      layer2_tag: 'Caption · “Metabolic routing &amp; stress mapping hub”',
+      layer2_tech: '<strong>Tech:</strong> not blood—a nutrient broth with engineered chromogenic bacteria; cortisol shifts pathways to purple/red pigments.',
+      layer2_kw: 'Keywords: Branching veins · Red glow · Fluid motion',
+      layer3_h4: 'Layer 3 · Morphing stomata',
+      layer3_vis: '<strong>Look:</strong> gill- or leaf-stomata micro-valves along the edge.',
+      layer3_tag: 'Caption · “Thermo-active vent &amp; gas exchange”',
+      layer3_tech: '<strong>Tech:</strong> shape-memory hydrogel opens when the back plate heats, venting metabolic vapor—biomimetic cooling.',
+      layer3_kw: 'Keywords: Valves · Stomata · Exhaling effect',
+      layer4_h4: 'Layer 4 · Bio-electrochemical base',
+      layer4_vis: '<strong>Look:</strong> honeycomb cells pressed against the phone.',
+      layer4_tag: 'Caption · “Microbial fuel-cell (MFC) array”',
+      layer4_tech: '<strong>Tech:</strong> microbes oxidize organics from sweat for trickle current—maintaining “vitals” like osmotic pressure and culture activity.',
+      layer4_kw: 'Keywords: Honeycomb array · Interface · Micro-circuitry',
+      mechanism_h2: 'Mechanisms · physiology mapping &amp; multisensory intervention',
+      mechanism_sub: '<strong>Symbio-Shell</strong> uses a living hydrogel matrix and engineered microbes tightly coupled to physiological signals:',
+      mechanism_ai_label: 'Mechanism art · signal → vision / metabolic readout (AI concept)',
+      mech_cap1: '<strong>Stress / map</strong> · corner macro · skin A + microfluidics B',
+      mech_cap2: '<strong>Heat / metabolism</strong> · honeycomb · “layer D” mood',
+      mech_cap3: '<strong>Whole device</strong> · lab mood · multisensory overview',
+      mech_figcap: 'Triptych: left—cortisol, congestion, haptic shift; center—microfluidic / electrochemical macro mood; right—organic–hardware symbiosis at device scale.',
+      mech_li1: '<strong>Stress flush &amp; haptic drift:</strong> microfluidics track cortisol. Under doomscrolling anxiety the case clouds into a sick magenta; the gel surface roughens from osmotic changes—a combined visual/tactile “sensory ransom” to put the phone down.',
+      mech_li2: '<strong>Energy loop &amp; waste-heat metabolism:</strong> no external power—the phone’s waste heat drives metabolism; palm sweat salts feed the culture, turning simple cooling into a biological flow.',
+      alt_mech1: 'Corner macro: droplets under synthetic skin, magenta branching microfluidics, shallow DOF, “congested” wet epidermis.',
+      alt_mech2: 'Surface macro: dark honeycomb chambers, magenta metabolic glow, capillary filaments—MFC metaphor.',
+      alt_mech3: 'Lab upright: transparent shell, magenta mass, red vessels, gold filaments around phone, reflective tabletop.',
+      interaction_h2: 'Interaction · dormancy &amp; “revival ritual”',
+      interaction_sub: 'The shell speaks with blunt biological grammar to nudge behavior:',
+      interaction_li1: '<strong>Biological “breathing” heat relief:</strong> under load, <strong>honeycomb tissue along edges</strong> works with stomata—tissue dilates, seams glow, condensate evaporates, warm vapor vents—like tidal volume plus “sweating.” Users feel the device’s physiological load. <strong>Thermo stomata · macro (brief):</strong> many pores <strong>irregular</strong> (no grid); <strong>one hero pore sharp</strong>, peers in bokeh; petal/gill lips; magenta capillaries, faint fluorescence; <strong>staggered</strong> pale vapor; skin dew. 16:9; not a single-pore specimen slide.',
+      interaction_ai_label1: 'Interaction art · breath heat · edge metabolism / condensate',
+      breath_cap1: '<strong>Edge “alveolar” grid</strong> · porous · dilates under load',
+      breath_cap2: '<strong>Dew + seam glow</strong> · sweat + slit ventilation together',
+      breath_figcap: 'Waste heat drives <strong>rhythmic stomatal opening</strong>; condensate and vapor participate in <strong>evaporative cooling</strong>—a <strong>wet–glow–pulse</strong> triad.',
+      alt_breath1: 'Edge macro: translucent honeycomb on corner, teal metabolic glow, clear dew—expandable tissue and evaporative cooling.',
+      alt_breath2: 'Ultra close: dark skin beaded with water, teal light in slit—gill exhale plus sweat-like cooling.',
+      interaction_ai_label2: 'Macro reference · thermo stomata field (same narrative)',
+      stom_cap3: '<strong>v3</strong> · scattered pores (preferred)',
+      stom_cap1: '<strong>v1</strong> · single-pore mood',
+      stom_cap2: '<strong>v2</strong> · side-light layers',
+      stom_figcap: 'Cross-check with the macro bullet; <strong>v3</strong> stresses field + DOF hierarchy; v1/v2 are lighting alternates. Fallback order if files missing.',
+      alt_stom3: 'Storyboard v3: many stomata, graded focus, magenta vessels, gill lips, vapor &amp; droplets.',
+      alt_stom1: 'Storyboard v1: single dominant pore macro.',
+      alt_stom2: 'Storyboard v2: specimen side light, gills, weak fluorescence.',
+      stom_prompt_sum: 'Copy prompt · macro stomata (brief · EN/ZH · SD)',
+      stom_prompt_note: 'Send to artists or SD; bound to breath-heat narrative, no separate chapter.',
+      stom_prompt_h_zh: '中文（Brief）',
+      stom_prompt_h_en: 'English + --ar',
+      interaction_li2: '<strong>Dormancy &amp; symbiotic revival:</strong> cyanobacteria and photo-microlife need touch (nutrients) and daylight (oxygen). Long pocket dark or no contact triggers <strong>dormancy</strong>—hydrogel <strong>desiccates, grays, crazes</strong>; touch feels like dry substrate, a “thirst” metaphor versus slick industrial shells. That demands a <strong>revival ritual</strong>: outdoor light reboots photosynthesis; pores refill with oxygenated fluid and glow; dew returns; roughness yields to wet translucency. <strong>Symbio-Shell</strong> makes “leave the screen, enter daylight” the cost of caring—shared “breathing” across species.',
+      interaction_ai_label3: 'Interaction art · dormancy ⇄ revival (AI · 2×2)',
+      inactive_cap1: '<strong>Dormant I</strong> · corner mud-crack · drought',
+      inactive_cap2: '<strong>Dormant II</strong> · charred scales · aversive touch',
+      recovery_cap1: '<strong>Revival I</strong> · pore glow · fluid return',
+      recovery_cap2: '<strong>Revival II</strong> · fluid in lattice · photo-oxygen cue',
+      inactive_figcap: 'Top: visual–tactile “penalty” after <strong>low light &amp; touch</strong>. Bottom: after <strong>sun + moisture + contact</strong>, the shell returns from dry lattice to <strong>wet, luminous, re-circulating</strong> symbiosis.',
+      alt_in1: 'Dormant: corner like cracked mud, bone &amp; soot, port hints, high-key ground.',
+      alt_in2: 'Dormant: back shell blistered and fissured, calcified charcoal, camera hole survives.',
+      alt_rec1: 'Revival: dark exoskeleton splits, teal glowing chambers &amp; gold filigree, dew—water &amp; metabolism return.',
+      alt_rec2: 'Revival macro: white lattice chambers filled with bubbling teal fluid, hardware bevel—circuit restart.',
+      vision_h2: 'Vision · from consumption to cycle',
+      vision_sub: '<strong>Symbio-Shell</strong> shows bio-materials replacing plastic—and opens an ethical question for a posthuman everyday.',
+      vision_body: 'When a case can feel “hungry” or “spent,” its end is not the landfill but a <strong>bio-funeral</strong>—feeding new life as it degrades. It asks us to revisit consumerism and respect every digital symbiont we live with.',
+      totop_aria: 'Back to top',
+      foot_line1: '<strong>Symbio-Shell</strong> · concept v1.0 · standalone page',
+      standalone_hint: 'This folder is a <strong>single-page site</strong>: keep this HTML next to the <code style="color:var(--accent2)">assets</code> folder for offline use or static hosting; no other project HTML required.',
+      foot_home: 'Home',
+      foot_plan: 'Roadmap',
+      foot_intro: 'Brief',
+      foot_disclaimer: 'Speculative / critical design material; no commitment to a physical prototype. Biological metaphor &amp; ethics discussion—not medical or product claims.',
+      foot_extra: 'More: <a href="https://drive.google.com/drive/folders/1GhrP4S1NUM2SGHXxvMnEyHykKwLuvWOm" rel="noopener noreferrer" target="_blank">Biodesign Challenge 2026 folder</a> — access required.'
+    }
+  };
+
+  function applyLang(lang) {
+    var pack = I18N[lang] || I18N.zh;
+    document.documentElement.lang = lang === 'en' ? 'en' : 'zh-CN';
+    document.title = pack._title;
+    var meta = document.querySelector('meta[name="description"]');
+    if (meta) meta.setAttribute('content', pack._meta);
+
+    document.querySelectorAll('[data-i18n]').forEach(function (el) {
+      var k = el.getAttribute('data-i18n');
+      if (pack[k] != null) el.textContent = pack[k];
+    });
+    document.querySelectorAll('[data-i18n-html]').forEach(function (el) {
+      var k = el.getAttribute('data-i18n-html');
+      if (pack[k] != null) el.innerHTML = pack[k];
+    });
+    document.querySelectorAll('[data-i18n-alt]').forEach(function (el) {
+      var k = el.getAttribute('data-i18n-alt');
+      if (pack[k] != null) el.setAttribute('alt', pack[k]);
+    });
+    document.querySelectorAll('[data-i18n-aria-label]').forEach(function (el) {
+      var k = el.getAttribute('data-i18n-aria-label');
+      if (pack[k] != null) el.setAttribute('aria-label', pack[k]);
+    });
+
+    var btn = document.getElementById('lang-toggle');
+    if (btn) {
+      btn.textContent = lang === 'zh' ? 'English' : '中文';
+      btn.setAttribute('aria-label', lang === 'zh' ? 'Switch to English' : '切换到中文');
+      btn.setAttribute('aria-pressed', lang === 'en' ? 'true' : 'false');
+    }
+    try { localStorage.setItem(STORAGE, lang); } catch (e) {}
+  }
+
+  var saved = 'zh';
+  try { saved = localStorage.getItem(STORAGE) || 'zh'; } catch (e) {}
+  if (saved !== 'zh' && saved !== 'en') saved = 'zh';
+  applyLang(saved);
+
+  var toggle = document.getElementById('lang-toggle');
+  if (toggle) {
+    toggle.addEventListener('click', function () {
+      var cur = document.documentElement.lang === 'en' ? 'en' : 'zh';
+      applyLang(cur === 'zh' ? 'en' : 'zh');
+    });
+  }
+})();
+</script>
+
+</body>
+</html>

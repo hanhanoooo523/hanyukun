@@ -1,10 +1,13 @@
-# Deploy site root as GitHub Pages (static HTML).
-# After first push: Repo → Settings → Pages → Build: GitHub Actions.
+# Deploy only symbio-shell-concept-standalone/ as GitHub Pages (concept page + assets).
+# Settings → Pages → Build and deployment → Source: GitHub Actions.
 name: Deploy GitHub Pages
 
 on:
   push:
     branches: [main]
+    paths:
+      - "symbio-shell-concept-standalone/**"
+      - ".github/workflows/pages.yml"
   workflow_dispatch:
 
 permissions:
@@ -27,6 +30,6 @@ jobs:
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
         with:
-          path: .
+          path: symbio-shell-concept-standalone
       - id: deployment
         uses: actions/deploy-pages@v4
