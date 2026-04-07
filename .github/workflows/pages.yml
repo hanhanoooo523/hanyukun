@@ -9,6 +9,8 @@ on:
       - "symbio-shell-concept-standalone/**"
       - "StyleShift-Presentation.html"
       - "设计风格迁移-改进版.html"
+      - "Symbio-Shell-Biodesign-Planning.html"
+      - "Symbio-Shell-项目规划.html"
       - ".github/workflows/pages.yml"
   workflow_dispatch:
 
@@ -35,6 +37,8 @@ jobs:
           cp -r symbio-shell-concept-standalone/. _site/
           cp StyleShift-Presentation.html _site/
           cp "设计风格迁移-改进版.html" _site/
+          cp Symbio-Shell-Biodesign-Planning.html _site/
+          cp "Symbio-Shell-项目规划.html" _site/
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
         with:
