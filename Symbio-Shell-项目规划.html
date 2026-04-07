@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Symbio-Shell（共生壳）项目规划·概念构思版：无实物与实验；叙事、视觉与文献脚注级支持；伦理表述与交付清单。">
+<title>共生壳 Symbio-Shell — 项目规划</title>
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --bg: #0a0f0d;
+  --surface: #121c18;
+  --border: #2a3d34;
+  --accent: #2dd4a3;
+  --accent2: #5eead4;
+  --life: #be123c;
+  --life-dim: rgba(190,18,60,0.35);
+  --text: #e8f0eb;
+  --text2: #8fa89a;
+  --warn: #fcd34d;
+  --radius: 14px;
+}
+html { scroll-behavior: smooth; }
+body {
+  font-family: 'Segoe UI', system-ui, -apple-system, 'PingFang SC', 'Microsoft YaHei', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.7;
+  font-size: 16px;
+}
+a { color: var(--accent2); text-decoration: none; }
+a:hover { text-decoration: underline; }
+.site-head {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+  padding: 14px 24px;
+  background: rgba(18,28,24,0.94);
+  backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--border);
+}
+.site-logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-weight: 700;
+  font-size: 1.1rem;
+  color: var(--text);
+}
+.site-logo span {
+  background: linear-gradient(135deg, var(--accent), var(--accent2));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+.site-nav { display: flex; flex-wrap: wrap; gap: 8px 16px; font-size: 13px; }
+.site-nav a { color: var(--text2); }
+.site-nav a:hover { color: var(--text); }
+.hero {
+  max-width: 920px;
+  margin: 0 auto;
+  padding: 48px 24px 32px;
+  text-align: center;
+}
+.hero .tagline {
+  display: inline-block;
+  margin-bottom: 14px;
+  padding: 6px 14px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--accent2);
+  background: rgba(45,212,163,0.12);
+  border: 1px solid rgba(94,234,212,0.35);
+}
+.hero h1 { font-size: clamp(1.75rem, 4vw, 2.35rem); font-weight: 700; margin-bottom: 10px; line-height: 1.2; }
+.hero .meta {
+  color: var(--text2);
+  font-size: 0.98rem;
+  max-width: 720px;
+  margin: 0 auto 12px;
+}
+.hero-lead { color: var(--text2); max-width: 680px; margin: 0 auto; font-size: 1.05rem; }
+.wrap { max-width: 900px; margin: 0 auto; padding: 0 24px 72px; }
+.doc-bar {
+  margin-bottom: 40px;
+  padding: 16px 20px;
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
+  background: var(--surface);
+  font-size: 14px;
+  color: var(--text2);
+}
+.doc-bar strong { color: var(--text); }
+.section { margin-bottom: 48px; }
+.section h2 {
+  font-size: 1.28rem;
+  margin-bottom: 14px;
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  line-height: 1.35;
+}
+.section h2 .num {
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 32px;
+  height: 32px;
+  padding: 0 6px;
+  border-radius: 10px;
+  background: linear-gradient(145deg, var(--accent), #0d9488);
+  color: #042f2e;
+  font-size: 14px;
+  font-weight: 800;
+}
+.section h3 {
+  font-size: 1.05rem;
+  color: var(--text);
+  margin: 22px 0 10px;
+  font-weight: 600;
+}
+.section .sub { color: var(--text2); font-size: 15px; margin-bottom: 14px; }
+.section p.body { color: var(--text2); margin-bottom: 12px; }
+.section p.body strong, .section li strong { color: var(--text); font-weight: 600; }
+.section ol.steps {
+  margin: 12px 0 0;
+  padding-left: 1.25em;
+  color: var(--text2);
+}
+.section ol.steps li { margin-bottom: 10px; }
+ul.feature-list {
+  margin: 12px 0 0;
+  padding-left: 1.15em;
+  color: var(--text2);
+}
+ul.feature-list li { margin-bottom: 10px; }
+.table-wrap {
+  overflow-x: auto;
+  margin: 16px 0;
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  background: rgba(18,28,24,0.5);
+}
+table.plan {
+  width: 100%;
+  min-width: 520px;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+table.plan th, table.plan td {
+  padding: 11px 14px;
+  border-bottom: 1px solid var(--border);
+  text-align: left;
+  vertical-align: top;
+}
+table.plan th {
+  background: rgba(13,24,20,0.95);
+  color: var(--text);
+  font-weight: 600;
+  white-space: nowrap;
+}
+table.plan tr:last-child td { border-bottom: none; }
+table.plan td { color: var(--text2); }
+table.plan td:first-child { color: var(--text); font-weight: 500; }
+ul.checklist {
+  list-style: none;
+  padding: 0;
+  margin: 14px 0 0;
+}
+ul.checklist li {
+  position: relative;
+  padding-left: 1.65em;
+  margin-bottom: 10px;
+  color: var(--text2);
+  font-size: 15px;
+}
+ul.checklist li::before {
+  content: "☐";
+  position: absolute;
+  left: 0;
+  color: var(--accent2);
+  font-size: 1rem;
+}
+.links-card {
+  padding: 18px 20px;
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
+  background: var(--surface);
+  font-size: 15px;
+  color: var(--text2);
+}
+.links-card ul { margin-top: 10px; padding-left: 1.2em; }
+.links-card li { margin-bottom: 8px; }
+.links-card code {
+  font-family: ui-monospace, Consolas, monospace;
+  font-size: 13px;
+  color: #a7f3d0;
+}
+.foot-note {
+  margin-top: 32px;
+  padding-top: 24px;
+  border-top: 1px dashed var(--border);
+  font-size: 14px;
+  color: var(--text2);
+  font-style: italic;
+}
+footer.site-foot {
+  border-top: 1px solid var(--border);
+  padding: 28px 24px 48px;
+  text-align: center;
+  color: var(--text2);
+  font-size: 14px;
+  line-height: 1.6;
+}
+@media (max-width: 640px) {
+  .site-head { flex-direction: column; align-items: flex-start; }
+  .section h2 { flex-direction: column; gap: 8px; }
+}
+</style>
+</head>
+<body id="top">
+
+<header class="site-head">
+  <a href="#top" class="site-logo" aria-label="回到页顶">
+    <svg width="26" height="26" viewBox="0 0 32 32" fill="none" aria-hidden="true">
+      <ellipse cx="16" cy="16" rx="14" ry="10" stroke="url(#plg)" stroke-width="2" fill="rgba(45,212,163,0.1)"/>
+      <circle cx="16" cy="16" r="3.5" fill="#0d9488"/>
+      <defs>
+        <linearGradient id="plg" x1="4" y1="8" x2="28" y2="24">
+          <stop stop-color="#2dd4a3"/><stop offset="1" stop-color="#5eead4"/>
+        </linearGradient>
+      </defs>
+    </svg>
+    <span>共生壳 · 项目规划</span>
+  </a>
+  <nav class="site-nav" aria-label="本页导航">
+    <a href="#overview">概述</a>
+    <a href="#phases">阶段</a>
+    <a href="#wbs">工作分解</a>
+    <a href="#roles">角色</a>
+    <a href="#risks">风险</a>
+    <a href="#ethics">伦理</a>
+    <a href="#deliverables">交付物</a>
+    <a href="#links">关联</a>
+  </nav>
+</header>
+
+<section class="hero">
+  <span class="tagline">规划文档 · v0.2 · 概念构思版</span>
+  <h1>Symbio-Shell 项目规划</h1>
+  <p class="meta">思辨设计 / 虚构装置路线——<strong style="color:var(--text)">不制作实物</strong>，不涉及台架或生物实验；以叙事、视觉与表述规范为主。</p>
+  <p class="hero-lead">在<strong style="color:var(--text)">纸面与屏幕</strong>上把体系说圆：系统图、分镜、网站或幻灯可达答辩/作品集程度；对外明确「概念提案」即可。</p>
+</section>
+
+<div class="wrap">
+  <div class="doc-bar" id="meta">
+    <strong>文档性质：</strong>概念/构思阶段专用；<strong>不包含</strong>可握持样机、工作原型或实验室验证。<strong>Markdown 同源：</strong><code style="color:var(--accent2);font-size:13px">Symbio-Shell-项目规划.md</code>
+  </div>
+
+  <section class="section" id="overview">
+    <h2><span class="num">1</span> 项目概述</h2>
+    <div class="table-wrap">
+      <table class="plan">
+        <thead>
+          <tr><th>项目</th><th>说明</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>名称</td><td>Symbio-Shell（共生壳）</td></tr>
+          <tr><td>一句话定义</td><td>基于生理反馈与合成生物代谢逻辑的活性手机界面（概念壳体）。</td></tr>
+          <tr><td>核心价值</td><td>将「数字焦虑、废热、依赖」转译为可感知的多通道反馈，推动从消耗到轮回的材料与伦理叙事。</td></tr>
+          <tr><td>规划边界</td><td><strong>纯概念与可观看的叙事资产</strong>（图文、网站、幻灯、短片稿等）。不做实物、不做生物/化学实测。对外可称<strong>思辨设计 / 概念提案</strong>。</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="sub" style="margin-top:20px"><strong>成功标准</strong>（建议同时满足其中 <strong>3</strong> 条即可视为阶段成功）</p>
+    <ol class="steps">
+      <li>叙事与技术路径自洽：四层结构、代谢闭环、行为干预逻辑可用一页「系统图 + 时序」讲清（可标「推测」「未验证」）。</li>
+      <li><strong>（可选）</strong> 配 2–3 条公开文献或常识级脚注，说明机制「对应哪类讨论」即可——<strong>不要求</strong>自做实验或数据。</li>
+      <li>视觉与叙事资产可展示：解剖图、分镜、展板/KV、网页或短片稿（含 AI 成图）<strong>至少一类</strong>达答辩/作品集完成度。</li>
+      <li>伦理与表述备忘录 + 明确<strong>构思性质</strong>；附简短「我们不承诺什么」。</li>
+    </ol>
+  </section>
+
+  <section class="section" id="phases">
+    <h2><span class="num">2</span> 阶段总览（推荐节奏）</h2>
+    <p class="body">以下为 <strong>约 4–6 个月</strong> 的轻量切分；若仅为单次答辩，可用 <strong>6–8 周冲刺</strong>（见表 2.1）。</p>
+    <div class="table-wrap">
+      <table class="plan">
+        <thead>
+          <tr><th>阶段</th><th>周期（参考）</th><th>目标</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>P0 对齐与范围</td><td>第 1–2 周</td><td>锁定叙事、成功标准、<strong>明确无实物</strong>、成果形式（展赛 / 作品集 / 网页）。</td></tr>
+          <tr><td>P1 设定与依据</td><td>第 2–6 周</td><td>系统框图、假设表、自愿的文献笔记（无需实验）、名词与「推测」标注规范。</td></tr>
+          <tr><td>P2 叙事与视觉</td><td>与 P1 并行</td><td>主视觉与解剖图迭代、分镜、概念页与介绍页统一、可选动效/短片脚本。</td></tr>
+          <tr><td>P3 整合与预演</td><td>第 5–8 周</td><td>答辩 deck、讲稿、模拟追问；汇总为可分享入口（静态站或 PDF）。</td></tr>
+          <tr><td>P4 复盘与延伸</td><td>持续</td><td>若未来有人愿做实物，另立子项目；此处只归档叙事与素材说明。</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <h3 id="phases-sprint">2.1 答辩「压缩版」里程碑（示例 · 无实物）</h3>
+    <div class="table-wrap">
+      <table class="plan">
+        <thead>
+          <tr><th>周次</th><th>交付</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>W1–W2</td><td>一页系统图 + 假设表 + 对外一句「本项目为概念提案」</td></tr>
+          <tr><td>W3–W4</td><td>叙事定稿 + 主视觉/KV + 2 分钟口播稿</td></tr>
+          <tr><td>W5–W6</td><td>分镜深化或 30–60 秒影像稿（可全部为生成素材）</td></tr>
+          <tr><td>W7</td><td>答辩 deck、模拟评委追问、伦理/表述页定稿</td></tr>
+          <tr><td>W8</td><td>排版、网页或 PDF 冻结、素材备份</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="section" id="wbs">
+    <h2><span class="num">3</span> 工作分解（WBS）</h2>
+    <h3>3.1 系统与科学叙事（纸面 / 屏幕）</h3>
+    <ul class="feature-list">
+      <li>将「皮质醇检测—显色—触觉」写成<strong>故事内自洽</strong>的因果链；可脚注「现实中需哪些条件」——无需验证。</li>
+      <li><strong>废热、气孔、渗透压</strong>：<strong>叙事级设定</strong>即可，图注或小字写明推测边界。</li>
+      <li>光合微生物与复苏仪式：<strong>与世界观一致</strong>，可按科普级资料避免明显硬伤。</li>
+      <li>输出：<strong>系统框图、时序故事板（焦虑暴发 / 高负载 / 长期弃置）</strong>。</li>
+    </ul>
+    <h3>3.2 设计资产</h3>
+    <ul class="feature-list">
+      <li>四层叠层与 A–E 图例统一命名（与概念页同源更佳）。</li>
+      <li><strong>概念外观</strong>：尺度、握持区、气孔排布——重画面可读性，不重工艺可实现性。</li>
+      <li>输出：<strong>Figma/AI 展板、HTML 概念页、可选动态分镜</strong>。</li>
+    </ul>
+    <h3>3.3 技术叙事支撑（书桌工作，非动手验证）</h3>
+    <ol class="steps">
+      <li><strong>微流控/比色：</strong>公开研究中常见到什么程度——数句背景 + 参考链接即可。</li>
+      <li><strong>水凝胶与渗透压：</strong>科普/综述级理解，支撑「质感变化」叙述。</li>
+      <li><strong>温敏材料：</strong>作类比，说明叙事隐喻，不承诺配方。</li>
+      <li><strong>生物电/MFC：</strong>若写入设定，用「极低功率示意」一笔带过并标虚构强度。</li>
+    </ol>
+    <h3>3.4 展示与传播</h3>
+    <ul class="feature-list">
+      <li>项目介绍页、概念页、规划书三份材料<strong>术语一致</strong>。</li>
+      <li>短片/幻灯结构：问题 → 机制 → 仪式 → 轮回（各段可短至 20–40 秒口播）。</li>
+    </ul>
+    <h3>3.5 合规与表述（贯穿全程）</h3>
+    <ul class="feature-list">
+      <li>「感官勒索」等强措辞备<strong>学术版 / 大众版</strong>；对外保留<strong>思辨设计</strong>定位。</li>
+      <li>本阶段<strong>无</strong>真实人体数据与生物样本；若将来扩展再补合规条款。</li>
+    </ul>
+  </section>
+
+  <section class="section" id="roles">
+    <h2><span class="num">4</span> 角色与协作（最小配置）</h2>
+    <div class="table-wrap">
+      <table class="plan">
+        <thead>
+          <tr><th>角色</th><th>职责</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>项目负责人</td><td>范围、叙事口径、截止日期。</td></tr>
+          <tr><td>叙事／视觉</td><td>系统图、KV、分镜、网站与幻灯。</td></tr>
+          <tr><td>科学／设定顾问</td><td>查资料、挑硬伤、<strong>不写实验方案</strong>。</td></tr>
+          <tr><td>伦理／表述</td><td>「概念 vs 产品」措辞、答辩敏感问答。</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="body" style="margin-top:16px">一人团队：叙事 + 视觉 + 自编「我们不承诺什么」一节即可。</p>
+  </section>
+
+  <section class="section" id="risks">
+    <h2><span class="num">5</span> 风险与应对</h2>
+    <div class="table-wrap">
+      <table class="plan">
+        <thead>
+          <tr><th>风险</th><th>应对</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>被误读成「已能做成的产品」</td><td>首页/封底固定<strong>概念提案</strong>；系统图旁注明推测与虚构强度。</td></tr>
+          <tr><td>评审质疑「操纵用户」</td><td>与注意力经济对照；强调虚构场景与价值讨论，非销售承诺。</td></tr>
+          <tr><td>设定被指「不科学」</td><td>脚注链到综述或科普；承认边界，诗学/伦理意图可优先于工程细节。</td></tr>
+          <tr><td>时间不足</td><td>砍掉文献扩展，保住<strong>一条主叙事 + 一套主视觉</strong>。</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="section" id="ethics">
+    <h2><span class="num">6</span> 伦理与表述备忘录</h2>
+    <p class="sub">需在对外材料中可追溯；本阶段无实验与人体采样。</p>
+    <ul class="feature-list">
+      <li>不宣称医疗诊断或治疗；皮质醇等为<strong>设定元素</strong>，非实测指标。</li>
+      <li>本阶段<strong>无</strong>生物实验与人体接触；若图像中出现体液隐喻，标注为<strong>象征性</strong>。</li>
+      <li>「强制户外」「心理厌恶」等可 soften 为<strong>强提示、可逆反馈、仪式性叙事</strong>。</li>
+      <li>若被问及「能否定做」：当前为<strong>叙事与视觉层面的概念作品</strong>，实物委托须另立范围。</li>
+    </ul>
+  </section>
+
+  <section class="section" id="deliverables">
+    <h2><span class="num">7</span> 交付物清单（核对用 · 无实物）</h2>
+    <ul class="checklist">
+      <li>项目规划书（本文档 / MD 迭代版）</li>
+      <li>系统框图 + 假设表（含「推测」标注）</li>
+      <li>主视觉与解剖/分镜资产包</li>
+      <li>演示材料（PPT / HTML / 影像稿其一或以上）</li>
+      <li>（可选）文献或背景阅读笔记 1–3 页</li>
+      <li>伦理与表述一页纸 + 「我们不承诺什么」</li>
+      <li>答辩 Q&amp;A 清单</li>
+    </ul>
+  </section>
+
+  <section class="section" id="links">
+    <h2><span class="num">8</span> 关联文件（仓库内）</h2>
+    <div class="links-card">
+      <ul>
+        <li><code>Symbio-Shell-共生壳-概念页.html</code> — 结构解剖、分镜与叙事长文</li>
+        <li><code>Symbio-Shell-项目介绍.html</code> — 偏简的项目概念陈述</li>
+        <li><code>Symbio-Shell-项目规划.md</code> — 与本页内容同源，便于 Git 与协作修订</li>
+      </ul>
+    </div>
+    <p class="foot-note">若未来升级为可演示原型，请另建「原型子规划」；本页不覆盖产线与实验室。如需甘特图或英文 BDC 格式，可在 MD 追加一节。</p>
+  </section>
+</div>
+
+<footer class="site-foot">
+  <p><strong>共生壳 Symbio-Shell</strong> · 项目规划页 · 静态 HTML</p>
+  <p style="margin-top:8px">本项目为<strong>概念构思与思辨设计</strong>，不包含可工作实物或生物实验；对外陈述以本文与概念页为准。</p>
+</footer>
+
+</body>
+</html>

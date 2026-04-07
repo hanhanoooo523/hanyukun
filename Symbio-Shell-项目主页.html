@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Symbio-Shell 共生壳：基于生理反馈与合成生物代谢逻辑的活性手机界面。设计动机、核心机制、交互特征与未来愿景全文。">
+<title>Symbio-Shell 共生壳 — 项目介绍</title>
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --bg: #0a0f0d;
+  --surface: #121c18;
+  --surface2: #162822;
+  --border: #2a3d34;
+  --accent: #2dd4a3;
+  --accent2: #5eead4;
+  --life: #be123c;
+  --life-muted: rgba(190, 18, 60, 0.45);
+  --text: #e8f0eb;
+  --text2: #8fa89a;
+  --warn: #fcd34d;
+  --radius: 16px;
+  --max: 1100px;
+}
+html { scroll-behavior: smooth; }
+body {
+  font-family: 'Segoe UI', system-ui, -apple-system, 'PingFang SC', 'Microsoft YaHei', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.65;
+  font-size: 16px;
+}
+a { color: var(--accent2); text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+/* --- header --- */
+.site-head {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+  padding: 14px 22px;
+  background: rgba(10, 15, 13, 0.88);
+  backdrop-filter: blur(14px);
+  border-bottom: 1px solid var(--border);
+}
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-weight: 700;
+  font-size: 1.05rem;
+}
+.brand-mark {
+  width: 36px;
+  height: 36px;
+  border-radius: 12px;
+  background: linear-gradient(145deg, rgba(45,212,163,0.25), rgba(13,148,136,0.15));
+  border: 1px solid rgba(94,234,212,0.35);
+  display: grid;
+  place-items: center;
+}
+.brand-mark svg { width: 22px; height: 22px; }
+.brand span {
+  background: linear-gradient(135deg, var(--accent), var(--accent2));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+.site-nav {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px 18px;
+  font-size: 14px;
+}
+.site-nav a {
+  color: var(--text2);
+  padding: 4px 0;
+}
+.site-nav a:hover { color: var(--text); text-decoration: none; }
+.nav-cta {
+  padding: 8px 16px !important;
+  border-radius: 999px;
+  background: rgba(45,212,163,0.14);
+  border: 1px solid rgba(94,234,212,0.4);
+  color: var(--accent2) !important;
+  font-weight: 600;
+}
+.nav-cta:hover { background: rgba(45,212,163,0.22); color: var(--text) !important; }
+
+/* --- layout --- */
+.wrap { max-width: var(--max); margin: 0 auto; padding: 0 22px; }
+.section { padding: 64px 0; }
+.section-head {
+  max-width: 640px;
+  margin-bottom: 32px;
+}
+.section-kicker {
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--warn);
+  margin-bottom: 10px;
+}
+.section-title {
+  font-size: clamp(1.5rem, 3.5vw, 2rem);
+  font-weight: 700;
+  line-height: 1.25;
+  margin-bottom: 12px;
+}
+.section-lead { color: var(--text2); font-size: 1.05rem; }
+
+.spec-deck {
+  margin-bottom: 40px;
+  padding: 22px 24px;
+  border-radius: var(--radius);
+  border: 1px solid rgba(94,234,212,0.28);
+  background: rgba(45,212,163,0.07);
+}
+.spec-deck p { margin: 0 0 10px; font-size: 15px; color: var(--text2); line-height: 1.6; }
+.spec-deck p:last-child { margin-bottom: 0; }
+.spec-deck strong { color: var(--text); }
+
+.spec-block {
+  margin-bottom: 24px;
+  padding: 28px 26px;
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
+  background: linear-gradient(165deg, rgba(22,40,34,0.42), rgba(18,28,24,0.94));
+}
+.spec-block h2 {
+  font-size: clamp(1.12rem, 2.6vw, 1.38rem);
+  font-weight: 700;
+  line-height: 1.35;
+  margin-bottom: 16px;
+  color: var(--text);
+}
+.spec-block .sub { color: var(--text2); margin-bottom: 14px; font-size: 15px; line-height: 1.65; }
+.spec-block p.body {
+  color: var(--text2);
+  font-size: 15px;
+  margin-bottom: 14px;
+  line-height: 1.72;
+}
+.spec-block ul {
+  margin: 10px 0 0;
+  padding-left: 1.2em;
+  color: var(--text2);
+  font-size: 15px;
+  line-height: 1.72;
+}
+.spec-block li { margin-bottom: 16px; }
+.spec-block li strong { color: var(--text); font-weight: 600; }
+
+/* --- hero --- */
+.hero {
+  padding: 36px 22px 24px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+.hero::before {
+  content: "";
+  position: absolute;
+  inset: -40% -20% auto;
+  height: 80%;
+  background: radial-gradient(ellipse at 50% 0%, rgba(45,212,163,0.12), transparent 55%);
+  pointer-events: none;
+}
+.hero-inner { position: relative; max-width: 800px; margin: 0 auto; }
+.pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 14px;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--accent2);
+  background: rgba(45,212,163,0.1);
+  border: 1px solid rgba(94,234,212,0.3);
+  margin-bottom: 18px;
+}
+.hero h1 {
+  font-size: clamp(2rem, 5.5vw, 3rem);
+  font-weight: 800;
+  line-height: 1.12;
+  letter-spacing: -0.02em;
+  margin-bottom: 8px;
+}
+.hero .subtitle {
+  font-size: clamp(1rem, 2.2vw, 1.15rem);
+  color: var(--text2);
+  max-width: 540px;
+  margin: 0 auto 24px;
+}
+.hero-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  justify-content: center;
+}
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 12px 22px;
+  border-radius: 999px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  border: none;
+  font-family: inherit;
+}
+.btn-primary {
+  background: linear-gradient(135deg, #14b8a6, var(--accent));
+  color: #042f2e;
+}
+.btn-primary:hover { filter: brightness(1.08); }
+.btn-ghost {
+  background: transparent;
+  color: var(--text2);
+  border: 1px solid var(--border);
+}
+.btn-ghost:hover { border-color: var(--accent2); color: var(--text); }
+
+/* --- media slots (images you will add) --- */
+.media-slot {
+  position: relative;
+  border-radius: var(--radius);
+  overflow: hidden;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  margin: 0 auto;
+}
+.media-slot--hero {
+  max-width: var(--max);
+  aspect-ratio: 16 / 9;
+  box-shadow: 0 24px 80px rgba(0,0,0,0.45);
+}
+.media-slot img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  vertical-align: middle;
+}
+.media-fallback {
+  display: none;
+  position: absolute;
+  inset: 0;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 24px;
+  background: linear-gradient(160deg, var(--surface2) 0%, #0d1512 100%);
+  color: var(--text2);
+  font-size: 15px;
+  line-height: 1.5;
+}
+.media-fallback strong {
+  display: block;
+  color: var(--text);
+  font-size: 1rem;
+  margin-bottom: 8px;
+}
+.media-fallback code {
+  font-size: 12px;
+  color: #a7f3d0;
+  background: rgba(0,0,0,0.35);
+  padding: 2px 8px;
+  border-radius: 6px;
+  margin-top: 10px;
+}
+.media-fallback.show { display: flex; }
+.caption {
+  max-width: var(--max);
+  margin: 12px auto 0;
+  padding: 0 22px;
+  font-size: 13px;
+  color: var(--text2);
+}
+
+/* --- gallery grid --- */
+.gallery-intro { margin-bottom: 20px; color: var(--text2); font-size: 15px; }
+.media-slot--tile { aspect-ratio: 4 / 3; }
+.media-slot--tile .media-fallback code { font-size: 11px; }
+
+.gallery-mosaic {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(268px, 1fr));
+  gap: 16px;
+  margin-top: 8px;
+}
+.gallery-item {
+  margin: 0;
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
+  overflow: hidden;
+  background: var(--surface);
+}
+.gallery-item img {
+  width: 100%;
+  height: 220px;
+  object-fit: cover;
+  display: block;
+  vertical-align: middle;
+}
+.gallery-item figcaption {
+  padding: 12px 14px;
+  font-size: 13px;
+  color: var(--text2);
+  line-height: 1.5;
+}
+@media (max-width: 520px) {
+  .gallery-item img { height: 200px; }
+}
+
+/* --- links --- */
+.resource-strip {
+  margin-top: 48px;
+  padding: 28px 24px;
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
+  background: var(--surface);
+}
+.resource-strip h3 { font-size: 1rem; margin-bottom: 14px; color: var(--warn); font-weight: 700; }
+.resource-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px 20px;
+}
+.resource-links a {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 10px 16px;
+  border-radius: 10px;
+  background: rgba(45,212,163,0.08);
+  border: 1px solid rgba(94,234,212,0.2);
+  color: var(--text);
+  font-size: 14px;
+  font-weight: 500;
+}
+.resource-links a:hover { background: rgba(45,212,163,0.15); text-decoration: none; }
+
+/* --- disclaimer --- */
+.disclaimer {
+  margin-top: 48px;
+  padding: 18px 20px;
+  border-radius: 12px;
+  border-left: 3px solid var(--life-muted);
+  background: rgba(190,18,60,0.06);
+  font-size: 14px;
+  color: var(--text2);
+}
+.disclaimer strong { color: #fecdd3; }
+
+/* --- footer --- */
+.site-foot {
+  margin-top: 40px;
+  padding: 32px 22px 48px;
+  text-align: center;
+  border-top: 1px solid var(--border);
+  color: var(--text2);
+  font-size: 14px;
+}
+.site-foot p + p { margin-top: 8px; }
+</style>
+</head>
+<body id="top">
+
+<header class="site-head">
+  <a href="#top" class="brand" style="-webkit-text-fill-color:initial;">
+    <div class="brand-mark" aria-hidden="true">
+      <svg viewBox="0 0 32 32" fill="none"><ellipse cx="16" cy="16" rx="13" ry="9" stroke="#2dd4a3" stroke-width="1.8"/><circle cx="16" cy="16" r="3.5" fill="#be123c"/></svg>
+    </div>
+    <span>Symbio-Shell · 共生壳</span>
+  </a>
+  <nav class="site-nav" aria-label="页面导航">
+    <a href="#motivation">设计动机</a>
+    <a href="#mechanism">核心机制</a>
+    <a href="#interaction">交互特征</a>
+    <a href="#vision">未来愿景</a>
+    <a href="#gallery">图廊</a>
+    <a href="Symbio-Shell-共生壳-概念页.html" class="nav-cta">解剖与分镜</a>
+  </nav>
+</header>
+
+<section class="hero">
+  <div class="hero-inner">
+    <div class="pill">思辨设计 · 概念提案（无实物样机）</div>
+    <h1>Symbio-Shell<br><span style="font-size:0.82em">共生壳</span></h1>
+    <p class="subtitle">一款基于<strong style="color:var(--text)">生理反馈</strong>与<strong style="color:var(--text)">合成生物代谢逻辑</strong>的活性手机界面——治愈数字时代的「感知麻木」，并以思辨设计探讨人机共生的边界。</p>
+    <div class="hero-actions">
+      <a class="btn btn-primary" href="#motivation">阅读全文</a>
+      <a class="btn btn-ghost" href="Symbio-Shell-项目规划.html">查看规划</a>
+    </div>
+  </div>
+</section>
+
+<div class="wrap">
+  <figure class="media-slot media-slot--hero" id="cover">
+    <img
+      src="assets/symbio-hero.png"
+      alt="Symbio-Shell：活体手机壳背部，半透明基质、紫红色血管网络与气孔排气，概念可视化"
+      width="1600"
+      height="900"
+      loading="eager"
+    >
+  </figure>
+  <p class="caption">主视觉：代谢活跃状态下的壳体叙事配图（AI 概念生成 · 思辨设计）。文件 <code>assets/symbio-hero.png</code>。</p>
+</div>
+
+<section class="section wrap" id="narrative">
+  <div class="section-head">
+    <p class="section-kicker">Project</p>
+    <h2 class="section-title">项目陈述</h2>
+    <p class="section-lead">以下为完整概念阐述，与《共生壳》长页正文一致；用于展览导语与口述底稿。</p>
+  </div>
+
+  <div class="spec-deck">
+    <p><strong>项目名称</strong> · Symbio-Shell（共生壳）</p>
+    <p><strong>项目定义</strong> · 一款基于生理反馈与合成生物代谢逻辑的活性手机界面</p>
+  </div>
+
+  <article class="spec-block" id="motivation">
+    <h2>1. 设计动机：治愈数字时代的「感知麻木」</h2>
+    <p class="body">在数字消费主义的驱动下，智能手机已成为人类感官的延伸，但其冰冷的工业属性使我们对数字焦虑和环境成本缺乏直觉感知。</p>
+    <p class="body">我们频繁更换塑料配件，产生大量电子垃圾，却从未察觉自己与设备之间日益病态的依赖。<strong>Symbio-Shell</strong> 旨在通过合成生物学介入，将手机壳从「工业死物」转化为一个具备代谢功能和情感反馈的「共生器官」。</p>
+  </article>
+
+  <article class="spec-block" id="mechanism">
+    <h2>2. 核心机制：生理映射与多感官干预</h2>
+    <p class="sub"><strong>Symbio-Shell</strong> 采用活性水凝胶作为基质，内置工程微生物系统，与用户的生理信号深度耦合：</p>
+    <ul>
+      <li><strong>压力性充血与触觉变异：</strong>通过微流控系统监测汗液中的皮质醇（压力激素）。当用户因沉迷网络产生焦虑时，外壳会从透明转为浑浊病态的紫红色；同时，水凝胶表层会由于渗透压改变，从平滑转变为黏糊、粗糙的质感。这种视觉与触觉的双重生理不适，通过「感官勒索」强迫用户产生心理厌恶，从而放下手机。</li>
+      <li><strong>能量闭环与废热代谢：</strong>它彻底抛弃了外部电力，转而以手机运行散发的废热为代谢动力，并摄取用户手心的汗液盐分作为核心养分。这种设计将单一的设备散热转化为复杂的生物代谢流。</li>
+    </ul>
+  </article>
+
+  <article class="spec-block" id="interaction">
+    <h2>3. 交互特征：动态失活与「复苏仪式」</h2>
+    <p class="sub">设计赋予了外壳极具冲击力的生命语言，用生物逻辑修正人类行为：</p>
+    <ul>
+      <li><strong>生物性「呼吸」散热：</strong>在设备高负荷运作时，壳体侧边的微型生物气孔会产生肉眼可见的舒张并排出温热水蒸气。这种模拟肺部的起伏和「出汗」降温，让用户直观感受到设备正承受的生理压力。</li>
+      <li><strong>失活状态与共生复苏：</strong>外壳内置蓝藻等光合微生物，其活性高度依赖于用户的物理互动（养分）与自然光照（氧气）。若长期处于黑暗口袋或缺乏接触，外壳会进入「失活状态」，表现为色泽发白、质感干瘪，并产生类似皮肤起皮的凋亡纹理。这创造了一场强制性的「复苏仪式」：用户必须带它前往户外接受日光浴。这种设计在为生物界面供氧的同时，也强制引导用户脱离室内屏幕，回归自然光源，实现跨物种的共同「呼吸」。</li>
+    </ul>
+  </article>
+
+  <article class="spec-block" id="vision">
+    <h2>4. 未来愿景：从「消耗」回归「轮回」</h2>
+    <p class="sub"><strong>Symbio-Shell</strong> 不仅展示了生物材料替代塑料的巨大潜力，更发起了一场关于后人类时代的伦理考问。</p>
+    <p class="body">当手机壳拥有了「饥饿感」与「疲惫感」，它的终结不再是垃圾场的填埋，而是一场回归土壤的<strong style="color:var(--text)">生物葬礼</strong>——在降解过程中滋养新的生命。它促使我们重新审视消费主义，学着去敬畏每一个与我们共生的数字生命。</p>
+  </article>
+
+  <div class="resource-strip" id="resources">
+    <h3>延伸阅读</h3>
+    <div class="resource-links">
+      <a href="Symbio-Shell-共生壳-概念页.html">解剖图 · 分镜 · 长文</a>
+      <a href="Symbio-Shell-项目介绍.html">精简概念陈述</a>
+      <a href="Symbio-Shell-项目规划.html">项目规划（构思版）</a>
+    </div>
+  </div>
+
+  <div class="disclaimer">
+    <strong>声明：</strong>本项目为概念与思辨设计作品，当前阶段不制作实物样机、不进行生物或化学实验。对外展示请勿表述为可购产品或医疗器械。
+  </div>
+</section>
+
+<section class="section wrap" id="gallery" style="padding-top:32px">
+  <div class="section-head">
+    <p class="section-kicker">Gallery</p>
+    <h2 class="section-title">概念图廊</h2>
+    <p class="section-lead gallery-intro">下列为项目叙事配套的 AI 概念图，对应压力充血、掌机粘连、废热代谢、失活干裂与光合复苏等设定；非实物摄影。</p>
+  </div>
+  <div class="gallery-mosaic">
+    <figure class="gallery-item"><img src="assets/symbio-01-macro-stress-corner.png" alt="手机角部覆盖紫红色活性凝胶与丝状伪足" width="800" height="600" loading="lazy"><figcaption><strong>压力性充血</strong> · 微距角部 · 病态紫红与湿润肌理</figcaption></figure>
+    <figure class="gallery-item"><img src="assets/symbio-02-texture-fibers.png" alt="紫红色纤维状生物材质微观纹理" width="800" height="600" loading="lazy"><figcaption><strong>材质特写</strong> · 纤维网络与体素化细胞感</figcaption></figure>
+    <figure class="gallery-item"><img src="assets/symbio-03-hand-device-purple.png" alt="手持手机被紫红黏性生物膜与掌指牵连" width="800" height="600" loading="lazy"><figcaption><strong>掌机共生</strong> · 感官层面的黏连与难以抽离</figcaption></figure>
+    <figure class="gallery-item"><img src="assets/symbio-04-lab-upright-stress.png" alt="立式手机包裹厚重紫红生物壳体置于实验环境" width="800" height="600" loading="lazy"><figcaption><strong>高负荷隐喻</strong> · 实验室语境下的「病态」外轮廓</figcaption></figure>
+    <figure class="gallery-item"><img src="assets/symbio-05-motion-still.png" alt="Symbio-Shell 动态概念静帧" width="800" height="600" loading="lazy"><figcaption><strong>动效静帧</strong> · 可延展为循环影像</figcaption></figure>
+    <figure class="gallery-item"><img src="assets/symbio-06-inactive-crack.png" alt="干裂灰白生物壳体包覆手机一角如失活组织" width="800" height="600" loading="lazy"><figcaption><strong>失活状态</strong> · 干裂、凋亡纹理与复苏仪式前置</figcaption></figure>
+    <figure class="gallery-item"><img src="assets/symbio-07-green-glow-corner.png" alt="手机角部绿色荧光活性凝胶与水珠" width="800" height="600" loading="lazy"><figcaption><strong>代谢 / 光合侧</strong> · 绿色辉光与「户外」联想</figcaption></figure>
+    <figure class="gallery-item"><img src="assets/symbio-08-hydrogel-teal-a.png" alt="青绿色活性水凝胶与细胞腔室特写" width="800" height="600" loading="lazy"><figcaption><strong>活性水凝胶 A</strong> · 微流控腔室感</figcaption></figure>
+    <figure class="gallery-item"><img src="assets/symbio-09-hydrogel-teal-b.png" alt="青绿色凝胶网格与金属边框" width="800" height="600" loading="lazy"><figcaption><strong>活性水凝胶 B</strong> · 与机身接口的拼贴</figcaption></figure>
+    <figure class="gallery-item"><img src="assets/symbio-10-living-back-steam.png" alt="手机背部活体壳血管网络与气孔排气" width="800" height="600" loading="lazy"><figcaption><strong>呼吸散热</strong> · 血管、水珠与蒸气</figcaption></figure>
+    <figure class="gallery-item"><img src="assets/symbio-11-living-detail.png" alt="白色格状结构与青色液腔微观" width="800" height="600" loading="lazy"><figcaption><strong>格室结构</strong> · 蓝藻 / 代谢流体暗示</figcaption></figure>
+    <figure class="gallery-item"><img src="assets/symbio-12-lattice-cyan.png" alt="多层发光蓝绿细胞格与汗滴" width="800" height="600" loading="lazy"><figcaption><strong>Lattice · cyan</strong> · 健康与供氧侧写</figcaption></figure>
+    <figure class="gallery-item"><img src="assets/symbio-13-coverage-scene.png" alt="整体覆盖机身的紫红生物团块俯拍" width="800" height="600" loading="lazy"><figcaption><strong>包裹态势</strong> · 工业机身 vs 有机淤积</figcaption></figure>
+    <figure class="gallery-item"><img src="assets/symbio-14-topcorner-stress.png" alt="手机顶角紫红丝状增生蔓延" width="800" height="600" loading="lazy"><figcaption><strong>应力角部</strong> · 纤维状蔓延与触觉变异</figcaption></figure>
+  </div>
+  <p class="caption">源文件位于 <code>assets/symbio-01 … symbio-14</code> 与 <code>symbio-hero.png</code>；与《共生壳》概念页图廊同步维护。</p>
+</section>
+
+<footer class="site-foot">
+  <p><strong>Symbio-Shell · 共生壳</strong> · 项目介绍主页</p>
+  <p>素材：<code style="color:var(--accent2)">assets/symbio-hero.png</code>、<code style="color:var(--accent2)">symbio-01 … 14</code>（PNG）。</p>
+</footer>
+
+</body>
+</html>
