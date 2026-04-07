@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="Biodesign planning document for Symbio-Shell: problem framing, design brief, milestones, ethics, and deliverables (speculative / no physical prototype).">
+<meta name="description" id="pageMetaDesc" content="Biodesign planning document for Symbio-Shell: problem framing, design brief, milestones, ethics, and deliverables (speculative / no physical prototype).">
 <title>Symbio-Shell — Biodesign Project Planning Document</title>
 <style>
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -59,6 +59,36 @@ a:hover { text-decoration: underline; }
 .site-nav { display: flex; flex-wrap: wrap; gap: 8px 14px; font-size: 13px; }
 .site-nav a { color: var(--text2); }
 .site-nav a:hover { color: var(--text); }
+.lang-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px 14px;
+}
+.lang-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 14px;
+  border-radius: 10px;
+  border: 1px solid rgba(45,212,163,0.4);
+  background: rgba(45,212,163,0.1);
+  color: var(--text);
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: inherit;
+  -webkit-tap-highlight-color: transparent;
+  transition: background .2s, border-color .2s;
+}
+.lang-btn:hover {
+  background: rgba(45,212,163,0.2);
+  border-color: var(--accent2);
+}
+.lang-btn:focus-visible {
+  outline: 2px solid var(--accent2);
+  outline-offset: 2px;
+}
 .lang-chip {
   font-size: 12px;
   color: var(--text2);
@@ -204,7 +234,7 @@ footer.site-foot {
 <body id="top">
 
 <header class="site-head">
-  <a href="#top" class="site-logo" aria-label="Back to top">
+  <a href="#top" class="site-logo" id="bdLogoLink" aria-label="Symbio-Shell planning" data-i18n-title="ui.logoAria">
     <svg width="26" height="26" viewBox="0 0 32 32" fill="none" aria-hidden="true">
       <ellipse cx="16" cy="16" rx="14" ry="10" stroke="url(#plg2)" stroke-width="2" fill="rgba(45,212,163,0.1)"/>
       <circle cx="16" cy="16" r="3.5" fill="#0d9488"/>
@@ -214,188 +244,492 @@ footer.site-foot {
         </linearGradient>
       </defs>
     </svg>
-    <span>Symbio-Shell · Biodesign plan</span>
+    <span data-i18n="ui.logo">Symbio-Shell · Biodesign plan</span>
   </a>
-  <nav class="site-nav" aria-label="Page sections">
-    <a href="#identity">Identity</a>
-    <a href="#problem">Problem</a>
-    <a href="#stakeholders">Stakeholders</a>
-    <a href="#brief">Brief</a>
-    <a href="#plan">Plan</a>
-    <a href="#ethics">Ethics</a>
-    <a href="#risks">Risks</a>
-    <a href="#deliverables">Deliverables</a>
-  </nav>
-  <a class="lang-chip" href="Symbio-Shell-项目规划.html" title="Chinese version">中文版项目规划 →</a>
+  <div class="lang-row">
+    <nav class="site-nav" id="bdSiteNav" aria-label="Page sections">
+      <a href="#identity" data-i18n="nav.identity">Identity</a>
+      <a href="#problem" data-i18n="nav.problem">Problem</a>
+      <a href="#stakeholders" data-i18n="nav.stakeholders">Stakeholders</a>
+      <a href="#brief" data-i18n="nav.brief">Brief</a>
+      <a href="#plan" data-i18n="nav.plan">Plan</a>
+      <a href="#ethics" data-i18n="nav.ethics">Ethics</a>
+      <a href="#risks" data-i18n="nav.risks">Risks</a>
+      <a href="#deliverables" data-i18n="nav.deliverables">Deliverables</a>
+      <a href="#refs" data-i18n="nav.refs">Refs</a>
+    </nav>
+    <button type="button" class="lang-btn" id="bdPlanLangBtn" data-i18n-title="ui.langBtnTitle" aria-live="polite">
+      <span aria-hidden="true">🌐</span>
+      <span class="lang-btn-label">中文</span>
+    </button>
+    <a class="lang-chip" id="bdAltPlanLink" href="Symbio-Shell-项目规划.html" data-i18n-title="ui.altPlanTitle" data-i18n="ui.altPlanLink">中文版项目规划 →</a>
+  </div>
 </header>
 
 <section class="hero">
-  <span class="tagline">Biodesign · Planning document · v1.0</span>
-  <h1>Biodesign Project Planning Document</h1>
-  <p class="meta"><strong style="color:var(--text)">Symbio-Shell</strong> — a speculative living interface for handheld devices, framed as <strong style="color:var(--text)">critical / biodesign fiction</strong>. This plan covers narrative, visualization, and responsible communication only.</p>
-  <p class="hero-lead"><strong style="color:var(--text)">Scope:</strong> no working prototype, no wet-lab work, no claims of clinical performance. Success is measured clarity of intent, visual storytelling, and ethics-aware framing.</p>
+  <span class="tagline" data-i18n="hero.tag">Biodesign · Planning document · v1.0</span>
+  <h1 data-i18n="hero.h1">Biodesign Project Planning Document</h1>
+  <p class="meta" data-i18n-html="hero.meta"></p>
+  <p class="hero-lead" data-i18n-html="hero.lead"></p>
 </section>
 
 <div class="wrap">
-  <div class="doc-bar" id="meta">
-    <strong>Document type:</strong> course-style biodesign planning template, applied to Symbio-Shell.<br>
-    <strong>Companion:</strong> concept narrative and imagery live in <code style="color:var(--accent2);font-size:13px">Symbio-Shell-共生壳-概念页.html</code> (Chinese long-form).
-  </div>
+  <div class="doc-bar" id="meta" data-i18n-html="doc.bar"></div>
 
   <section class="section" id="identity">
-    <h2><span class="num">1</span> Project identity &amp; scope</h2>
+    <h2><span class="num">1</span> <span data-i18n="s1.h2">Project identity &amp; scope</span></h2>
     <div class="table-wrap">
       <table class="plan">
         <thead>
-          <tr><th>Field</th><th>Content</th></tr>
+          <tr><th data-i18n="tbl.field">Field</th><th data-i18n="tbl.content">Content</th></tr>
         </thead>
         <tbody>
-          <tr><td>Title</td><td>Symbio-Shell（共生壳）</td></tr>
-          <tr><td>One-liner</td><td>A metabolically legible phone enclosure concept that couples physiological signals, waste heat, and microbial metaphor to make digital anxiety and dependency <em>felt</em>—not merely measured.</td></tr>
-          <tr><td>Biodesign lens</td><td>Uses motifs from synthetic biology, microfluidics, hydrogels, and bio-interfaces as <strong>design vocabulary</strong>, not as validated engineering specs.</td></tr>
-          <tr><td>Declared boundary</td><td><strong>Speculative biodesign</strong> for portfolio, exhibition, or classroom critique. All “sensing” and “metabolism” are narrative devices unless future work opens a separate prototype track.</td></tr>
+          <tr><td data-i18n="s1.r1a">Title</td><td data-i18n="s1.r1b">Symbio-Shell（共生壳）</td></tr>
+          <tr><td data-i18n="s1.r2a">One-liner</td><td data-i18n-html="s1.r2b"></td></tr>
+          <tr><td data-i18n="s1.r3a">Biodesign lens</td><td data-i18n-html="s1.r3b"></td></tr>
+          <tr><td data-i18n="s1.r4a">Declared boundary</td><td data-i18n-html="s1.r4b"></td></tr>
         </tbody>
       </table>
     </div>
   </section>
 
   <section class="section" id="problem">
-    <h2><span class="num">2</span> Problem framing &amp; need statement</h2>
-    <p class="body"><strong>Observed condition:</strong> Mobile devices extend perception yet dull embodied intuition about stress, thermal load, and material waste. Accessories feel disposable and psychically “dead.”</p>
-    <p class="body"><strong>Design question:</strong> How might a <em>biotic</em> layer re-introduce embodiment, accountability, and ritual around everyday compute—without pretending to be a medical device?</p>
-    <p class="sub"><strong>Need statement (for critique):</strong></p>
-    <p class="body" style="border-left:3px solid var(--accent);padding-left:16px;color:var(--text2)">People who feel “numb” to their digital habits need a <strong>fictionally coherent</strong> object language—visual, tactile, and procedural—that makes interdependence with technology emotionally and narratively legible, so we can argue about care, limits, and end-of-use in public.</p>
-    <div class="callout">
-      <strong>Important:</strong> Cortisol, stomata-like valves, and MFC arrays are <strong>story elements</strong>. This document does not claim biomarker accuracy or regulatory readiness.
-    </div>
+    <h2><span class="num">2</span> <span data-i18n="s2.h2">Problem framing &amp; need statement</span></h2>
+    <p class="body" data-i18n-html="s2.p1"></p>
+    <p class="body" data-i18n-html="s2.p2"></p>
+    <p class="sub" data-i18n="s2.sub">Need statement (for critique):</p>
+    <p class="body" style="border-left:3px solid var(--accent);padding-left:16px;color:var(--text2)" data-i18n-html="s2.need"></p>
+    <div class="callout" data-i18n-html="s2.callout"></div>
   </section>
 
   <section class="section" id="stakeholders">
-    <h2><span class="num">3</span> Stakeholders &amp; context of use</h2>
+    <h2><span class="num">3</span> <span data-i18n="s3.h2">Stakeholders &amp; context of use</span></h2>
     <div class="table-wrap">
       <table class="plan">
         <thead>
-          <tr><th>Actor</th><th>Interest in the project</th></tr>
+          <tr><th data-i18n="tbl.actor">Actor</th><th data-i18n="tbl.interest">Interest in the project</th></tr>
         </thead>
         <tbody>
-          <tr><td>Primary audience</td><td>Design &amp; biodesign educators, peers in seminar, exhibition visitors reading wall text.</td></tr>
-          <tr><td>Secondary</td><td>Synthetic-biology-curious public; HCI and STS readers interested in somatic metaphors.</td></tr>
-          <tr><td>Non-goals</td><td>End users expecting a purchasable product; clinicians seeking diagnostic tools.</td></tr>
-          <tr><td>Context</td><td>Galleries, PDF decks, static web pages, short video treatments—always paired with a clear “concept / speculative” label.</td></tr>
+          <tr><td data-i18n="s3.t1a">Primary audience</td><td data-i18n="s3.t1b">Design &amp; biodesign educators, peers in seminar, exhibition visitors reading wall text.</td></tr>
+          <tr><td data-i18n="s3.t2a">Secondary</td><td data-i18n="s3.t2b">Synthetic-biology-curious public; HCI and STS readers interested in somatic metaphors.</td></tr>
+          <tr><td data-i18n="s3.t3a">Non-goals</td><td data-i18n="s3.t3b">End users expecting a purchasable product; clinicians seeking diagnostic tools.</td></tr>
+          <tr><td data-i18n="s3.t4a">Context</td><td data-i18n="s3.t4b">Galleries, PDF decks, static web pages, short video treatments—always paired with a clear “concept / speculative” label.</td></tr>
         </tbody>
       </table>
     </div>
   </section>
 
   <section class="section" id="brief">
-    <h2><span class="num">4</span> Design brief &amp; biological concept strategy</h2>
-    <p class="sub">Translate the fiction into <strong>design criteria</strong> you can grade in studio (coherence, ethics, communication), not manufacturing KPIs.</p>
+    <h2><span class="num">4</span> <span data-i18n="s4.h2">Design brief &amp; biological concept strategy</span></h2>
+    <p class="sub" data-i18n-html="s4.sub"></p>
     <div class="table-wrap">
       <table class="plan">
         <thead>
-          <tr><th>Criterion</th><th>Intent</th></tr>
+          <tr><th data-i18n="tbl.criterion">Criterion</th><th data-i18n="tbl.intent">Intent</th></tr>
         </thead>
         <tbody>
-          <tr><td>Layered anatomy</td><td>Four functional strata (epidermis → microfluidics → stomata → bio-electrochemical base) read as one diagram; labels match the concept page glossary.</td></tr>
-          <tr><td>Feedback loops</td><td>Stress / heat / neglect each map to distinct sensory channels (color, texture metaphor, “breath,” desiccation)—described, not instrumented.</td></tr>
-          <tr><td>Ritual closure</td><td>“Recovery” scenes (light, moisture, contact) carry ethical payload: stepping outside, maintenance-as-relation, not punishment-as-default.</td></tr>
-          <tr><td>End-of-life story</td><td>Composting / return-to-soil narrative distinguishes the project from throwaway accessories.</td></tr>
+          <tr><td data-i18n="s4.r1a">Layered anatomy</td><td data-i18n="s4.r1b">Four functional strata (epidermis → microfluidics → stomata → bio-electrochemical base) read as one diagram; labels match the concept page glossary.</td></tr>
+          <tr><td data-i18n="s4.r2a">Feedback loops</td><td data-i18n="s4.r2b">Stress / heat / neglect each map to distinct sensory channels (color, texture metaphor, “breath,” desiccation)—described, not instrumented.</td></tr>
+          <tr><td data-i18n="s4.r3a">Ritual closure</td><td data-i18n-html="s4.r3b"></td></tr>
+          <tr><td data-i18n="s4.r4a">End-of-life story</td><td data-i18n="s4.r4b">Composting / return-to-soil narrative distinguishes the project from throwaway accessories.</td></tr>
         </tbody>
       </table>
     </div>
-    <h3>Concept-stage “research” (desk only)</h3>
+    <h3 data-i18n="s4.h3">Concept-stage “research” (desk only)</h3>
     <ul class="feature-list">
-      <li><strong>Microfluidic colorimetry</strong> — cite reviews or popular science to show the trope is <em>in conversation with</em> real labs; mark speculative amplification.</li>
-      <li><strong>Hydrogel mechanics</strong> — enough to justify a plausible texture story; no formulation.</li>
-      <li><strong>Thermo-responsive materials</strong> — analogy tier only.</li>
+      <li data-i18n-html="s4.l1"></li>
+      <li data-i18n-html="s4.l2"></li>
+      <li data-i18n-html="s4.l3"></li>
     </ul>
   </section>
 
   <section class="section" id="plan">
-    <h2><span class="num">5</span> Milestones &amp; work plan</h2>
-    <p class="body">Two rhythms: a <strong>full concept arc (~4–6 months light part-time)</strong> or a <strong>critique sprint (~6–8 weeks)</strong>.</p>
+    <h2><span class="num">5</span> <span data-i18n="s5.h2">Milestones &amp; work plan</span></h2>
+    <p class="body" data-i18n-html="s5.intro"></p>
     <div class="table-wrap">
       <table class="plan">
         <thead>
-          <tr><th>Phase</th><th>Outcome</th></tr>
+          <tr><th data-i18n="tbl.phase">Phase</th><th data-i18n="tbl.outcome">Outcome</th></tr>
         </thead>
         <tbody>
-          <tr><td>P0 Align</td><td>Lock scope, success rubric, and disclaimer language (“speculative biodesign”).</td></tr>
-          <tr><td>P1 Systems story</td><td>One system diagram + assumption table; annotate “inferred / fictional strength.”</td></tr>
-          <tr><td>P2 Narrative &amp; visuals</td><td>Hero imagery, anatomical plate, storyboards (high load / neglect / recovery).</td></tr>
-          <tr><td>P3 Synthesis</td><td>Deck, talk track, mock Q&amp;A; export web or PDF “freeze” for submission.</td></tr>
+          <tr><td data-i18n="s5.p0a">P0 Align</td><td data-i18n="s5.p0b">Lock scope, success rubric, and disclaimer language (“speculative biodesign”).</td></tr>
+          <tr><td data-i18n="s5.p1a">P1 Systems story</td><td data-i18n="s5.p1b">One system diagram + assumption table; annotate “inferred / fictional strength.”</td></tr>
+          <tr><td data-i18n="s5.p2a">P2 Narrative &amp; visuals</td><td data-i18n="s5.p2b">Hero imagery, anatomical plate, storyboards (high load / neglect / recovery).</td></tr>
+          <tr><td data-i18n="s5.p3a">P3 Synthesis</td><td data-i18n="s5.p3b">Deck, talk track, mock Q&amp;A; export web or PDF “freeze” for submission.</td></tr>
         </tbody>
       </table>
     </div>
-    <h3>Sprint checklist (example)</h3>
+    <h3 data-i18n="s5.h3">Sprint checklist (example)</h3>
     <ol class="numbered">
-      <li>Weeks 1–2: system sketch + stakeholder paragraph.</li>
-      <li>Weeks 3–4: narrative lock + primary visual.</li>
-      <li>Weeks 5–6: deepen storyboard or 30–60s motion script.</li>
-      <li>Week 7: rehearsal + ethics one-pager.</li>
-      <li>Week 8: final layout and asset archive.</li>
+      <li data-i18n="s5.o1">Weeks 1–2: system sketch + stakeholder paragraph.</li>
+      <li data-i18n="s5.o2">Weeks 3–4: narrative lock + primary visual.</li>
+      <li data-i18n="s5.o3">Weeks 5–6: deepen storyboard or 30–60s motion script.</li>
+      <li data-i18n="s5.o4">Week 7: rehearsal + ethics one-pager.</li>
+      <li data-i18n="s5.o5">Week 8: final layout and asset archive.</li>
     </ol>
   </section>
 
   <section class="section" id="ethics">
-    <h2><span class="num">6</span> Ethics, biosafety &amp; responsible hype</h2>
+    <h2><span class="num">6</span> <span data-i18n="s6.h2">Ethics, biosafety &amp; responsible hype</span></h2>
     <ul class="feature-list">
-      <li>No diagnostic or therapeutic claims; no human-subjects framing in this phase.</li>
-      <li>Avoid implying shipped consumer hardware; prefer “concept,” “proposal,” or “design fiction.”</li>
-      <li>Where metaphors are harsh (“sensory coercion”), prepare a softer academic wording for mixed audiences.</li>
-      <li>If imagery suggests bodily fluids, caption as <strong>symbolic</strong> / non-biohazard staging.</li>
-      <li>Future wet work requires a separate risk assessment and institutional process—<strong>out of scope here</strong>.</li>
+      <li data-i18n="s6.l1">No diagnostic or therapeutic claims; no human-subjects framing in this phase.</li>
+      <li data-i18n="s6.l2">Avoid implying shipped consumer hardware; prefer “concept,” “proposal,” or “design fiction.”</li>
+      <li data-i18n-html="s6.l3"></li>
+      <li data-i18n-html="s6.l4"></li>
+      <li data-i18n-html="s6.l5"></li>
     </ul>
   </section>
 
   <section class="section" id="risks">
-    <h2><span class="num">7</span> Risks &amp; mitigations</h2>
+    <h2><span class="num">7</span> <span data-i18n="s7.h2">Risks &amp; mitigations</span></h2>
     <div class="table-wrap">
       <table class="plan">
         <thead>
-          <tr><th>Risk</th><th>Mitigation</th></tr>
+          <tr><th data-i18n="tbl.risk">Risk</th><th data-i18n="tbl.mit">Mitigation</th></tr>
         </thead>
         <tbody>
-          <tr><td>Misread as near-market product</td><td>Banner disclaimer on every public surface; diagram footnotes for fictional elements.</td></tr>
-          <tr><td>“Anti-user” interpretation</td><td>Pair discomfort mechanics with care rhetoric; emphasize debate, not deployment.</td></tr>
-          <tr><td>Fact-check pushback</td><td>Short bibliography + explicit limits; poetic/ethical intent may outweigh engineering fidelity in critique.</td></tr>
-          <tr><td>Time shortfall</td><td>Cut literature extras; keep <strong>one storyline + one visual system</strong>.</td></tr>
+          <tr><td data-i18n="s7.t1a">Misread as near-market product</td><td data-i18n="s7.t1b">Banner disclaimer on every public surface; diagram footnotes for fictional elements.</td></tr>
+          <tr><td data-i18n="s7.t2a">“Anti-user” interpretation</td><td data-i18n="s7.t2b">Pair discomfort mechanics with care rhetoric; emphasize debate, not deployment.</td></tr>
+          <tr><td data-i18n="s7.t3a">Fact-check pushback</td><td data-i18n="s7.t3b">Short bibliography + explicit limits; poetic/ethical intent may outweigh engineering fidelity in critique.</td></tr>
+          <tr><td data-i18n="s7.t4a">Time shortfall</td><td data-i18n-html="s7.t4b"></td></tr>
         </tbody>
       </table>
     </div>
   </section>
 
   <section class="section" id="deliverables">
-    <h2><span class="num">8</span> Deliverables &amp; success criteria</h2>
-    <p class="sub">Checklist for instructors or reviewers (concept track):</p>
+    <h2><span class="num">8</span> <span data-i18n="s8.h2">Deliverables &amp; success criteria</span></h2>
+    <p class="sub" data-i18n="s8.sub">Checklist for instructors or reviewers (concept track):</p>
     <ul class="checklist">
-      <li>This planning doc + bilingual counterpart if required.</li>
-      <li>System diagram + explicit assumption / speculation key.</li>
-      <li>Primary visual suite (exploded anatomy, mechanism stills, stomata macro series).</li>
-      <li>Presentation medium: HTML concept page, slide deck, and/or short film treatment.</li>
-      <li>One-page ethics &amp; “what we are not claiming.”</li>
-      <li>Optional: 1–3 page annotated bibliography (review / pop-sci level).</li>
+      <li data-i18n="s8.i1">This planning doc + bilingual counterpart if required.</li>
+      <li data-i18n="s8.i2">System diagram + explicit assumption / speculation key.</li>
+      <li data-i18n="s8.i3">Primary visual suite (exploded anatomy, mechanism stills, stomata macro series).</li>
+      <li data-i18n="s8.i4">Presentation medium: HTML concept page, slide deck, and/or short film treatment.</li>
+      <li data-i18n-html="s8.i5"></li>
+      <li data-i18n-html="s8.i6"></li>
     </ul>
-    <p class="body" style="margin-top:18px"><strong>Success (minimum):</strong> a visitor can summarize <em>problem → biological metaphor → feedback ethics → circularity story</em> in under two minutes using your materials alone.</p>
+    <p class="body" style="margin-top:18px" data-i18n-html="s8.success"></p>
   </section>
 
   <section class="section" id="refs">
-    <h2><span class="num">9</span> Suggested reference themes</h2>
-    <p class="body">Replace with your course-required citations. Thematic buckets that match this fiction:</p>
+    <h2><span class="num">9</span> <span data-i18n="s9.h2">Suggested reference themes</span></h2>
+    <p class="body" data-i18n="s9.intro">Replace with your course-required citations. Thematic buckets that match this fiction:</p>
     <ul class="feature-list">
-      <li>Critical design &amp; design fiction (Dunne &amp; Raby–style provocation, updated to your syllabus).</li>
-      <li>Organism–device metaphors in HCI and wearable discourse.</li>
-      <li>Popular or review-level microfluidics / synthetic biology communication (for footnotes only).</li>
-      <li>STS perspectives on e-waste, attention economies, and “more-than-human” care.</li>
+      <li data-i18n-html="s9.b1"></li>
+      <li data-i18n="s9.b2">Organism–device metaphors in HCI and wearable discourse.</li>
+      <li data-i18n="s9.b3">Popular or review-level microfluidics / synthetic biology communication (for footnotes only).</li>
+      <li data-i18n-html="s9.b4"></li>
     </ul>
-    <p class="foot-note">For a Chinese-language WBS, phased table, and repository file map, open <a href="Symbio-Shell-项目规划.html">Symbio-Shell-项目规划.html</a>.</p>
+    <p class="foot-note" data-i18n-html="s9.note"></p>
   </section>
 </div>
 
 <footer class="site-foot">
-  <p><strong>Symbio-Shell</strong> · Biodesign planning document · static HTML</p>
-  <p style="margin-top:8px">Speculative biodesign / critical design project. Not a medical device, not a product offer, not validated biodevice performance data.</p>
+  <p data-i18n-html="foot.l1"></p>
+  <p style="margin-top:8px" data-i18n-html="foot.l2"></p>
 </footer>
+
+<script>
+(function () {
+  var LS_KEY = 'symbio-shell-biodesign-plan-lang';
+
+  var I18N = {
+    en: {
+      'page.title': 'Symbio-Shell — Biodesign Project Planning Document',
+      'page.meta': 'Biodesign planning for Symbio-Shell: problem framing, brief, milestones, ethics, deliverables (speculative, no prototype).',
+      'ui.logoAria': 'Back to top',
+      'ui.langBtnTitle': 'Switch to 中文',
+      'ui.logo': 'Symbio-Shell · Biodesign plan',
+      'ui.altPlanTitle': 'Full Chinese planning page (WBS, phases)',
+      'ui.altPlanLink': 'Chinese planning (full) →',
+      'nav.identity': 'Identity',
+      'nav.problem': 'Problem',
+      'nav.stakeholders': 'Stakeholders',
+      'nav.brief': 'Brief',
+      'nav.plan': 'Plan',
+      'nav.ethics': 'Ethics',
+      'nav.risks': 'Risks',
+      'nav.deliverables': 'Deliverables',
+      'nav.refs': 'Refs',
+      'hero.tag': 'Biodesign · Planning document · v1.0',
+      'hero.h1': 'Biodesign Project Planning Document',
+      'hero.meta': '<strong style="color:var(--text)">Symbio-Shell</strong> — a speculative living interface for handheld devices, framed as <strong style="color:var(--text)">critical / biodesign fiction</strong>. This plan covers narrative, visualization, and responsible communication only.',
+      'hero.lead': '<strong style="color:var(--text)">Scope:</strong> no working prototype, no wet-lab work, no claims of clinical performance. Success is measured by clarity of intent, visual storytelling, and ethics-aware framing.',
+      'doc.bar': '<strong>Document type:</strong> course-style biodesign planning template, applied to Symbio-Shell.<br><strong>Companion:</strong> concept narrative and imagery in <code style="color:var(--accent2);font-size:13px">Symbio-Shell-共生壳-概念页.html</code> (Chinese long-form).',
+      'tbl.field': 'Field',
+      'tbl.content': 'Content',
+      's1.h2': 'Project identity & scope',
+      's1.r1a': 'Title',
+      's1.r1b': 'Symbio-Shell（共生壳）',
+      's1.r2a': 'One-liner',
+      's1.r2b': 'A metabolically legible phone enclosure concept that couples physiological signals, waste heat, and microbial metaphor to make digital anxiety and dependency <em>felt</em>—not merely measured.',
+      's1.r3a': 'Biodesign lens',
+      's1.r3b': 'Uses motifs from synthetic biology, microfluidics, hydrogels, and bio-interfaces as <strong>design vocabulary</strong>, not as validated engineering specs.',
+      's1.r4a': 'Declared boundary',
+      's1.r4b': '<strong>Speculative biodesign</strong> for portfolio, exhibition, or classroom critique. All “sensing” and “metabolism” are narrative devices unless future work opens a separate prototype track.',
+      's2.h2': 'Problem framing & need statement',
+      's2.p1': '<strong>Observed condition:</strong> Mobile devices extend perception yet dull embodied intuition about stress, thermal load, and material waste. Accessories feel disposable and psychically “dead.”',
+      's2.p2': '<strong>Design question:</strong> How might a <em>biotic</em> layer re-introduce embodiment, accountability, and ritual around everyday compute—without pretending to be a medical device?',
+      's2.sub': 'Need statement (for critique):',
+      's2.need': 'People who feel “numb” to their digital habits need a <strong>fictionally coherent</strong> object language—visual, tactile, and procedural—that makes interdependence with technology emotionally and narratively legible, so we can argue about care, limits, and end-of-use in public.',
+      's2.callout': '<strong>Important:</strong> Cortisol, stomata-like valves, and MFC arrays are <strong>story elements</strong>. This document does not claim biomarker accuracy or regulatory readiness.',
+      's3.h2': 'Stakeholders & context of use',
+      'tbl.actor': 'Actor',
+      'tbl.interest': 'Interest in the project',
+      's3.t1a': 'Primary audience',
+      's3.t1b': 'Design & biodesign educators, peers in seminar, exhibition visitors reading wall text.',
+      's3.t2a': 'Secondary',
+      's3.t2b': 'Synthetic-biology-curious public; HCI and STS readers interested in somatic metaphors.',
+      's3.t3a': 'Non-goals',
+      's3.t3b': 'End users expecting a purchasable product; clinicians seeking diagnostic tools.',
+      's3.t4a': 'Context',
+      's3.t4b': 'Galleries, PDF decks, static web pages, short video treatments—always paired with a clear “concept / speculative” label.',
+      's4.h2': 'Design brief & biological concept strategy',
+      's4.sub': 'Translate the fiction into <strong>design criteria</strong> you can grade in studio (coherence, ethics, communication), not manufacturing KPIs.',
+      'tbl.criterion': 'Criterion',
+      'tbl.intent': 'Intent',
+      's4.r1a': 'Layered anatomy',
+      's4.r1b': 'Four functional strata (epidermis → microfluidics → stomata → bio-electrochemical base) read as one diagram; labels match the concept page glossary.',
+      's4.r2a': 'Feedback loops',
+      's4.r2b': 'Stress / heat / neglect each map to distinct sensory channels (color, texture metaphor, “breath,” desiccation)—described, not instrumented.',
+      's4.r3a': 'Ritual closure',
+      's4.r3b': '“Recovery” scenes (light, moisture, contact) carry ethical payload: stepping outside, maintenance-as-relation, not punishment-as-default.',
+      's4.r4a': 'End-of-life story',
+      's4.r4b': 'Composting / return-to-soil narrative distinguishes the project from throwaway accessories.',
+      's4.h3': 'Concept-stage “research” (desk only)',
+      's4.l1': '<strong>Microfluidic colorimetry</strong> — cite reviews or popular science to show the trope is <em>in conversation with</em> real labs; mark speculative amplification.',
+      's4.l2': '<strong>Hydrogel mechanics</strong> — enough to justify a plausible texture story; no formulation.',
+      's4.l3': '<strong>Thermo-responsive materials</strong> — analogy tier only.',
+      's5.h2': 'Milestones & work plan',
+      's5.intro': 'Two rhythms: a <strong>full concept arc (~4–6 months light part-time)</strong> or a <strong>critique sprint (~6–8 weeks)</strong>.',
+      'tbl.phase': 'Phase',
+      'tbl.outcome': 'Outcome',
+      's5.p0a': 'P0 Align',
+      's5.p0b': 'Lock scope, success rubric, and disclaimer language (“speculative biodesign”).',
+      's5.p1a': 'P1 Systems story',
+      's5.p1b': 'One system diagram + assumption table; annotate “inferred / fictional strength.”',
+      's5.p2a': 'P2 Narrative & visuals',
+      's5.p2b': 'Hero imagery, anatomical plate, storyboards (high load / neglect / recovery).',
+      's5.p3a': 'P3 Synthesis',
+      's5.p3b': 'Deck, talk track, mock Q&A; export web or PDF “freeze” for submission.',
+      's5.h3': 'Sprint checklist (example)',
+      's5.o1': 'Weeks 1–2: system sketch + stakeholder paragraph.',
+      's5.o2': 'Weeks 3–4: narrative lock + primary visual.',
+      's5.o3': 'Weeks 5–6: deepen storyboard or 30–60s motion script.',
+      's5.o4': 'Week 7: rehearsal + ethics one-pager.',
+      's5.o5': 'Week 8: final layout and asset archive.',
+      's6.h2': 'Ethics, biosafety & responsible hype',
+      's6.l1': 'No diagnostic or therapeutic claims; no human-subjects framing in this phase.',
+      's6.l2': 'Avoid implying shipped consumer hardware; prefer “concept,” “proposal,” or “design fiction.”',
+      's6.l3': 'Where metaphors are harsh (“sensory coercion”), prepare a softer academic wording for mixed audiences.',
+      's6.l4': 'If imagery suggests bodily fluids, caption as <strong>symbolic</strong> / non-biohazard staging.',
+      's6.l5': 'Future wet work requires a separate risk assessment and institutional process—<strong>out of scope here</strong>.',
+      's7.h2': 'Risks & mitigations',
+      'tbl.risk': 'Risk',
+      'tbl.mit': 'Mitigation',
+      's7.t1a': 'Misread as near-market product',
+      's7.t1b': 'Banner disclaimer on every public surface; diagram footnotes for fictional elements.',
+      's7.t2a': '“Anti-user” interpretation',
+      's7.t2b': 'Pair discomfort mechanics with care rhetoric; emphasize debate, not deployment.',
+      's7.t3a': 'Fact-check pushback',
+      's7.t3b': 'Short bibliography + explicit limits; poetic/ethical intent may outweigh engineering fidelity in critique.',
+      's7.t4a': 'Time shortfall',
+      's7.t4b': 'Cut literature extras; keep <strong>one storyline + one visual system</strong>.',
+      's8.h2': 'Deliverables & success criteria',
+      's8.sub': 'Checklist for instructors or reviewers (concept track):',
+      's8.i1': 'This planning doc + bilingual counterpart if required.',
+      's8.i2': 'System diagram + explicit assumption / speculation key.',
+      's8.i3': 'Primary visual suite (exploded anatomy, mechanism stills, stomata macro series).',
+      's8.i4': 'Presentation medium: HTML concept page, slide deck, and/or short film treatment.',
+      's8.i5': 'One-page ethics &amp; “what we are not claiming.”',
+      's8.i6': 'Optional: 1–3 page annotated bibliography (review / pop-sci level).',
+      's8.success': '<strong>Success (minimum):</strong> a visitor can summarize <em>problem → biological metaphor → feedback ethics → circularity story</em> in under two minutes using your materials alone.',
+      's9.h2': 'Suggested reference themes',
+      's9.intro': 'Replace with your course-required citations. Thematic buckets that match this fiction:',
+      's9.b1': 'Critical design &amp; design fiction (Dunne &amp; Raby–style provocation, updated to your syllabus).',
+      's9.b2': 'Organism–device metaphors in HCI and wearable discourse.',
+      's9.b3': 'Popular or review-level microfluidics / synthetic biology communication (for footnotes only).',
+      's9.b4': 'STS perspectives on e-waste, attention economies, and “more-than-human” care.',
+      's9.note': 'For a Chinese WBS, phased table, and file map, open <a href="Symbio-Shell-项目规划.html">Symbio-Shell-项目规划.html</a> (that page also has its own EN toggle).',
+      'foot.l1': '<strong>Symbio-Shell</strong> · Biodesign planning document · static HTML',
+      'foot.l2': 'Speculative biodesign / critical design project. Not a medical device, not a product offer, not validated biodevice performance data.'
+    },
+    zh: {
+      'page.title': '共生壳 Symbio-Shell — 生物设计规划文档',
+      'page.meta': 'Symbio-Shell 生物设计规划：问题界定、设计纲要、里程碑、伦理与交付物（思辨向、无实物原型）。',
+      'ui.logoAria': '回到页顶',
+      'ui.langBtnTitle': 'Switch to English',
+      'ui.logo': 'Symbio-Shell · 生物设计规划',
+      'ui.altPlanTitle': '完整中文版项目规划（含 WBS、阶段表）',
+      'ui.altPlanLink': '中文版项目规划 →',
+      'nav.identity': '定位',
+      'nav.problem': '问题',
+      'nav.stakeholders': '相关方',
+      'nav.brief': '纲要',
+      'nav.plan': '计划',
+      'nav.ethics': '伦理',
+      'nav.risks': '风险',
+      'nav.deliverables': '交付',
+      'nav.refs': '文献',
+      'hero.tag': '生物设计 · 规划文档 · v1.0',
+      'hero.h1': '生物设计项目规划文档',
+      'hero.meta': '<strong style="color:var(--text)">Symbio-Shell（共生壳）</strong> — 面向手持设备的思辨性「活性界面」，定位为<strong style="color:var(--text)">思辨设计 / 生物设计虚构</strong>。本文档仅覆盖叙事、视觉呈现与负责任的对外表述。',
+      'hero.lead': '<strong style="color:var(--text)">范围：</strong>不做可工作原型、不做湿实验、不宣称临床性能。成功标准在于意图是否清晰、视觉叙事是否成立、伦理表述是否自觉。',
+      'doc.bar': '<strong>文档性质：</strong>课程式生物设计规划模板，适用于 Symbio-Shell。<br><strong>配套：</strong>概念叙事与配图见 <code style="color:var(--accent2);font-size:13px">Symbio-Shell-共生壳-概念页.html</code>（中文长文）。',
+      'tbl.field': '项目',
+      'tbl.content': '说明',
+      's1.h2': '项目定位与范围',
+      's1.r1a': '名称',
+      's1.r1b': 'Symbio-Shell（共生壳）',
+      's1.r2a': '一句话',
+      's1.r2b': '将生理信号、废热与微生物隐喻耦合于一体的概念壳体，使数字焦虑与依赖<strong>被身体感知</strong>，而非仅被量化。',
+      's1.r3a': '生物设计视角',
+      's1.r3b': '借用合成生物学、微流控、水凝胶与生物界面的意象作为<strong>设计语汇</strong>，而非已验证的工程规格。',
+      's1.r4a': '声明边界',
+      's1.r4b': '面向作品集、展览或课堂评述的<strong>思辨生物设计</strong>。除非未来单开原型子项目，否则所有「传感」与「代谢」均为叙事装置。',
+      's2.h2': '问题界定与需求陈述',
+      's2.p1': '<strong>观察：</strong>移动设备延伸感知，却弱化了对压力、热负荷与材料浪费的身体直觉；配件常被视为一次性、无「生命感」的消费物。',
+      's2.p2': '<strong>设计问题：</strong>一层「biotic」外衣能否在日常计算情境中重新唤起具身性、责任与仪式——同时不伪装成医疗器械？',
+      's2.sub': '需求陈述（供评议）：',
+      's2.need': '对数字习惯感到「麻木」的人需要一套<strong>叙事自洽</strong>的物语言——视觉、触觉与流程并重——使与技术的相互依存可被情感与叙事读出，从而在公共讨论中谈 care、边界与报废。',
+      's2.callout': '<strong>重要：</strong>皮质醇、类气孔瓣膜、MFC 阵列等均为<strong>故事元素</strong>。本文档不声称生物标志物精度或监管就绪。',
+      's3.h2': '相关方与使用情境',
+      'tbl.actor': '主体',
+      'tbl.interest': '与项目的关系',
+      's3.t1a': '首要受众',
+      's3.t1b': '设计与生物设计教师、研讨课同伴、阅读展签的参观者。',
+      's3.t2a': '次要受众',
+      's3.t2b': '对合成生物学好奇的公众；关注身体隐喻的 HCI / STS 读者。',
+      's3.t3a': '非目标',
+      's3.t3b': '期待「可购买成品」的终端用户；寻求诊断工具的一线临床人员。',
+      's3.t4a': '情境',
+      's3.t4b': '画廊、PDF、静态网页、短视频方案——一律配以明确的「概念 / 思辨」标签。',
+      's4.h2': '设计纲要 · 生物学概念策略',
+      's4.sub': '将虚构转译为可在课堂打分的<strong>设计准则</strong>（连贯性、伦理、传达），而非产线 KPI。',
+      'tbl.criterion': '准则',
+      'tbl.intent': '意图',
+      's4.r1a': '分层解剖',
+      's4.r1b': '四层功能叠层（表皮→微流控→气孔→生物电化学基底）在同一图中可读；标注与概念页术语表一致。',
+      's4.r2a': '反馈回路',
+      's4.r2b': '压力 / 废热 / 忽视分别映射到可区分的感官通道（色、质感隐喻、「呼吸」、干枯）——以描述呈现，非实测。',
+      's4.r3a': '仪式收束',
+      's4.r3b': '「复苏」场景（光、水分、接触）承载伦理载荷：走向户外、养护式共处，而非默认惩罚。',
+      's4.r4a': '终结叙事',
+      's4.r4b': '堆肥 / 归土叙事区分于一次性配件。',
+      's4.h3': '概念阶段「研究」（仅书桌工作）',
+      's4.l1': '<strong>微流控 / 比色</strong> — 引用综述或科普，表明该母题与真实实验室<strong>在同一话语场</strong>；标出推测性放大。',
+      's4.l2': '<strong>水凝胶力学</strong> — 足以支撑质感叙事即可，不给出配方。',
+      's4.l3': '<strong>温敏材料</strong> — 仅作类比层级。',
+      's5.h2': '里程碑与工作计划',
+      's5.intro': '两种节奏：<strong>完整概念弧（约 4–6 个月轻量兼职）</strong>或<strong>答辩冲刺（约 6–8 周）</strong>。',
+      'tbl.phase': '阶段',
+      'tbl.outcome': '产出',
+      's5.p0a': 'P0 对齐',
+      's5.p0b': '锁定范围、成功量表与免责声明措辞（「思辨生物设计」）。',
+      's5.p1a': 'P1 系统叙事',
+      's5.p1b': '系统图 + 假设表；标注「推断 / 虚构强度」。',
+      's5.p2a': 'P2 叙事与视觉',
+      's5.p2b': '主视觉、解剖板、分镜（高负载 / 忽视 / 复苏）。',
+      's5.p3a': 'P3 整合',
+      's5.p3b': '幻灯、口播稿、模拟 Q&amp;A；导出可供提交的网页或 PDF「冻结版」。',
+      's5.h3': '冲刺清单（示例）',
+      's5.o1': '第 1–2 周：系统草图 + 相关方段落。',
+      's5.o2': '第 3–4 周：叙事定稿 + 主视觉。',
+      's5.o3': '第 5–6 周：深化分镜或 30–60 秒动效脚本。',
+      's5.o4': '第 7 周：预演 + 伦理一页纸。',
+      's5.o5': '第 8 周：定稿排版与素材归档。',
+      's6.h2': '伦理、生物安全与克制宣传',
+      's6.l1': '本阶段不做诊断或治疗宣称；不以人体受试框架叙述。',
+      's6.l2': '避免暗示已量产消费硬件；优先使用「概念」「提案」「设计虚构」。',
+      's6.l3': '隐喻过激时（如「感官胁迫」），准备面向混合受众的更柔和学术措辞。',
+      's6.l4': '若画面涉及体液隐喻，标注为<strong>象征性</strong> / 非生物危害拍摄。',
+      's6.l5': '未来湿实验须另做风险评估与机构流程——<strong>不在本文范围</strong>。',
+      's7.h2': '风险与应对',
+      'tbl.risk': '风险',
+      'tbl.mit': '应对',
+      's7.t1a': '被误读为临近上市产品',
+      's7.t1b': '所有公开展示面保留横幅免责声明；图为虚构元素加脚注。',
+      's7.t2a': '「反用户」解读',
+      's7.t2b': '将不适机制与照护修辞并置；强调辩论而非部署。',
+      's7.t3a': '事实核查压力',
+      's7.t3b': '简短文献 + 明确边界；在评述中诗学/伦理意图可比工程细节优先。',
+      's7.t4a': '时间不足',
+      's7.t4b': '砍掉文献扩展，保住<strong>一条主叙事 + 一套主视觉</strong>。',
+      's8.h2': '交付物与成功标准',
+      's8.sub': '教师或评审核对清单（概念赛道的作业）：',
+      's8.i1': '本规划文档 + 如课程要求则双语版本。',
+      's8.i2': '系统图 + 明确的假设/推测图例。',
+      's8.i3': '主视觉套件（爆炸解剖、机制静帧、气孔微距系列）。',
+      's8.i4': '演示媒介：HTML 概念页、幻灯，和/或短片方案。',
+      's8.i5': '伦理一页纸 +「我们不宣称什么」。',
+      's8.i6': '（可选）1–3 页带注释文献（综述/科普层级）。',
+      's8.success': '<strong>成功（底线）：</strong>参观者仅凭你的材料，能在两分钟内概括 <em>问题 → 生物隐喻 → 反馈伦理 → 循环叙事</em>。',
+      's9.h2': '建议文献主题桶',
+      's9.intro': '请替换为课程指定引用。与虚构相匹配的主题方向：',
+      's9.b1': '思辨设计与设计虚构（如 Dunne &amp; Raby 式诘问，按大纲更新）。',
+      's9.b2': 'HCI 与可穿戴话语中的有机体—装置隐喻。',
+      's9.b3': '微流控 / 合成生物学的科普或综述级写作（仅作脚注）。',
+      's9.b4': '关于电子垃圾、注意力经济与「多物种照护」的 STS 视角。',
+      's9.note': '中文 WBS、阶段总表与仓库文件地图见 <a href="Symbio-Shell-项目规划.html">Symbio-Shell-项目规划.html</a>（该页另有中英文切换）。',
+      'foot.l1': '<strong>共生壳 Symbio-Shell</strong> · 生物设计规划 · 静态 HTML',
+      'foot.l2': '思辨生物设计 / 临界设计作品。非医疗器械，非产品要约，非经实测的生物装置性能数据。'
+    }
+  };
+
+  var lang = localStorage.getItem(LS_KEY) || 'en';
+  if (lang !== 'zh' && lang !== 'en') lang = 'en';
+
+  function t(key) {
+    var pack = I18N[lang] || I18N.en;
+    if (pack[key] != null) return pack[key];
+    return I18N.en[key] != null ? I18N.en[key] : key;
+  }
+
+  function apply() {
+    document.documentElement.lang = lang === 'zh' ? 'zh-CN' : 'en';
+    document.title = t('page.title');
+    var metaD = document.getElementById('pageMetaDesc');
+    if (metaD) metaD.setAttribute('content', t('page.meta'));
+
+    var logo = document.getElementById('bdLogoLink');
+    if (logo) logo.setAttribute('aria-label', t('ui.logoAria'));
+    var nav = document.getElementById('bdSiteNav');
+    if (nav) nav.setAttribute('aria-label', lang === 'zh' ? '本页导航' : 'Page sections');
+
+    document.querySelectorAll('[data-i18n-title]').forEach(function (el) {
+      var k = el.getAttribute('data-i18n-title');
+      if (k) el.setAttribute('title', t(k));
+    });
+
+    document.querySelectorAll('[data-i18n]').forEach(function (el) {
+      var k = el.getAttribute('data-i18n');
+      if (!k) return;
+      if (el.tagName === 'A' && el.querySelector('*')) return;
+      el.textContent = t(k);
+    });
+
+    document.querySelectorAll('[data-i18n-html]').forEach(function (el) {
+      var k = el.getAttribute('data-i18n-html');
+      if (k) el.innerHTML = t(k);
+    });
+
+    var btn = document.getElementById('bdPlanLangBtn');
+    var lab = btn && btn.querySelector('.lang-btn-label');
+    if (lab) lab.textContent = lang === 'en' ? '中文' : 'English';
+    if (btn) {
+      btn.setAttribute('aria-label', lang === 'en' ? '切换为中文界面' : 'Switch interface to English');
+    }
+  }
+
+  document.getElementById('bdPlanLangBtn').addEventListener('click', function () {
+    lang = lang === 'en' ? 'zh' : 'en';
+    localStorage.setItem(LS_KEY, lang);
+    apply();
+  });
+
+  apply();
+})();
+</script>
 
 </body>
 </html>
