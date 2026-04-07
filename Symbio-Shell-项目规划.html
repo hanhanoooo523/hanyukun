@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="Symbio-Shell（共生壳）项目规划·概念构思版：无实物与实验；叙事、视觉与文献脚注级支持；伦理表述与交付清单。">
+<meta name="description" id="pageMetaDesc" content="Symbio-Shell（共生壳）项目规划·概念构思版：无实物与实验；叙事、视觉与文献脚注级支持；伦理表述与交付清单。">
 <title>共生壳 Symbio-Shell — 项目规划</title>
 <style>
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -60,6 +60,36 @@ a:hover { text-decoration: underline; }
 .site-nav { display: flex; flex-wrap: wrap; gap: 8px 16px; font-size: 13px; }
 .site-nav a { color: var(--text2); }
 .site-nav a:hover { color: var(--text); }
+.lang-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px 14px;
+}
+.lang-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 14px;
+  border-radius: 10px;
+  border: 1px solid rgba(45,212,163,0.4);
+  background: rgba(45,212,163,0.1);
+  color: var(--text);
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: inherit;
+  -webkit-tap-highlight-color: transparent;
+  transition: background .2s, border-color .2s;
+}
+.lang-btn:hover {
+  background: rgba(45,212,163,0.2);
+  border-color: var(--accent2);
+}
+.lang-btn:focus-visible {
+  outline: 2px solid var(--accent2);
+  outline-offset: 2px;
+}
 .hero {
   max-width: 920px;
   margin: 0 auto;
@@ -229,7 +259,7 @@ footer.site-foot {
 <body id="top">
 
 <header class="site-head">
-  <a href="#top" class="site-logo" aria-label="回到页顶">
+  <a href="#top" class="site-logo" id="siteLogoLink" aria-label="回到页顶" data-i18n-title="ui.logoAria">
     <svg width="26" height="26" viewBox="0 0 32 32" fill="none" aria-hidden="true">
       <ellipse cx="16" cy="16" rx="14" ry="10" stroke="url(#plg)" stroke-width="2" fill="rgba(45,212,163,0.1)"/>
       <circle cx="16" cy="16" r="3.5" fill="#0d9488"/>
@@ -239,201 +269,529 @@ footer.site-foot {
         </linearGradient>
       </defs>
     </svg>
-    <span>共生壳 · 项目规划</span>
+    <span data-i18n="ui.logo">共生壳 · 项目规划</span>
   </a>
-  <nav class="site-nav" aria-label="本页导航">
-    <a href="#overview">概述</a>
-    <a href="#phases">阶段</a>
-    <a href="#wbs">工作分解</a>
-    <a href="#roles">角色</a>
-    <a href="#risks">风险</a>
-    <a href="#ethics">伦理</a>
-    <a href="#deliverables">交付物</a>
-    <a href="#links">关联</a>
-  </nav>
+  <div class="lang-row">
+    <nav class="site-nav" id="planSiteNav" aria-label="本页导航">
+      <a href="#overview" data-i18n="nav.overview">概述</a>
+      <a href="#phases" data-i18n="nav.phases">阶段</a>
+      <a href="#wbs" data-i18n="nav.wbs">工作分解</a>
+      <a href="#roles" data-i18n="nav.roles">角色</a>
+      <a href="#risks" data-i18n="nav.risks">风险</a>
+      <a href="#ethics" data-i18n="nav.ethics">伦理</a>
+      <a href="#deliverables" data-i18n="nav.deliverables">交付物</a>
+      <a href="#links" data-i18n="nav.links">关联</a>
+    </nav>
+    <button type="button" class="lang-btn" id="planLangBtn" data-i18n-title="ui.langBtnTitle" aria-live="polite">
+      <span aria-hidden="true">🌐</span>
+      <span class="lang-btn-label">English</span>
+    </button>
+  </div>
 </header>
 
 <section class="hero">
-  <span class="tagline">规划文档 · v0.2 · 概念构思版</span>
-  <h1>Symbio-Shell 项目规划</h1>
-  <p class="meta">思辨设计 / 虚构装置路线——<strong style="color:var(--text)">不制作实物</strong>，不涉及台架或生物实验；以叙事、视觉与表述规范为主。</p>
-  <p class="hero-lead">在<strong style="color:var(--text)">纸面与屏幕</strong>上把体系说圆：系统图、分镜、网站或幻灯可达答辩/作品集程度；对外明确「概念提案」即可。</p>
+  <span class="tagline" data-i18n="hero.tag">规划文档 · v0.2 · 概念构思版</span>
+  <h1 data-i18n="hero.h1">Symbio-Shell 项目规划</h1>
+  <p class="meta" data-i18n-html="hero.meta"></p>
+  <p class="hero-lead" data-i18n-html="hero.lead"></p>
 </section>
 
 <div class="wrap">
-  <div class="doc-bar" id="meta">
-    <strong>文档性质：</strong>概念/构思阶段专用；<strong>不包含</strong>可握持样机、工作原型或实验室验证。<strong>Markdown 同源：</strong><code style="color:var(--accent2);font-size:13px">Symbio-Shell-项目规划.md</code>
-  </div>
+  <div class="doc-bar" id="meta" data-i18n-html="doc.bar"></div>
 
   <section class="section" id="overview">
-    <h2><span class="num">1</span> 项目概述</h2>
+    <h2><span class="num">1</span> <span data-i18n="s1.h2">项目概述</span></h2>
     <div class="table-wrap">
       <table class="plan">
         <thead>
-          <tr><th>项目</th><th>说明</th></tr>
+          <tr><th data-i18n="tbl.field">项目</th><th data-i18n="tbl.desc">说明</th></tr>
         </thead>
         <tbody>
-          <tr><td>名称</td><td>Symbio-Shell（共生壳）</td></tr>
-          <tr><td>一句话定义</td><td>基于生理反馈与合成生物代谢逻辑的活性手机界面（概念壳体）。</td></tr>
-          <tr><td>核心价值</td><td>将「数字焦虑、废热、依赖」转译为可感知的多通道反馈，推动从消耗到轮回的材料与伦理叙事。</td></tr>
-          <tr><td>规划边界</td><td><strong>纯概念与可观看的叙事资产</strong>（图文、网站、幻灯、短片稿等）。不做实物、不做生物/化学实测。对外可称<strong>思辨设计 / 概念提案</strong>。</td></tr>
+          <tr><td data-i18n="s1.r1c1">名称</td><td data-i18n="s1.r1c2">Symbio-Shell（共生壳）</td></tr>
+          <tr><td data-i18n="s1.r2c1">一句话定义</td><td data-i18n="s1.r2c2">基于生理反馈与合成生物代谢逻辑的活性手机界面（概念壳体）。</td></tr>
+          <tr><td data-i18n="s1.r3c1">核心价值</td><td data-i18n="s1.r3c2">将「数字焦虑、废热、依赖」转译为可感知的多通道反馈，推动从消耗到轮回的材料与伦理叙事。</td></tr>
+          <tr><td data-i18n="s1.r4c1">规划边界</td><td data-i18n-html="s1.r4c2"></td></tr>
         </tbody>
       </table>
     </div>
-    <p class="sub" style="margin-top:20px"><strong>成功标准</strong>（建议同时满足其中 <strong>3</strong> 条即可视为阶段成功）</p>
+    <p class="sub" style="margin-top:20px" data-i18n-html="s1.successIntro"></p>
     <ol class="steps">
-      <li>叙事与技术路径自洽：四层结构、代谢闭环、行为干预逻辑可用一页「系统图 + 时序」讲清（可标「推测」「未验证」）。</li>
-      <li><strong>（可选）</strong> 配 2–3 条公开文献或常识级脚注，说明机制「对应哪类讨论」即可——<strong>不要求</strong>自做实验或数据。</li>
-      <li>视觉与叙事资产可展示：解剖图、分镜、展板/KV、网页或短片稿（含 AI 成图）<strong>至少一类</strong>达答辩/作品集完成度。</li>
-      <li>伦理与表述备忘录 + 明确<strong>构思性质</strong>；附简短「我们不承诺什么」。</li>
+      <li data-i18n="s1.step1">叙事与技术路径自洽：四层结构、代谢闭环、行为干预逻辑可用一页「系统图 + 时序」讲清（可标「推测」「未验证」）。</li>
+      <li data-i18n-html="s1.step2"></li>
+      <li data-i18n-html="s1.step3"></li>
+      <li data-i18n-html="s1.step4"></li>
     </ol>
   </section>
 
   <section class="section" id="phases">
-    <h2><span class="num">2</span> 阶段总览（推荐节奏）</h2>
-    <p class="body">以下为 <strong>约 4–6 个月</strong> 的轻量切分；若仅为单次答辩，可用 <strong>6–8 周冲刺</strong>（见表 2.1）。</p>
+    <h2><span class="num">2</span> <span data-i18n="s2.h2t">阶段总览（推荐节奏）</span></h2>
+    <p class="body" data-i18n-html="s2.intro"></p>
     <div class="table-wrap">
       <table class="plan">
         <thead>
-          <tr><th>阶段</th><th>周期（参考）</th><th>目标</th></tr>
+          <tr><th data-i18n="tbl.phase">阶段</th><th data-i18n="tbl.duration">周期（参考）</th><th data-i18n="tbl.goal">目标</th></tr>
         </thead>
         <tbody>
-          <tr><td>P0 对齐与范围</td><td>第 1–2 周</td><td>锁定叙事、成功标准、<strong>明确无实物</strong>、成果形式（展赛 / 作品集 / 网页）。</td></tr>
-          <tr><td>P1 设定与依据</td><td>第 2–6 周</td><td>系统框图、假设表、自愿的文献笔记（无需实验）、名词与「推测」标注规范。</td></tr>
-          <tr><td>P2 叙事与视觉</td><td>与 P1 并行</td><td>主视觉与解剖图迭代、分镜、概念页与介绍页统一、可选动效/短片脚本。</td></tr>
-          <tr><td>P3 整合与预演</td><td>第 5–8 周</td><td>答辩 deck、讲稿、模拟追问；汇总为可分享入口（静态站或 PDF）。</td></tr>
-          <tr><td>P4 复盘与延伸</td><td>持续</td><td>若未来有人愿做实物，另立子项目；此处只归档叙事与素材说明。</td></tr>
+          <tr><td data-i18n="s2.p0n">P0 对齐与范围</td><td data-i18n="s2.p0t">第 1–2 周</td><td data-i18n-html="s2.p0g"></td></tr>
+          <tr><td data-i18n="s2.p1n">P1 设定与依据</td><td data-i18n="s2.p1t">第 2–6 周</td><td data-i18n="s2.p1g">系统框图、假设表、自愿的文献笔记（无需实验）、名词与「推测」标注规范。</td></tr>
+          <tr><td data-i18n="s2.p2n">P2 叙事与视觉</td><td data-i18n="s2.p2t">与 P1 并行</td><td data-i18n="s2.p2g">主视觉与解剖图迭代、分镜、概念页与介绍页统一、可选动效/短片脚本。</td></tr>
+          <tr><td data-i18n="s2.p3n">P3 整合与预演</td><td data-i18n="s2.p3t">第 5–8 周</td><td data-i18n="s2.p3g">答辩 deck、讲稿、模拟追问；汇总为可分享入口（静态站或 PDF）。</td></tr>
+          <tr><td data-i18n="s2.p4n">P4 复盘与延伸</td><td data-i18n="s2.p4t">持续</td><td data-i18n="s2.p4g">若未来有人愿做实物，另立子项目；此处只归档叙事与素材说明。</td></tr>
         </tbody>
       </table>
     </div>
-    <h3 id="phases-sprint">2.1 答辩「压缩版」里程碑（示例 · 无实物）</h3>
+    <h3 id="phases-sprint" data-i18n="s2.h31">2.1 答辩「压缩版」里程碑（示例 · 无实物）</h3>
     <div class="table-wrap">
       <table class="plan">
         <thead>
-          <tr><th>周次</th><th>交付</th></tr>
+          <tr><th data-i18n="tbl.week">周次</th><th data-i18n="tbl.out">交付</th></tr>
         </thead>
         <tbody>
-          <tr><td>W1–W2</td><td>一页系统图 + 假设表 + 对外一句「本项目为概念提案」</td></tr>
-          <tr><td>W3–W4</td><td>叙事定稿 + 主视觉/KV + 2 分钟口播稿</td></tr>
-          <tr><td>W5–W6</td><td>分镜深化或 30–60 秒影像稿（可全部为生成素材）</td></tr>
-          <tr><td>W7</td><td>答辩 deck、模拟评委追问、伦理/表述页定稿</td></tr>
-          <tr><td>W8</td><td>排版、网页或 PDF 冻结、素材备份</td></tr>
+          <tr><td>W1–W2</td><td data-i18n="s2.w12">一页系统图 + 假设表 + 对外一句「本项目为概念提案」</td></tr>
+          <tr><td>W3–W4</td><td data-i18n="s2.w34">叙事定稿 + 主视觉/KV + 2 分钟口播稿</td></tr>
+          <tr><td>W5–W6</td><td data-i18n="s2.w56">分镜深化或 30–60 秒影像稿（可全部为生成素材）</td></tr>
+          <tr><td>W7</td><td data-i18n="s2.w7">答辩 deck、模拟评委追问、伦理/表述页定稿</td></tr>
+          <tr><td>W8</td><td data-i18n="s2.w8">排版、网页或 PDF 冻结、素材备份</td></tr>
         </tbody>
       </table>
     </div>
   </section>
 
   <section class="section" id="wbs">
-    <h2><span class="num">3</span> 工作分解（WBS）</h2>
-    <h3>3.1 系统与科学叙事（纸面 / 屏幕）</h3>
+    <h2><span class="num">3</span> <span data-i18n="s3.h2">工作分解（WBS）</span></h2>
+    <h3 data-i18n="s3.h31">3.1 系统与科学叙事（纸面 / 屏幕）</h3>
     <ul class="feature-list">
-      <li>将「皮质醇检测—显色—触觉」写成<strong>故事内自洽</strong>的因果链；可脚注「现实中需哪些条件」——无需验证。</li>
-      <li><strong>废热、气孔、渗透压</strong>：<strong>叙事级设定</strong>即可，图注或小字写明推测边界。</li>
-      <li>光合微生物与复苏仪式：<strong>与世界观一致</strong>，可按科普级资料避免明显硬伤。</li>
-      <li>输出：<strong>系统框图、时序故事板（焦虑暴发 / 高负载 / 长期弃置）</strong>。</li>
+      <li data-i18n-html="s3.l1"></li>
+      <li data-i18n-html="s3.l2"></li>
+      <li data-i18n-html="s3.l3"></li>
+      <li data-i18n-html="s3.l4"></li>
     </ul>
-    <h3>3.2 设计资产</h3>
+    <h3 data-i18n="s3.h32">3.2 设计资产</h3>
     <ul class="feature-list">
-      <li>四层叠层与 A–E 图例统一命名（与概念页同源更佳）。</li>
-      <li><strong>概念外观</strong>：尺度、握持区、气孔排布——重画面可读性，不重工艺可实现性。</li>
-      <li>输出：<strong>Figma/AI 展板、HTML 概念页、可选动态分镜</strong>。</li>
+      <li data-i18n="s3.l5">四层叠层与 A–E 图例统一命名（与概念页同源更佳）。</li>
+      <li data-i18n-html="s3.l6"></li>
+      <li data-i18n-html="s3.l7"></li>
     </ul>
-    <h3>3.3 技术叙事支撑（书桌工作，非动手验证）</h3>
+    <h3 data-i18n="s3.h33">3.3 技术叙事支撑（书桌工作，非动手验证）</h3>
     <ol class="steps">
-      <li><strong>微流控/比色：</strong>公开研究中常见到什么程度——数句背景 + 参考链接即可。</li>
-      <li><strong>水凝胶与渗透压：</strong>科普/综述级理解，支撑「质感变化」叙述。</li>
-      <li><strong>温敏材料：</strong>作类比，说明叙事隐喻，不承诺配方。</li>
-      <li><strong>生物电/MFC：</strong>若写入设定，用「极低功率示意」一笔带过并标虚构强度。</li>
+      <li data-i18n-html="s3.o1"></li>
+      <li data-i18n-html="s3.o2"></li>
+      <li data-i18n-html="s3.o3"></li>
+      <li data-i18n-html="s3.o4"></li>
     </ol>
-    <h3>3.4 展示与传播</h3>
+    <h3 data-i18n="s3.h34">3.4 展示与传播</h3>
     <ul class="feature-list">
-      <li>项目介绍页、概念页、规划书三份材料<strong>术语一致</strong>。</li>
-      <li>短片/幻灯结构：问题 → 机制 → 仪式 → 轮回（各段可短至 20–40 秒口播）。</li>
+      <li data-i18n-html="s3.l8"></li>
+      <li data-i18n="s3.l9">短片/幻灯结构：问题 → 机制 → 仪式 → 轮回（各段可短至 20–40 秒口播）。</li>
     </ul>
-    <h3>3.5 合规与表述（贯穿全程）</h3>
+    <h3 data-i18n="s3.h35">3.5 合规与表述（贯穿全程）</h3>
     <ul class="feature-list">
-      <li>「感官勒索」等强措辞备<strong>学术版 / 大众版</strong>；对外保留<strong>思辨设计</strong>定位。</li>
-      <li>本阶段<strong>无</strong>真实人体数据与生物样本；若将来扩展再补合规条款。</li>
+      <li data-i18n-html="s3.l10"></li>
+      <li data-i18n-html="s3.l11"></li>
     </ul>
   </section>
 
   <section class="section" id="roles">
-    <h2><span class="num">4</span> 角色与协作（最小配置）</h2>
+    <h2><span class="num">4</span> <span data-i18n="s4.h2">角色与协作（最小配置）</span></h2>
     <div class="table-wrap">
       <table class="plan">
         <thead>
-          <tr><th>角色</th><th>职责</th></tr>
+          <tr><th data-i18n="tbl.role">角色</th><th data-i18n="tbl.duty">职责</th></tr>
         </thead>
         <tbody>
-          <tr><td>项目负责人</td><td>范围、叙事口径、截止日期。</td></tr>
-          <tr><td>叙事／视觉</td><td>系统图、KV、分镜、网站与幻灯。</td></tr>
-          <tr><td>科学／设定顾问</td><td>查资料、挑硬伤、<strong>不写实验方案</strong>。</td></tr>
-          <tr><td>伦理／表述</td><td>「概念 vs 产品」措辞、答辩敏感问答。</td></tr>
+          <tr><td data-i18n="s4.r1a">项目负责人</td><td data-i18n="s4.r1b">范围、叙事口径、截止日期。</td></tr>
+          <tr><td data-i18n="s4.r2a">叙事／视觉</td><td data-i18n="s4.r2b">系统图、KV、分镜、网站与幻灯。</td></tr>
+          <tr><td data-i18n="s4.r3a">科学／设定顾问</td><td data-i18n-html="s4.r3b"></td></tr>
+          <tr><td data-i18n="s4.r4a">伦理／表述</td><td data-i18n="s4.r4b">「概念 vs 产品」措辞、答辩敏感问答。</td></tr>
         </tbody>
       </table>
     </div>
-    <p class="body" style="margin-top:16px">一人团队：叙事 + 视觉 + 自编「我们不承诺什么」一节即可。</p>
+    <p class="body" style="margin-top:16px" data-i18n="s4.solo">一人团队：叙事 + 视觉 + 自编「我们不承诺什么」一节即可。</p>
   </section>
 
   <section class="section" id="risks">
-    <h2><span class="num">5</span> 风险与应对</h2>
+    <h2><span class="num">5</span> <span data-i18n="s5.h2">风险与应对</span></h2>
     <div class="table-wrap">
       <table class="plan">
         <thead>
-          <tr><th>风险</th><th>应对</th></tr>
+          <tr><th data-i18n="tbl.risk">风险</th><th data-i18n="tbl.mit">应对</th></tr>
         </thead>
         <tbody>
-          <tr><td>被误读成「已能做成的产品」</td><td>首页/封底固定<strong>概念提案</strong>；系统图旁注明推测与虚构强度。</td></tr>
-          <tr><td>评审质疑「操纵用户」</td><td>与注意力经济对照；强调虚构场景与价值讨论，非销售承诺。</td></tr>
-          <tr><td>设定被指「不科学」</td><td>脚注链到综述或科普；承认边界，诗学/伦理意图可优先于工程细节。</td></tr>
-          <tr><td>时间不足</td><td>砍掉文献扩展，保住<strong>一条主叙事 + 一套主视觉</strong>。</td></tr>
+          <tr><td data-i18n="s5.t1a">被误读成「已能做成的产品」</td><td data-i18n-html="s5.t1b"></td></tr>
+          <tr><td data-i18n="s5.t2a">评审质疑「操纵用户」</td><td data-i18n="s5.t2b">与注意力经济对照；强调虚构场景与价值讨论，非销售承诺。</td></tr>
+          <tr><td data-i18n="s5.t3a">设定被指「不科学」</td><td data-i18n="s5.t3b">脚注链到综述或科普；承认边界，诗学/伦理意图可优先于工程细节。</td></tr>
+          <tr><td data-i18n="s5.t4a">时间不足</td><td data-i18n-html="s5.t4b"></td></tr>
         </tbody>
       </table>
     </div>
   </section>
 
   <section class="section" id="ethics">
-    <h2><span class="num">6</span> 伦理与表述备忘录</h2>
-    <p class="sub">需在对外材料中可追溯；本阶段无实验与人体采样。</p>
+    <h2><span class="num">6</span> <span data-i18n="s6.h2">伦理与表述备忘录</span></h2>
+    <p class="sub" data-i18n="s6.sub">需在对外材料中可追溯；本阶段无实验与人体采样。</p>
     <ul class="feature-list">
-      <li>不宣称医疗诊断或治疗；皮质醇等为<strong>设定元素</strong>，非实测指标。</li>
-      <li>本阶段<strong>无</strong>生物实验与人体接触；若图像中出现体液隐喻，标注为<strong>象征性</strong>。</li>
-      <li>「强制户外」「心理厌恶」等可 soften 为<strong>强提示、可逆反馈、仪式性叙事</strong>。</li>
-      <li>若被问及「能否定做」：当前为<strong>叙事与视觉层面的概念作品</strong>，实物委托须另立范围。</li>
+      <li data-i18n-html="s6.l1"></li>
+      <li data-i18n-html="s6.l2"></li>
+      <li data-i18n-html="s6.l3"></li>
+      <li data-i18n-html="s6.l4"></li>
     </ul>
   </section>
 
   <section class="section" id="deliverables">
-    <h2><span class="num">7</span> 交付物清单（核对用 · 无实物）</h2>
+    <h2><span class="num">7</span> <span data-i18n="s7.h2">交付物清单（核对用 · 无实物）</span></h2>
     <ul class="checklist">
-      <li>项目规划书（本文档 / MD 迭代版）</li>
-      <li>系统框图 + 假设表（含「推测」标注）</li>
-      <li>主视觉与解剖/分镜资产包</li>
-      <li>演示材料（PPT / HTML / 影像稿其一或以上）</li>
-      <li>（可选）文献或背景阅读笔记 1–3 页</li>
-      <li>伦理与表述一页纸 + 「我们不承诺什么」</li>
-      <li>答辩 Q&amp;A 清单</li>
+      <li data-i18n="s7.i1">项目规划书（本文档 / MD 迭代版）</li>
+      <li data-i18n="s7.i2">系统框图 + 假设表（含「推测」标注）</li>
+      <li data-i18n="s7.i3">主视觉与解剖/分镜资产包</li>
+      <li data-i18n="s7.i4">演示材料（PPT / HTML / 影像稿其一或以上）</li>
+      <li data-i18n="s7.i5">（可选）文献或背景阅读笔记 1–3 页</li>
+      <li data-i18n="s7.i6">伦理与表述一页纸 + 「我们不承诺什么」</li>
+      <li data-i18n="s7.i7">答辩 Q&amp;A 清单</li>
     </ul>
   </section>
 
   <section class="section" id="links">
-    <h2><span class="num">8</span> 关联文件（仓库内）</h2>
+    <h2><span class="num">8</span> <span data-i18n="s8.h2">关联文件（仓库内）</span></h2>
     <div class="links-card">
       <ul>
-        <li><code>Symbio-Shell-共生壳-概念页.html</code> — 结构解剖、分镜与叙事长文</li>
-        <li><code>Symbio-Shell-项目介绍.html</code> — 偏简的项目概念陈述</li>
-        <li><code>Symbio-Shell-Biodesign-Planning.html</code> — 英文 · 生物设计课程式规划文档（Problem / Brief / Ethics / Deliverables）</li>
-        <li><code>Symbio-Shell-项目规划.md</code> — 与本页内容同源，便于 Git 与协作修订</li>
+        <li data-i18n-html="s8.l1"></li>
+        <li data-i18n-html="s8.l2"></li>
+        <li data-i18n-html="s8.l3"></li>
+        <li data-i18n-html="s8.l4"></li>
       </ul>
     </div>
-    <p class="foot-note">若未来升级为可演示原型，请另建「原型子规划」；本页不覆盖产线与实验室。如需甘特图或英文 BDC 格式，可在 MD 追加一节。</p>
+    <p class="foot-note" data-i18n="s8.note">若未来升级为可演示原型，请另建「原型子规划」；本页不覆盖产线与实验室。如需甘特图或英文 BDC 格式，可在 MD 追加一节。</p>
   </section>
 </div>
 
 <footer class="site-foot">
-  <p><strong>共生壳 Symbio-Shell</strong> · 项目规划页 · 静态 HTML</p>
-  <p style="margin-top:8px">本项目为<strong>概念构思与思辨设计</strong>，不包含可工作实物或生物实验；对外陈述以本文与概念页为准。</p>
+  <p data-i18n-html="foot.l1"></p>
+  <p style="margin-top:8px" data-i18n-html="foot.l2"></p>
 </footer>
+
+<script>
+(function () {
+
+  var LS_KEY = 'symbio-shell-plan-lang';
+
+  var I18N = {
+    zh: {
+      'page.title': '共生壳 Symbio-Shell — 项目规划',
+      'page.meta': 'Symbio-Shell（共生壳）项目规划·概念构思版：无实物与实验；叙事、视觉与文献脚注级支持；伦理表述与交付清单。',
+      'ui.logoAria': '回到页顶',
+      'ui.langBtnTitle': '切换为 English / Switch to English',
+      'ui.logo': '共生壳 · 项目规划',
+      'ui.navAria': '本页导航',
+      'nav.overview': '概述',
+      'nav.phases': '阶段',
+      'nav.wbs': '工作分解',
+      'nav.roles': '角色',
+      'nav.risks': '风险',
+      'nav.ethics': '伦理',
+      'nav.deliverables': '交付物',
+      'nav.links': '关联',
+      'hero.tag': '规划文档 · v0.2 · 概念构思版',
+      'hero.h1': 'Symbio-Shell 项目规划',
+      'hero.meta': '思辨设计 / 虚构装置路线——<strong style="color:var(--text)">不制作实物</strong>，不涉及台架或生物实验；以叙事、视觉与表述规范为主。',
+      'hero.lead': '在<strong style="color:var(--text)">纸面与屏幕</strong>上把体系说圆：系统图、分镜、网站或幻灯可达答辩/作品集程度；对外明确「概念提案」即可。',
+      'doc.bar': '<strong>文档性质：</strong>概念/构思阶段专用；<strong>不包含</strong>可握持样机、工作原型或实验室验证。<strong>Markdown 同源：</strong><code style="color:var(--accent2);font-size:13px">Symbio-Shell-项目规划.md</code>',
+      'tbl.field': '项目',
+      'tbl.desc': '说明',
+      's1.h2': '项目概述',
+      's1.r1c1': '名称',
+      's1.r1c2': 'Symbio-Shell（共生壳）',
+      's1.r2c1': '一句话定义',
+      's1.r2c2': '基于生理反馈与合成生物代谢逻辑的活性手机界面（概念壳体）。',
+      's1.r3c1': '核心价值',
+      's1.r3c2': '将「数字焦虑、废热、依赖」转译为可感知的多通道反馈，推动从消耗到轮回的材料与伦理叙事。',
+      's1.r4c1': '规划边界',
+      's1.r4c2': '<strong>纯概念与可观看的叙事资产</strong>（图文、网站、幻灯、短片稿等）。不做实物、不做生物/化学实测。对外可称<strong>思辨设计 / 概念提案</strong>。',
+      's1.successIntro': '<strong>成功标准</strong>（建议同时满足其中 <strong>3</strong> 条即可视为阶段成功）',
+      's1.step1': '叙事与技术路径自洽：四层结构、代谢闭环、行为干预逻辑可用一页「系统图 + 时序」讲清（可标「推测」「未验证」）。',
+      's1.step2': '<strong>（可选）</strong> 配 2–3 条公开文献或常识级脚注，说明机制「对应哪类讨论」即可——<strong>不要求</strong>自做实验或数据。',
+      's1.step3': '视觉与叙事资产可展示：解剖图、分镜、展板/KV、网页或短片稿（含 AI 成图）<strong>至少一类</strong>达答辩/作品集完成度。',
+      's1.step4': '伦理与表述备忘录 + 明确<strong>构思性质</strong>；附简短「我们不承诺什么」。',
+      's2.h2t': '阶段总览（推荐节奏）',
+      's2.intro': '以下为 <strong>约 4–6 个月</strong> 的轻量切分；若仅为单次答辩，可用 <strong>6–8 周冲刺</strong>（见表 2.1）。',
+      'tbl.phase': '阶段',
+      'tbl.duration': '周期（参考）',
+      'tbl.goal': '目标',
+      's2.p0n': 'P0 对齐与范围',
+      's2.p0t': '第 1–2 周',
+      's2.p0g': '锁定叙事、成功标准、<strong>明确无实物</strong>、成果形式（展赛 / 作品集 / 网页）。',
+      's2.p1n': 'P1 设定与依据',
+      's2.p1t': '第 2–6 周',
+      's2.p1g': '系统框图、假设表、自愿的文献笔记（无需实验）、名词与「推测」标注规范。',
+      's2.p2n': 'P2 叙事与视觉',
+      's2.p2t': '与 P1 并行',
+      's2.p2g': '主视觉与解剖图迭代、分镜、概念页与介绍页统一、可选动效/短片脚本。',
+      's2.p3n': 'P3 整合与预演',
+      's2.p3t': '第 5–8 周',
+      's2.p3g': '答辩 deck、讲稿、模拟追问；汇总为可分享入口（静态站或 PDF）。',
+      's2.p4n': 'P4 复盘与延伸',
+      's2.p4t': '持续',
+      's2.p4g': '若未来有人愿做实物，另立子项目；此处只归档叙事与素材说明。',
+      's2.h31': '2.1 答辩「压缩版」里程碑（示例 · 无实物）',
+      'tbl.week': '周次',
+      'tbl.out': '交付',
+      's2.w12': '一页系统图 + 假设表 + 对外一句「本项目为概念提案」',
+      's2.w34': '叙事定稿 + 主视觉/KV + 2 分钟口播稿',
+      's2.w56': '分镜深化或 30–60 秒影像稿（可全部为生成素材）',
+      's2.w7': '答辩 deck、模拟评委追问、伦理/表述页定稿',
+      's2.w8': '排版、网页或 PDF 冻结、素材备份',
+      's3.h2': '工作分解（WBS）',
+      's3.h31': '3.1 系统与科学叙事（纸面 / 屏幕）',
+      's3.l1': '将「皮质醇检测—显色—触觉」写成<strong>故事内自洽</strong>的因果链；可脚注「现实中需哪些条件」——无需验证。',
+      's3.l2': '<strong>废热、气孔、渗透压</strong>：<strong>叙事级设定</strong>即可，图注或小字写明推测边界。',
+      's3.l3': '光合微生物与复苏仪式：<strong>与世界观一致</strong>，可按科普级资料避免明显硬伤。',
+      's3.l4': '输出：<strong>系统框图、时序故事板（焦虑暴发 / 高负载 / 长期弃置）</strong>。',
+      's3.h32': '3.2 设计资产',
+      's3.l5': '四层叠层与 A–E 图例统一命名（与概念页同源更佳）。',
+      's3.l6': '<strong>概念外观</strong>：尺度、握持区、气孔排布——重画面可读性，不重工艺可实现性。',
+      's3.l7': '输出：<strong>Figma/AI 展板、HTML 概念页、可选动态分镜</strong>。',
+      's3.h33': '3.3 技术叙事支撑（书桌工作，非动手验证）',
+      's3.o1': '<strong>微流控/比色：</strong>公开研究中常见到什么程度——数句背景 + 参考链接即可。',
+      's3.o2': '<strong>水凝胶与渗透压：</strong>科普/综述级理解，支撑「质感变化」叙述。',
+      's3.o3': '<strong>温敏材料：</strong>作类比，说明叙事隐喻，不承诺配方。',
+      's3.o4': '<strong>生物电/MFC：</strong>若写入设定，用「极低功率示意」一笔带过并标虚构强度。',
+      's3.h34': '3.4 展示与传播',
+      's3.l8': '项目介绍页、概念页、规划书三份材料<strong>术语一致</strong>。',
+      's3.l9': '短片/幻灯结构：问题 → 机制 → 仪式 → 轮回（各段可短至 20–40 秒口播）。',
+      's3.h35': '3.5 合规与表述（贯穿全程）',
+      's3.l10': '「感官勒索」等强措辞备<strong>学术版 / 大众版</strong>；对外保留<strong>思辨设计</strong>定位。',
+      's3.l11': '本阶段<strong>无</strong>真实人体数据与生物样本；若将来扩展再补合规条款。',
+      's4.h2': '角色与协作（最小配置）',
+      'tbl.role': '角色',
+      'tbl.duty': '职责',
+      's4.r1a': '项目负责人',
+      's4.r1b': '范围、叙事口径、截止日期。',
+      's4.r2a': '叙事／视觉',
+      's4.r2b': '系统图、KV、分镜、网站与幻灯。',
+      's4.r3a': '科学／设定顾问',
+      's4.r3b': '查资料、挑硬伤、<strong>不写实验方案</strong>。',
+      's4.r4a': '伦理／表述',
+      's4.r4b': '「概念 vs 产品」措辞、答辩敏感问答。',
+      's4.solo': '一人团队：叙事 + 视觉 + 自编「我们不承诺什么」一节即可。',
+      's5.h2': '风险与应对',
+      'tbl.risk': '风险',
+      'tbl.mit': '应对',
+      's5.t1a': '被误读成「已能做成的产品」',
+      's5.t1b': '首页/封底固定<strong>概念提案</strong>；系统图旁注明推测与虚构强度。',
+      's5.t2a': '评审质疑「操纵用户」',
+      's5.t2b': '与注意力经济对照；强调虚构场景与价值讨论，非销售承诺。',
+      's5.t3a': '设定被指「不科学」',
+      's5.t3b': '脚注链到综述或科普；承认边界，诗学/伦理意图可优先于工程细节。',
+      's5.t4a': '时间不足',
+      's5.t4b': '砍掉文献扩展，保住<strong>一条主叙事 + 一套主视觉</strong>。',
+      's6.h2': '伦理与表述备忘录',
+      's6.sub': '需在对外材料中可追溯；本阶段无实验与人体采样。',
+      's6.l1': '不宣称医疗诊断或治疗；皮质醇等为<strong>设定元素</strong>，非实测指标。',
+      's6.l2': '本阶段<strong>无</strong>生物实验与人体接触；若图像中出现体液隐喻，标注为<strong>象征性</strong>。',
+      's6.l3': '「强制户外」「心理厌恶」等可 soften 为<strong>强提示、可逆反馈、仪式性叙事</strong>。',
+      's6.l4': '若被问及「能否定做」：当前为<strong>叙事与视觉层面的概念作品</strong>，实物委托须另立范围。',
+      's7.h2': '交付物清单（核对用 · 无实物）',
+      's7.i1': '项目规划书（本文档 / MD 迭代版）',
+      's7.i2': '系统框图 + 假设表（含「推测」标注）',
+      's7.i3': '主视觉与解剖/分镜资产包',
+      's7.i4': '演示材料（PPT / HTML / 影像稿其一或以上）',
+      's7.i5': '（可选）文献或背景阅读笔记 1–3 页',
+      's7.i6': '伦理与表述一页纸 + 「我们不承诺什么」',
+      's7.i7': '答辩 Q&A 清单',
+      's8.h2': '关联文件（仓库内）',
+      's8.l1': '<code>Symbio-Shell-共生壳-概念页.html</code> — 结构解剖、分镜与叙事长文',
+      's8.l2': '<code>Symbio-Shell-项目介绍.html</code> — 偏简的项目概念陈述',
+      's8.l3': '<code>Symbio-Shell-Biodesign-Planning.html</code> — 英文 · 生物设计课程式规划文档（Problem / Brief / Ethics / Deliverables）',
+      's8.l4': '<code>Symbio-Shell-项目规划.md</code> — 与本页内容同源，便于 Git 与协作修订',
+      's8.note': '若未来升级为可演示原型，请另建「原型子规划」；本页不覆盖产线与实验室。如需甘特图或英文 BDC 格式，可在 MD 追加一节。',
+      'foot.l1': '<strong>共生壳 Symbio-Shell</strong> · 项目规划页 · 静态 HTML',
+      'foot.l2': '本项目为<strong>概念构思与思辨设计</strong>，不包含可工作实物或生物实验；对外陈述以本文与概念页为准。'
+    },
+    en: {
+      'page.title': 'Symbio-Shell — Project planning',
+      'page.meta': 'Symbio-Shell planning (concept track): no physical build or wet lab; narrative, visuals, light citations; ethics & deliverables.',
+      'ui.logoAria': 'Back to top',
+      'ui.langBtnTitle': '切换为中文 / Switch to Chinese',
+      'ui.logo': 'Symbio-Shell · Planning',
+      'ui.navAria': 'On-page navigation',
+      'nav.overview': 'Overview',
+      'nav.phases': 'Phases',
+      'nav.wbs': 'WBS',
+      'nav.roles': 'Roles',
+      'nav.risks': 'Risks',
+      'nav.ethics': 'Ethics',
+      'nav.deliverables': 'Deliverables',
+      'nav.links': 'Links',
+      'hero.tag': 'Planning doc · v0.2 · Concept track',
+      'hero.h1': 'Symbio-Shell project plan',
+      'hero.meta': 'Critical design / design-fiction device — <strong style="color:var(--text)">no physical artifact</strong>; no bench or biological experiments. Focus: narrative, visuals, and consistent messaging.',
+      'hero.lead': 'Make the system coherent <strong style="color:var(--text)">on paper and screen</strong>: system map, storyboards, site or slides to portfolio / defense level; label outwardly as a <strong>concept proposal</strong>.',
+      'doc.bar': '<strong>Document scope:</strong> ideation only; <strong>excludes</strong> handheld prototypes, working demos, or lab validation. <strong>Markdown sibling:</strong> <code style="color:var(--accent2);font-size:13px">Symbio-Shell-项目规划.md</code>',
+      'tbl.field': 'Item',
+      'tbl.desc': 'Description',
+      's1.h2': 'Project overview',
+      's1.r1c1': 'Name',
+      's1.r1c2': 'Symbio-Shell',
+      's1.r2c1': 'One-liner',
+      's1.r2c2': 'A metabolically legible “living” phone interface (concept enclosure) coupling physiological cues with synthetic-biology metaphors.',
+      's1.r3c1': 'Core value',
+      's1.r3c2': 'Translates anxiety, waste heat, and dependency into felt, multi-channel feedback; advances material and ethical narratives from consumption toward cycles.',
+      's1.r4c1': 'Planning boundary',
+      's1.r4c2': '<strong>Pure concept + narrative artifacts</strong> (graphics, site, slides, film scripts). No build, no bio/chemical validation. Outward framing: <strong>critical design / concept proposal</strong>.',
+      's1.successIntro': '<strong>Success criteria</strong> (aim for <strong>3</strong> of the following for this phase)',
+      's1.step1': 'Narrative + technical story hold together: four layers, metabolic loops, and behavioral arc in one system map + timeline (mark “speculative / unverified”).',
+      's1.step2': '<strong>(Optional)</strong> 2–3 public or popular-science footnotes naming the <em>discussion class</em> each mechanism echoes — <strong>no</strong> requirement to run experiments.',
+      's1.step3': 'Showable narrative assets: anatomy plates, storyboards, hero/KV, web or motion script (incl. AI imagery) — <strong>at least one</strong> at defense / portfolio polish.',
+      's1.step4': 'Ethics & messaging memo + explicit <strong>ideation status</strong>; short “what we do not claim.”',
+      's2.h2t': 'Phased roadmap (suggested)',
+      's2.intro': 'Below: <strong>~4–6 months</strong> light pacing; for a single defense sprint, use <strong>6–8 weeks</strong> (table 2.1).',
+      'tbl.phase': 'Phase',
+      'tbl.duration': 'Duration (ref.)',
+      'tbl.goal': 'Goal',
+      's2.p0n': 'P0 Scope align',
+      's2.p0t': 'Weeks 1–2',
+      's2.p0g': 'Lock narrative, success metrics, <strong>no artifact</strong>, output modes (show / portfolio / web).',
+      's2.p1n': 'P1 Framing & evidence',
+      's2.p1t': 'Weeks 2–6',
+      's2.p1g': 'Block diagram, assumption table, optional lit notes (no experiments), consistent “speculation” labeling.',
+      's2.p2n': 'P2 Narrative & visuals',
+      's2.p2t': 'Parallel to P1',
+      's2.p2g': 'Hero & anatomy iterations, storyboards, aligned concept + intro pages; optional motion script.',
+      's2.p3n': 'P3 Integrate & rehearse',
+      's2.p3t': 'Weeks 5–8',
+      's2.p3g': 'Defense deck, talk track, mock Q&A; publishable entry (static site or PDF).',
+      's2.p4n': 'P4 Retrospective',
+      's2.p4t': 'Ongoing',
+      's2.p4g': 'Physical builds become a <em>separate</em> sub-project; here archive narrative and asset notes only.',
+      's2.h31': '2.1 Defense sprint milestones (example · no artifact)',
+      'tbl.week': 'Week',
+      'tbl.out': 'Deliverable',
+      's2.w12': 'One system map + assumption table + one-line “concept proposal” label.',
+      's2.w34': 'Locked narrative + hero/KV + ~2-minute spoken script.',
+      's2.w56': 'Storyboard depth or 30–60s motion outline (generated assets OK).',
+      's2.w7': 'Defense deck, mock jury Q&A, finalized ethics / messaging page.',
+      's2.w8': 'Layout freeze: web or PDF + asset backup.',
+      's3.h2': 'Work breakdown (WBS)',
+      's3.h31': '3.1 System & science storytelling (paper / screen)',
+      's3.l1': 'Chain “cortisol cue → color → haptic metaphor” as <strong>internally coherent fiction</strong>; footnote real-world prerequisites — no validation required.',
+      's3.l2': '<strong>Waste heat, stomata, osmotic pressure</strong>: <strong>narrative-tier</strong> only; caption speculative bounds.',
+      's3.l3': 'Photosynthetic microbes & recovery ritual: <strong>world-consistent</strong>; use pop-sci guardrails against gross errors.',
+      's3.l4': 'Outputs: <strong>system diagram, temporal boards (anxiety spike / high load / long neglect)</strong>.',
+      's3.h32': '3.2 Design assets',
+      's3.l5': 'Unified naming for four-stack layers & A–E keys (ideally same as concept page).',
+      's3.l6': '<strong>Concept look</strong>: scale, grip zone, pore layout — optimize legibility, not manufacturability.',
+      's3.l7': 'Outputs: <strong>Figma/AI plate, HTML concept page, optional motion boards</strong>.',
+      's3.h33': '3.3 Technical storytelling support (desk only)',
+      's3.o1': '<strong>Microfluidics / colorimetry:</strong> a few sentences + links on where this exists in literature.',
+      's3.o2': '<strong>Hydrogel & osmosis:</strong> review/pop level to support “texture change” talk.',
+      's3.o3': '<strong>Thermo-responsive materials:</strong> analogy only; no recipe promises.',
+      's3.o4': '<strong>Bioelectric / MFC:</strong> if used, note as ultra-low-power fiction with labeled intensity.',
+      's3.h34': '3.4 Presentation & outreach',
+      's3.l8': 'Intro page, concept page, and this plan share <strong>one glossary</strong>.',
+      's3.l9': 'Short film / slide arc: problem → mechanism → ritual → cycle (20–40s beats each).',
+      's3.h35': '3.5 Compliance & tone (throughout)',
+      's3.l10': 'Prepare <strong>academic vs. public</strong> wording for sharp phrases; keep <strong>critical design</strong> positioning.',
+      's3.l11': '<strong>No</strong> human biosamples or personal data in this phase; expand compliance if scope changes.',
+      's4.h2': 'Roles (minimum crew)',
+      'tbl.role': 'Role',
+      'tbl.duty': 'Responsibilities',
+      's4.r1a': 'Lead',
+      's4.r1b': 'Scope, narrative line, deadlines.',
+      's4.r2a': 'Narrative / visual',
+      's4.r2b': 'Diagrams, KV, boards, site & slides.',
+      's4.r3a': 'Science / lore advisor',
+      's4.r3b': 'Literature passes, flag errors, <strong>no lab protocol duty</strong>.',
+      's4.r4a': 'Ethics / comms',
+      's4.r4b': '“Concept vs. product” language, sensitive Q&A.',
+      's4.solo': 'Solo team: narrative + visuals + a self-written “what we do not claim” section suffices.',
+      's5.h2': 'Risks & responses',
+      'tbl.risk': 'Risk',
+      'tbl.mit': 'Mitigation',
+      's5.t1a': 'Read as “almost a product”',
+      's5.t1b': 'Banner <strong>concept proposal</strong> on cover & closing; mark speculative load on diagrams.',
+      's5.t2a': 'Critique of “manipulating users”',
+      's5.t2b': 'Contrast attention economy; stress fiction + values debate, not sales.',
+      's5.t3a': '“Unscientific” accusations',
+      's5.t3b': 'Point to reviews / explain limits; poetic or ethical intent can outweigh engineering detail in critique.',
+      's5.t4a': 'Time crunch',
+      's5.t4b': 'Drop lit expansions; protect <strong>one storyline + one visual system</strong>.',
+      's6.h2': 'Ethics & messaging memo',
+      's6.sub': 'Traceable in public-facing materials; no experiments or human sampling in this phase.',
+      's6.l1': 'No diagnostic or therapeutic claims; cortisol etc. are <strong>story devices</strong>, not measured biomarkers.',
+      's6.l2': '<strong>No</strong> wet lab or bodily contact in this phase; label fluid imagery as <strong>symbolic</strong>.',
+      's6.l3': 'Harsh cues (“forced outdoors,” “aversion”) soften to <strong>strong cues, reversible feedback, ritual narrative</strong>.',
+      's6.l4': 'If asked to commission hardware: <strong>narrative / visual concept only</strong> — physical builds need a new scope.',
+      's7.h2': 'Deliverables checklist (no artifact)',
+      's7.i1': 'Planning doc (this page / Markdown sibling)',
+      's7.i2': 'System diagram + assumption table (with “speculative” tags)',
+      's7.i3': 'Hero + anatomy / storyboard asset pack',
+      's7.i4': 'Presentation pack (PPT / HTML / motion outline — one or more)',
+      's7.i5': '(Optional) 1–3 pages reading notes',
+      's7.i6': 'Ethics one-pager + “what we do not claim”',
+      's7.i7': 'Defense Q&A list',
+      's8.h2': 'Related files (repo)',
+      's8.l1': '<code>Symbio-Shell-共生壳-概念页.html</code> — Anatomy, boards, long-form narrative',
+      's8.l2': '<code>Symbio-Shell-项目介绍.html</code> — Short project statement',
+      's8.l3': '<code>Symbio-Shell-Biodesign-Planning.html</code> — English biodesign course-style brief',
+      's8.l4': '<code>Symbio-Shell-项目规划.md</code> — Markdown twin for Git collaboration',
+      's8.note': 'If upgrading to a demo prototype, open a <em>hardware sub-plan</em>; this page does not cover fabrication lines or labs. Add Gantt or BDC format in MD if required.',
+      'foot.l1': '<strong>Symbio-Shell</strong> · Planning page · static HTML',
+      'foot.l2': 'This is <strong>conceptual critical design</strong>, not a working product or bio experiment; public statements follow this page and the concept site.'
+    }
+  };
+
+  var lang = localStorage.getItem(LS_KEY) || 'zh';
+  if (lang !== 'zh' && lang !== 'en') lang = 'zh';
+
+  function t(key) {
+    var pack = I18N[lang] || I18N.zh;
+    if (pack[key] != null) return pack[key];
+    return I18N.zh[key] != null ? I18N.zh[key] : key;
+  }
+
+  function apply() {
+    document.documentElement.lang = lang === 'zh' ? 'zh-CN' : 'en';
+    document.title = t('page.title');
+    var metaD = document.getElementById('pageMetaDesc');
+    if (metaD) metaD.setAttribute('content', t('page.meta'));
+
+    document.querySelectorAll('[data-i18n-title]').forEach(function (el) {
+      var k = el.getAttribute('data-i18n-title');
+      if (k) el.setAttribute('title', t(k));
+    });
+
+    var logo = document.getElementById('siteLogoLink');
+    if (logo) logo.setAttribute('aria-label', t('ui.logoAria'));
+
+    var nav = document.getElementById('planSiteNav');
+    if (nav) nav.setAttribute('aria-label', t('ui.navAria'));
+
+    document.querySelectorAll('[data-i18n]').forEach(function (el) {
+      var k = el.getAttribute('data-i18n');
+      if (!k) return;
+      if (el.tagName === 'A' && el.querySelector('*')) return;
+      el.textContent = t(k);
+    });
+
+    document.querySelectorAll('[data-i18n-html]').forEach(function (el) {
+      var k = el.getAttribute('data-i18n-html');
+      if (k) el.innerHTML = t(k);
+    });
+
+    var btn = document.getElementById('planLangBtn');
+    var lab = btn && btn.querySelector('.lang-btn-label');
+    if (lab) lab.textContent = lang === 'zh' ? 'English' : '中文';
+    if (btn) btn.setAttribute('aria-label', lang === 'zh' ? 'Switch interface to English' : '将界面切换为中文');
+  }
+
+  document.getElementById('planLangBtn').addEventListener('click', function () {
+    lang = lang === 'zh' ? 'en' : 'zh';
+    localStorage.setItem(LS_KEY, lang);
+    apply();
+  });
+
+  apply();
+})();
+</script>
 
 </body>
 </html>
