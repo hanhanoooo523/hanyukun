@@ -10,6 +10,7 @@ on:
       - "StyleShift-Presentation.html"
       - "设计风格迁移-改进版.html"
       - "Symbio-Shell-Biodesign-Planning.html"
+      - "Symbio-Shell-共生壳-概念页.html"
       - "Symbio-Shell-项目规划.html"
       - ".github/workflows/pages.yml"
   workflow_dispatch:
@@ -38,6 +39,7 @@ jobs:
           cp StyleShift-Presentation.html _site/
           cp "设计风格迁移-改进版.html" _site/
           cp Symbio-Shell-Biodesign-Planning.html _site/
+          cp "Symbio-Shell-共生壳-概念页.html" _site/
           cp "Symbio-Shell-项目规划.html" _site/
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
